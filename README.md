@@ -1,4 +1,4 @@
 # Personal
 Contains my personals projects.
 
-Imports in progress, think you for waiting.
+Imports in progress, thank you for waiting.
