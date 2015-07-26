@@ -1,0 +1,262 @@
+package terrain.Test;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+
+import bloc.BlocContract;
+import bloc.BlocImpl;
+import bloc.BlocService;
+import bloc.Tresor;
+import bloc.Type;
+
+import error.InvariantError;
+import error.PostconditionError;
+import error.PreconditionError;
+
+import terrain.TerrainContract;
+import terrain.TerrainImpl;
+import terrain.TerrainService;
+
+public class Test {
+
+	public TerrainService terrain;
+
+	@Before
+	public void initilisation(){
+		terrain = new TerrainContract(new TerrainImpl());
+	}
+	//**** Pré Condition *******/
+
+	@org.junit.Test
+	public void getBloc1Test(){
+		try{
+			terrain.init(11, 9);
+			Assert.assertTrue(true);
+		}catch(PreconditionError e){
+			System.out.println("Precondition : " + e + " catcher");
+			Assert.assertTrue(false);
+		}catch(PostconditionError e){
+			System.out.println("Postcondition :" + e + "catcher");
+			Assert.assertTrue(false);
+		}catch(InvariantError e){
+			System.out.println("Invariant : " + e + "catcher");
+			Assert.assertTrue(false);
+		}catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+
+
+	@org.junit.Test
+	public void getBloc2Test(){
+		terrain.init(11, 9);
+		try{
+			terrain.getBloc(9, 11);
+			Assert.assertTrue(false);
+		}catch(PreconditionError e){
+			System.out.println("Precondition : " + e + " catcher");
+			Assert.assertTrue(true);
+		}catch(PostconditionError e){
+			System.out.println("Postcondition :" + e + "catcher");
+			Assert.assertTrue(false);
+		}catch(InvariantError e){
+			System.out.println("Invariant : " + e + "catcher");
+			Assert.assertTrue(false);
+		}
+	}
+
+	@org.junit.Test
+	public void getBloc3Test(){
+		terrain.init(11, 9);
+		try{
+			terrain.getBloc(9, 1);
+			Assert.assertTrue(false);
+		}catch(PreconditionError e){
+			System.out.println("Precondition : " + e + " catcher");
+			Assert.assertTrue(true);
+		}catch(PostconditionError e){
+			System.out.println("Postcondition :" + e + "catcher");
+			Assert.assertTrue(false);
+		}catch(InvariantError e){
+			System.out.println("Invariant : " + e + "catcher");
+			Assert.assertTrue(false);
+		}
+	}
+
+	@org.junit.Test
+	public void init1Test(){
+		try{
+			terrain.init(11, 9);
+			Assert.assertTrue(true);
+		}catch(PreconditionError e){
+			System.out.println("Precondition : " + e + " catcher");
+			Assert.assertTrue(false);
+		}catch(PostconditionError e){
+			System.out.println("Postcondition :" + e + "catcher");
+			Assert.assertTrue(false);
+		}catch(InvariantError e){
+			System.out.println("Invariant : " + e + "catcher");
+			Assert.assertTrue(false);
+		}
+	}
+
+	@org.junit.Test
+	public void init2Test(){
+		try{
+			terrain.init(-1, 9);
+			Assert.assertTrue(false);
+		}catch(PreconditionError e){
+			System.out.println("Precondition : " + e + " catcher");
+			Assert.assertTrue(true);
+		}catch(PostconditionError e){
+			System.out.println("Postcondition :" + e + "catcher");
+			Assert.assertTrue(false);
+		}catch(InvariantError e){
+			System.out.println("Invariant : " + e + "catcher");
+			Assert.assertTrue(false);
+		}
+	}
+
+	@org.junit.Test
+	public void init3Test(){
+		try{
+			terrain.init(11, 0);
+			Assert.assertTrue(false);
+		}catch(PreconditionError e){
+			System.out.println("Precondition : " + e + " catcher");
+			Assert.assertTrue(true);
+		}catch(PostconditionError e){
+			System.out.println("Postcondition :" + e + "catcher");
+			Assert.assertTrue(false);
+		}catch(InvariantError e){
+			System.out.println("Invariant : " + e + "catcher");
+			Assert.assertTrue(false);
+		}
+	}
+
+	@org.junit.Test
+	public void init4Test(){
+		try{
+			terrain.init(6	, 8);
+			Assert.assertTrue(false);
+		}catch(PreconditionError e){
+			System.out.println("Precondition : " + e + " catcher");
+			Assert.assertTrue(true);
+		}catch(PostconditionError e){
+			System.out.println("Postcondition :" + e + "catcher");
+			Assert.assertTrue(false);
+		}catch(InvariantError e){
+			System.out.println("Invariant : " + e + "catcher");
+			Assert.assertTrue(false);
+		}
+	}
+	
+	@org.junit.Test
+	public void setBloc1Test(){
+		terrain.init(11, 9);
+		try{
+			BlocService B = new BlocContract(new BlocImpl());
+			B.init(Type.VIDE, Tresor.RIEN);
+			terrain.setBloc(B, 1, 1);
+			Assert.assertTrue(true);
+		}catch(PreconditionError e){
+			System.out.println("Precondition : " + e + " catcher");
+			Assert.assertTrue(false);
+		}catch(PostconditionError e){
+			System.out.println("Postcondition :" + e + "catcher");
+			Assert.assertTrue(false);
+		}catch(InvariantError e){
+			System.out.println("Invariant : " + e + "catcher");
+			Assert.assertTrue(false);
+		}
+	}
+	
+	@org.junit.Test
+	public void setBloc2Test(){
+		terrain.init(11, 9);
+		try{
+			BlocService B = new BlocContract(new BlocImpl());
+			B.init(Type.VIDE, Tresor.RIEN);
+			terrain.setBloc(B, -1, 1);
+			Assert.assertTrue(false);
+		}catch(PreconditionError e){
+			System.out.println("Precondition : " + e + " catcher");
+			Assert.assertTrue(true);
+		}catch(PostconditionError e){
+			System.out.println("Postcondition :" + e + "catcher");
+			Assert.assertTrue(false);
+		}catch(InvariantError e){
+			System.out.println("Invariant : " + e + "catcher");
+			Assert.assertTrue(false);
+		}
+	}
+	@org.junit.Test
+	public void setBloc3Test(){
+		terrain.init(11, 9);
+		try{
+			terrain.setBloc(null, 1, 1);
+			Assert.assertTrue(false);
+		}catch(PreconditionError e){
+			System.out.println("Precondition : " + e + " catcher");
+			Assert.assertTrue(true);
+		}catch(PostconditionError e){
+			System.out.println("Postcondition :" + e + "catcher");
+			Assert.assertTrue(false);
+		}catch(InvariantError e){
+			System.out.println("Invariant : " + e + "catcher");
+			Assert.assertTrue(false);
+		}
+	}
+
+	@org.junit.Test
+	public void setBloc4Test(){
+		terrain.init(11, 9);
+		try{
+			BlocService B = new BlocContract(new BlocImpl());
+			B.init(Type.VIDE, Tresor.RIEN);
+			terrain.setBloc(B, 1, -1);
+			Assert.assertTrue(false);
+		}catch(PreconditionError e){
+			System.out.println("Precondition : " + e + " catcher");
+			Assert.assertTrue(true);
+		}catch(PostconditionError e){
+			System.out.println("Postcondition :" + e + "catcher");
+			Assert.assertTrue(false);
+		}catch(InvariantError e){
+			System.out.println("Invariant : " + e + "catcher");
+			Assert.assertTrue(false);
+		}
+	}
+
+	//******** Post Condition  **************************/
+
+	@org.junit.Test
+	public void init5Test(){
+		terrain.init(11, 9);
+		Assert.assertTrue(terrain.getNombreColonnes() == 11);
+		Assert.assertTrue(terrain.getNombreLignes() == 9);
+		Assert.assertTrue(terrain.getBloc(1, 1).getType() == Type.VIDE);
+		Assert.assertTrue(terrain.getBloc(7, 9).getType() == Type.VIDE);
+		for(int i = 0; i < terrain.getNombreLignes() ;i++){
+			for(int j=0; j < terrain.getNombreColonnes(); j++){
+				Assert.assertTrue(terrain.getBloc(i, j) != null);
+				if(i==0 || j==0 || i==(terrain.getNombreLignes()-1) || 
+						j==(terrain.getNombreLignes()-1) || (i%2)==0 || ((j%2)==0)) {
+					//Assert.assertTrue(terrain.getBloc(i, j).getType() != Type.MURMETAL);
+				}
+			}
+		}
+	}
+
+
+
+	@org.junit.Test
+	public void setBloc5Test(){
+		terrain.init(11, 9);
+		BlocService B = new BlocContract(new BlocImpl());
+		B.init(Type.VIDE, Tresor.RIEN);
+		terrain.setBloc(B, 1, 3);
+		Assert.assertTrue(terrain.getBloc(1, 3).equals(B));
+	}
+}

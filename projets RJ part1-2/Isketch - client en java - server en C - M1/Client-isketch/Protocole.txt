@@ -1,0 +1,43 @@
+
+
+CONNECT/user/
+(C->S) Nouvelle connexion de "user"
+CONNECTED/user/
+(S->C) Signifie à tous les clients la connexion de "user"
+
+EXIT/user/
+(C->S) Déconnexion de "user"
+EXITED/user/
+(S->C) Signifie à tous les clients le départ de "user"
+(+ Gérer le cas ou le "exited" concerne le dessinateur)
+
+Gestion d’un round :
+NEW_ROUND/role/mot/
+(S->C) Le nouveau round démarre avec le rôle spécifié et eventuellement le
+mot à dessiner si rôle = dessinateur
+GUESS/mot/
+(C->S) Mot proposé par un client
+GUESSED/mot/user/
+(S->C) Signifie aux clients le mot proposé par un autre
+WORD_FOUND/joueur/
+(S->C) Signifie que le client joueur a trouvé le mot (en supprimant l’output du mot sur les autres clients)
+WORD_FOUND_TIMEOUT/timeout/
+(S->C) Signifie aux autres clients que le timeout de la fin du round est
+enclenché suite à un premier joueur ayant trouvé le mot cachémot
+END_ROUND/user/mot/
+(S->C) Signifie aux clients que le tour est fini avec nom du vainqueur et
+le vrai mot à trouver
+SCORE_ROUND/user1/score1/users2/score2/.../userN/scoreN/
+(S->C) Donne le score de tous les joueurs
+
+
+Dessin :
+SET_COLOR/r/g/b/
+(C->S) du dessinateur au serveur indiquant un changement de couleur
+SET_SIZE/s/
+(C->S) du dessinateur au serveur indiquant un changement de taille de trait
+SET_LINE/x1/y1/x2/y2/
+(C->S) du dessinateur au serveur indiquant le tracé d’un segment
+LINE/x1/y1/x2/y2/r/g/b/s/
+(S->C) du serveur à tous indiquant un segment à dessiner de (x1,y1) à (x2,y2)
+de la couleur (r,g,b) de taille s

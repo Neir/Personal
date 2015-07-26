@@ -1,0 +1,14 @@
+package MoteurJeu.Test;
+
+import org.junit.Before;
+
+import MoteurJeu.MoteurJeuImpl;
+
+public class TestSansContract extends Test{
+
+	@Before
+	public void initilisation(){
+		jeu = new MoteurJeuImpl();
+	}
+
+}

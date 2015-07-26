@@ -1,0 +1,51 @@
+Service : MoteurJeu
+Use : GestionCombat
+Types : boolean, int, 
+enum RESULTAT{SLICK_M_RYAN_V, SLICK_M_RYAN_M_ALEX_V, 
+				SLICK_V_RYAN_M_ALEX_M, TOUS_M, NULLE}, // M=mort, V=vivant
+enum COMMANDE{RIEN, GAUCHE, DROITE, HAUT, BAS, FRAPPE, SAUT, PREND, JET}
+
+Observators :
+	estFini : [MoteurJeu] → boolean
+	resultatFinal : [MoteurJeu] → RESULTAT
+		pre resultatFinal(M) require estFini(M)
+	combat : [MoteurJeu] → GestionCombat
+	
+Constructors :
+	init : int × int × int → [MoteurJeu]
+		pre init(largeur,hauteur, profondeur)
+			require largeur ≥ 256 & hauteur ≥ 240 & profondeur ≥ 100
+			
+Operators :
+	pasJeu : [MoteurJeu]  COMMANDE × COMMANDE → [MoteurJeu]
+		pre pasJeu(M,comRyan,comAlex) require : ￢estFini(M)
+		
+Observations :
+[invariants]
+	estFini(M) (min)= (  Personnage::estVaincu(GestionCombat::ryan(combat(M)))
+	         & Personnage::estVaincu(GestionCombat::alex(combat(M)))
+	     		∪ Personnage::estVaincu(GestionCombat::slick(combat(M))) )
+
+	resultatFinal(M) (min)=
+		{ SLICK_M_RYAN_V 
+		si Personnage::estVaincu(GestionCombat::slick(combat(M)))
+			& ￢Personnage::estVaincu(GestionCombat::ryan(combat(M))) }
+		{ SLICK_M_RYAN_M_ALEX_V 
+		si Personnage::estVaincu(GestionCombat::slick(combat(M)))
+			& Personnage::estVaincu(GestionCombat::ryan(combat(M))) 
+			& ￢Personnage::estVaincu(GestionCombat::alex(combat(M))) }
+		{ SLICK_V_RYAN_M_ALEX_M
+		si ￢Personnage::estVaincu(GestionCombat::slick(combat(M)))
+			& Personnage::estVaincu(GestionCombat::ryan(combat(M))) 
+			& Personnage::estVaincu(GestionCombat::alex(combat(M))) }
+		{ TOUS_M
+		si Personnage::estVaincu(GestionCombat::slick(combat(M)))
+			& Personnage::estVaincu(GestionCombat::ryan(combat(M))) 
+			& Personnage::estVaincu(GestionCombat::alex(combat(M))) }
+		{ NULLE sinon}
+
+[init]
+	combat(init(l,h,p))=GestionCombat::init(l,h,p)
+	
+[pasJeu]
+	combat(pasJeu(M,cR,cA))=GestionCombat::gerer(combat(M),cR,cA)

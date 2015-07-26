@@ -1,0 +1,203 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentTop="true"
+    android:background="@color/Beige"
+    android:orientation="vertical"
+    tools:context=".BeeralyzerActivity" >
+
+        <TextView
+        android:id="@+id/beeralyzerTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/Brown"
+        android:gravity="center"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:text="@string/beeralyzerTitle"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/Beige"
+        android:textSize="30sp" />
+
+
+    <ScrollView
+        android:id="@+id/ScrollView01"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/calculer"
+        android:layout_alignLeft="@+id/poids"
+        android:layout_alignRight="@+id/poids"
+        android:layout_below="@+id/poids" >
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="1" >
+
+            <TextView android:text="Estimez votre consommation :" />
+
+            <View
+                android:layout_height="2dip"
+                android:background="#FF909090" />
+
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/qty"
+                    android:gravity="left"
+                    android:padding="1dip"
+                    android:text="0x" />
+
+                <TextView
+                    android:layout_column="1"
+                    android:padding="3dip"
+                    android:text="Guiness" />
+
+                <Button
+                    android:id="@+id/plus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+" />
+
+                <Button
+                    android:id="@+id/moins"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/qty"
+                    android:gravity="left"
+                    android:padding="1dip"
+                    android:text="0x" />
+
+                <TextView
+                    android:layout_column="1"
+                    android:padding="3dip"
+                    android:text="Leffe" />
+
+                <Button
+                    android:id="@+id/plus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+" />
+
+                <Button
+                    android:id="@+id/moins"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:gravity="left"
+                    android:padding="1dip"
+                    android:text="0x" />
+
+                <TextView
+                    android:layout_column="1"
+                    android:padding="3dip"
+                    android:text="Belle Gueule" />
+
+                <Button
+                    android:id="@+id/plus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+" />
+
+                <Button
+                    android:id="@+id/moins"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:layout_column="1"
+                    android:layout_span="2"
+                    android:padding="3dip"
+                    android:text="Cet item s&apos;étend sur deux colonnes, cool hein ?" />
+            </TableRow>
+        </TableLayout>
+    </ScrollView>
+<Button
+        android:id="@+id/raz"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:text="@string/raz" />
+
+    <Button
+        android:id="@+id/calculer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/raz"
+        android:layout_centerHorizontal="true"
+        android:text="@string/calculer" />
+
+    <EditText
+        android:id="@+id/poids"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="@string/poids"
+        android:inputType="number" />
+
+    <RadioGroup
+        android:id="@+id/sexe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/poids"
+        android:layout_alignLeft="@+id/poids"
+        android:layout_alignRight="@+id/poids"
+        android:layout_centerHorizontal="true"
+        android:checkedButton="@+id/homme"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/homme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/homme" />
+
+        <RadioButton
+            android:id="@+id/femme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/femme" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/result2"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/sexe"
+        android:gravity="center"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/result1"
+        android:text="Vous devez cliquer sur le bouton « Calculer » pour obtenir un résultat." />
+
+    <TextView
+        android:id="@+id/result1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/raz"
+        android:layout_below="@+id/beeralyzerTitle"
+        android:layout_marginTop="20dp"
+        android:text="Résultat:" />
+
+</RelativeLayout>

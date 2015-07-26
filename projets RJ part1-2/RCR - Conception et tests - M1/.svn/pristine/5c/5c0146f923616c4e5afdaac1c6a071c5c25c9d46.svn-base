@@ -1,0 +1,106 @@
+package MoteurJeu;
+
+import java.util.ArrayList;
+
+import terrain.TerrainService;
+import vilain.VilainService;
+
+import Acteur.ActeurService;
+import Bombe.BombeService;
+
+
+
+public class MoteurJeuDecorateur implements MoteurJeu {
+	
+	private MoteurJeu delegate;
+	
+	@Override
+	public void init(int maxPas, int NBColonne, int NBLigne) {
+		delegate.init(maxPas,NBColonne, NBLigne);
+	}
+	
+	public MoteurJeuDecorateur(MoteurJeu m){
+		this.delegate=m;
+	}
+
+	@Override
+	public int getMaxPasJeu() {
+		return delegate.getMaxPasJeu();
+	}
+
+	@Override
+	public int getPasJeuCourrant() {
+		return delegate.getPasJeuCourrant();
+	}
+
+	@Override
+	public ArrayList<Integer> getBombeNumeros() {
+		return delegate.getBombeNumeros();
+	}
+
+	@Override
+	public int getNbBombes() {
+		return delegate.getNbBombes();
+	}
+
+	@Override
+	public boolean bombeExist(int numero) {
+		return delegate.bombeExist(numero);
+	}
+
+	@Override
+	public BombeService getBombe(int numero) {
+		return delegate.getBombe(numero);
+	}
+
+	@Override
+	public TerrainService getTerrain() {
+		return delegate.getTerrain();
+	}
+
+	@Override
+	public RESULTAT resultatFinal() {
+		return delegate.resultatFinal();
+	}
+	
+	@Override
+	public void poserBombe(int num, int x, int y, int a){
+		delegate.poserBombe(num, x, y, a);
+	}
+
+	@Override
+	public boolean estFini() {
+		return delegate.estFini();
+	}
+
+	@Override
+	public boolean misEnJoue(int x, int y, int num) {
+		return delegate.misEnJoue(x, y, num);
+	}
+
+	@Override
+	public ActeurService getHeros() {
+		return delegate.getHeros();
+	}
+
+	@Override
+	public ActeurService getKidnappeur() {
+		return delegate.getKidnappeur();
+	}
+
+	@Override
+	public boolean vilainExist(int x, int y) {
+		return delegate.vilainExist(x, y);
+	}
+
+	@Override
+	public ArrayList<VilainService> getVilains() {
+		return delegate.getVilains();
+	}
+
+	@Override
+	public void pasJeu(COMMANDE commande, boolean isHeros) {
+		delegate.pasJeu(commande,isHeros);
+	}
+	
+}

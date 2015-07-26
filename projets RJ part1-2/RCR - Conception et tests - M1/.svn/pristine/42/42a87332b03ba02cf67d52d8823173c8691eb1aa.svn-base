@@ -1,0 +1,73 @@
+/**
+ * 
+ */
+package rivercityrandom.decorators;
+
+import rivercityrandom.services.Equipable;
+import rivercityrandom.services.Personnage;
+
+/**
+ * @author Thibaut FLEURY & Jerome RAHAULT
+ *
+ */
+public class EquipableDecorator implements Equipable {
+	private final Equipable delegate;
+	
+	public EquipableDecorator(Equipable delegate) {
+		this.delegate = delegate;
+	}
+	
+	public Equipable getDelegate() {
+		return delegate;
+	}
+
+	/* (non-Javadoc)
+	 * @see rivercityrandom.services.Equipable#estEquipe()
+	 */
+	@Override
+	public boolean estEquipe() {
+		// TODO Auto-generated method stub
+		return delegate.estEquipe();
+	}
+
+	/* (non-Javadoc)
+	 * @see rivercityrandom.services.Equipable#utilisateur()
+	 */
+	@Override
+	public Personnage getUtilisateur() {
+		// TODO Auto-generated method stub
+		return delegate.getUtilisateur();
+	}
+	
+	/* (non-Javadoc)
+	 * @see rivercityrandom.services.Equipable#ramasse()
+	 */
+	@Override
+	public void ramasse() {
+		delegate.ramasse();
+	}
+
+	/* (non-Javadoc)
+	 * @see rivercityrandom.services.Equipable#estDeplace()
+	 */
+	@Override
+	public void estDeplace() {
+		delegate.estDeplace();
+	}
+
+	/* (non-Javadoc)
+	 * @see rivercityrandom.services.Equipable#frappeAvec()
+	 */
+	@Override
+	public void frappeAvec() {
+		delegate.frappeAvec();
+	}
+
+	/* (non-Javadoc)
+	 * @see rivercityrandom.services.Equipable#jeté()
+	 */
+	@Override
+	public void jette() {
+		delegate.jette();
+	}
+}

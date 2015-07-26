@@ -1,0 +1,7 @@
+nbCoups:100
+taillePop:60
+nbRules:20
+nbGen:20
+evolutionGenerationelle:true
+selectionUniforme:true
+labyFile:69Pts

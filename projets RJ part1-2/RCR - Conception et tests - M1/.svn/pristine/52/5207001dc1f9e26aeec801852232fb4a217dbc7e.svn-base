@@ -1,0 +1,50 @@
+package Bombe;
+
+public class BombeDecorateur implements BombeService {
+	
+	public BombeService delegate;
+	
+	public BombeDecorateur(BombeService d){
+		this.delegate=d;
+	}
+	
+	@Override
+	public void init(int num, int x, int y, int amp) {
+		delegate.init(num, x, y, amp);
+	}
+
+	@Override
+	public int getNumero() {
+		return delegate.getNumero();
+	}
+
+	@Override
+	public int getX() {
+		return delegate.getX();
+	}
+
+	@Override
+	public int getY() {
+		return delegate.getY();
+	}
+
+	@Override
+	public int getAmptitude() {
+		return delegate.getAmptitude();
+	}
+
+	@Override
+	public int getCompteARebours() {
+		return delegate.getCompteARebours();
+	}
+
+	@Override
+	public boolean vaExploser() {
+		return delegate.vaExploser();
+	}
+
+	@Override
+	public void diminueChrono() {
+		delegate.diminueChrono();
+	}
+}

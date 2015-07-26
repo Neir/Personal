@@ -1,0 +1,72 @@
+<project name="RiverCityRandom" default="compile" basedir=".">
+	
+	<description>
+		Fichier de construction pour le projet RiverCityRandom (2014)
+	</description>
+	
+	<!-- Set global properties for this build -->
+	<property name="src" location="src"/>
+	<property name="build" location="build"/>
+	<property name="jars" location="jars"/>
+	
+	<!-- Nom du binôme -->
+	<property name="Fleury" value="Thibaut"/>
+	<property name="Rahault" value="Jerome"/>
+	
+	
+	
+	<!-- TARGETS -->
+	
+	<!-- INIT -->
+	<target name="init">
+		<!-- Create the time stamp -->
+		<tstamp/>
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${build}"/>
+	</target>
+
+	<!-- COMPILE -->
+	<target name="compile" depends="init" description="compile the source">
+		<!-- Compile the java code from ${src} into ${build} -->
+		<javac debug="true" classpath="${jars}/junit-4.11.jar" 
+			srcdir="${src}" excludes="" destdir="${build}"
+			includeantruntime="false"/>
+	</target>
+	
+	<!-- TESTBLOC -->
+	<target name="testBloc" depends="compile"
+		description="test of first implementation">
+		<echo>================ Run first test ================</echo>
+		<junit printsummary="yes">
+			<classpath>
+				<pathelement location="${build}"/>
+				<pathelement location="${jars}/junit-4.11.jar"/>
+			</classpath>
+			
+			<formatter type="plain"/>
+			<test name="rivercityrandom.tests.BlocTest" outfile="report1"/>
+		</junit>
+	</target>
+	
+	<!-- DIST -->
+	<target name="dist" depends="init,clean"
+			description="Generer la distribution">
+		<!-- tout mettre dans l'archive -->
+		<jar basedir=".."
+			jarfile="../RiverCityRandom-${nom1}-${nom2}-${DSTAMP}.jar"
+			includes="RiverCityRandom/**/*" excludes="**/CVS"/>
+	</target>
+
+	<!-- CLEAN -->
+	<target name="clean" description="clean up">	
+		<echo>================ Removing temp files... ================</echo>
+		<delete verbose="true"> <!-- Remove all *~ files -->
+			<fileset dir="${basedir}" defaultexcludes="no">
+				<include name="**/*~"/>
+			</fileset>
+		</delete>
+		<echo>================ Removing build directory ================</echo>    
+		<delete dir="${build}"/>
+	</target>
+	
+</project>

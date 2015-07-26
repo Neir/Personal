@@ -1,0 +1,77 @@
+/**
+ * 
+ */
+package rivercityrandom.decorators;
+
+import java.util.List;
+
+import rivercityrandom.services.Joueur;
+import rivercityrandom.services.Objet;
+
+/**
+ * @author Thibaut FLEURY & Jerome RAHAULT
+ *
+ */
+public class JoueurDecorator extends PersonnageDecorator implements Joueur {
+
+	public JoueurDecorator(Joueur delegate) {
+		super(delegate);
+	}
+
+	/**
+	 * @see rivercityrandom.services.Joueur#getSomme_d_argent()
+	 */
+	@Override
+	public int getSomme_d_argent() {
+		return ((Joueur)delegate).getSomme_d_argent();
+	}
+
+	/**
+	 * @see rivercityrandom.services.Joueur#getInventaire()
+	 */
+	@Override
+	public List<Objet> getInventaire() {
+		return ((Joueur)delegate).getInventaire();
+	}
+
+	/**
+	 * @see rivercityrandom.services.Joueur#retrait_de_l_argent(int)
+	 */
+	@Override
+	public void retrait_de_l_argent(int argent) {
+		((Joueur)delegate).retrait_de_l_argent(argent);
+	}
+
+	/**
+	 * @see rivercityrandom.services.Joueur#depot_de_l_argent(int)
+	 */
+	@Override
+	public void depot_de_l_argent(int argent) {
+		((Joueur)delegate).depot_de_l_argent(argent);
+	}
+
+	/**
+	 * @see rivercityrandom.services.Joueur#retrait_objet_de_l_inventaire(rivercityrandom.services.Objet)
+	 */
+	@Override
+	public void retrait_objet_de_l_inventaire(Objet objet) {
+		((Joueur)delegate).retrait_objet_de_l_inventaire(objet);
+	}
+
+	/**
+	 * @see rivercityrandom.services.Joueur#depot_objet_de_l_inventaire(rivercityrandom.services.Objet)
+	 */
+	@Override
+	public void depot_objet_de_l_inventaire(Objet objet) {
+		((Joueur)delegate).depot_objet_de_l_inventaire(objet);
+	}
+
+	/**
+	 * @see rivercityrandom.services.Joueur#init(java.lang.String)
+	 */
+	@Override
+	public void init(String nom) {
+		((Joueur)delegate).init(nom);
+	}
+
+}

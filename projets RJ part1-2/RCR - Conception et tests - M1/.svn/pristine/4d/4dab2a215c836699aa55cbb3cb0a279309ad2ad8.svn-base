@@ -1,0 +1,6 @@
+package vilain;
+
+public enum TypeVilain {
+
+	BALLON_ORANGE,FANTOM_BLEU;
+}

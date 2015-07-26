@@ -1,0 +1,128 @@
+package terrain;
+
+import error.InvariantError;
+import error.PostconditionError;
+import error.PreconditionError;
+import bloc.BlocService;
+import bloc.Type;
+
+public class TerrainContract extends TerrainDecorator{
+
+	public TerrainContract(TerrainService terrain) {
+		super(terrain);
+	}
+
+	/* Check Invariant */
+	protected void checkInvariant() {
+		//\Inv : getNombreColonne(T) > 0 
+		if(getNombreColonnes() <=0)
+			throw new InvariantError("Le nombre de colonne du Terrain doit être supérieur à 0");
+		//\Inv : getNombreLigne(T) > 0 
+		if(getNombreLignes() <=0)
+			throw new InvariantError("Le nombre de ligne du Terrain doit être supérieur à 0");
+		//\Inv : getBloc(T,1,1) = BLOC::VIDE
+		if(getBloc(1, 1).getType() != Type.VIDE)
+			throw new InvariantError("La position initiale du heros doit être à vide");
+		//\Inv : getBloc(T,getColonne(T)-2,getLigne(T)-2) = BLOC::VIDE
+		if(getBloc(getNombreLignes()-2, getNombreColonnes()-2).getType() != Type.VIDE)
+			throw new InvariantError("la position initiale du kidnapeur doit être à vide");
+		
+		//\Inv : Pour tout (i,j) telque i=0 or j=0 or i= getNombreColonnes(T)-1 or 
+		//									j==getNombreLigne(T)-1
+		//					alors BLOC::getType(getBloc(T,i,j)) min= BLOC::MURMETAL
+		//\Inv : Pour tout (i,j) telque i mod 2=0 and j mod 2 = 0
+		//					alors BLOC::getType(getBloc(T,i,j)) min= BLOC::MURMETAL
+		//					and  BLOC::getType(getBloc(T,i-1,j-1)) min!= BLOC::MURMETAL
+		//					and  BLOC::getType(getBloc(T,i+1,j-1)) min!= BLOC::MURMETAL
+		//					and  BLOC::getType(getBloc(T),i-1,j+1)) min!= BLOC::MURMETAL
+		//					and  BLOC::getType(getBloc(T,i+1,j+1)) min!= BLOC::MURMETAL
+		for(int i = 0; i < getNombreLignes() ;i++){
+			for(int j=0; j < getNombreColonnes(); j++){
+				//\Inv : getBloc(T,i,j) min!= null
+				if(getBloc(i, j) == null)
+					throw new InvariantError("Le Bloc doit être initialiser");
+				else if(i == 0 || j == 0 || i == (getNombreLignes()-1) || j==(getNombreColonnes()-1) || (i%2==0 && j%2==0)) {
+					if(getBloc(i, j).getType() != Type.MURMETAL)
+						throw new InvariantError("Ce mur {"+i+","+j+"}doit être en métal ");
+				}
+				else {
+					//\Inv : getBloc(T,i,j) min!= null
+					if(getBloc(i, j).getType() == Type.MURMETAL)
+						throw new InvariantError("Le Bloc ne peut etre en metal");
+				}
+			}
+		}
+	}
+
+	public BlocService getBloc(int x, int y){
+		//\pre  : 0 <= y < getNombreColonnes(T) and 0 <=y < getNombreLignes(T)
+		if(!( 0 <= x && x<getNombreLignes() && 0<=y && y<getNombreColonnes()))
+		{
+			throw new PreconditionError("les coordonnées se trouve à l'extérieur du terrain " + x + " " + y);
+		}
+		return super.getBloc(x, y);
+	}
+
+	/* Initializer */
+
+	public void init(int SizeCol, int SizeLig) {
+		//\pre  : init(x,y) require x > 0 and y > 0 and 
+		//					        x mod 2 = 1 and y mod 2 = 1(x et y doivent être impaire)	
+		if(SizeCol<=0 || SizeLig<=0)
+			throw new PreconditionError("Le terrain doit avoir une taille (X*Y) > 0");
+		if((SizeCol)%2 == 0)
+			throw new PreconditionError("la longueur des coté doit être impaire");
+		if((SizeLig)%2 == 0)
+			throw new PreconditionError("la longueur des coté doit être impaire");
+
+		super.init(SizeCol, SizeLig);
+		//check Invariant
+		
+		
+		checkInvariant();
+		//\post : getNombreColonnes(init(x,y)) = X
+		if(getNombreColonnes() != SizeCol)
+			throw new PostconditionError("Initialisation de la longueur Col incorrecte");
+		//\post : getNombreLigne(init(x,y)) = Y
+		if(getNombreLignes() != SizeLig)
+			throw new PostconditionError("Initialisation de la longueur Lig incorrecte");
+		//\post : Pour Tout Bloc du Terrain : getBloc(init(X,Y),x,y) != null
+		for(int i = 0; i < getNombreLignes();  i++){
+			for(int j = 0; j < getNombreColonnes(); j++){
+				if(getBloc(i, j) == null)
+					throw new PostconditionError("Bloc ("+ i + ',' + ") null");
+			}
+		}
+		//\post : BLOC::getType(getBloc(init(X,Y),1,1)) = BLOC::VIDE
+		if(getBloc(1, 1).getType() != Type.VIDE)
+			throw new PostconditionError("Position initiale du héros non vide");
+		//\post : BLOC::getType(getBloc(init(f),getNombreLigness(init(x,y))-2,getNombreColonnes(init(x,y))-2)) = BLOC::VIDE		
+		if(getBloc(getNombreLignes()-2, getNombreColonnes()-2).getType() != Type.VIDE)
+			throw new PostconditionError("Position initiale du kidnappeur non vide");
+		
+	}
+
+
+	/* Operateur */
+	public void setBloc(BlocService bloc, int x, int y){
+		//\pre  : 0 <= x < getNombreColonnes(T) and 0 <= getNombreLignes(T) anD bloc != null
+		if(!(0 <= x && x < getNombreColonnes() &&
+				0 <= y && y < getNombreLignes() &&
+				bloc != null))
+			throw new PreconditionError("le bloc ne doit pas être à null et la position doit être dans " +
+					"le terrain");
+
+		//Pre-Invariant
+		checkInvariant();
+
+		//Traitement
+		super.setBloc(bloc, x, y);
+
+		//Post-Invariant
+		checkInvariant();
+
+		//\post : getBloc(setBloc(B,x,y),x,y) = B
+		if(!getBloc(x, y).equals(bloc))
+			throw new PostconditionError("Erreur modification du bloc");
+	}
+}

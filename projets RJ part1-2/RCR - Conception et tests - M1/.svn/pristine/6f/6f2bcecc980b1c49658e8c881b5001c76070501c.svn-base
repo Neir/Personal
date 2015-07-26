@@ -1,0 +1,64 @@
+package vilain;
+
+public class VilainErrImpl implements VilainService{
+	private TypeVilain type;
+	private int power;
+	private int indexX;
+	private int indexY;
+	
+	 public VilainErrImpl() {
+		
+	}
+
+	@Override
+	public void init(TypeVilain t, int power) {
+		type=t;
+		this.indexX=1;
+		this.indexY=1;
+		
+			this.power=0;
+		
+	}
+
+	@Override
+	public TypeVilain getType() {
+		return TypeVilain.FANTOM_BLEU;
+	}
+
+	@Override
+	public int getPower() {
+		return this.power+1;
+	}
+	
+	public void setPower(){
+		this.power-=2;
+	}
+
+	@Override
+	public void deplacer() {
+		
+			setPower();
+	}
+
+	@Override
+	public int getIndexX() {
+		return this.indexX;
+	}
+
+	@Override
+	public int getIndexY() {
+		return this.indexY;
+	}
+
+	@Override
+	public void setIndexX(int x) {
+		this.indexX=x;
+	}
+
+	@Override
+	public void setIndexY(int y) {
+		this.indexY=y;
+	}
+
+
+}

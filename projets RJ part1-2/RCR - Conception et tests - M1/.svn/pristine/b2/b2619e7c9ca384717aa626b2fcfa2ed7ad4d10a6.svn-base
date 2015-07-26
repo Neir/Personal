@@ -1,0 +1,187 @@
+package bloc.Test;
+
+import org.junit.Assert;
+import org.junit.Before;
+
+import bloc.BlocContract;
+import bloc.BlocImpl;
+import bloc.BlocService;
+import bloc.Tresor;
+import bloc.Type;
+import error.InvariantError;
+import error.PostconditionError;
+import error.PreconditionError;
+
+public class Test {
+	protected BlocService bloc;
+
+	@Before
+	public void initilisation(){
+		bloc = new BlocContract(new BlocImpl());
+	}
+
+	@org.junit.Test
+	public void InitPre1Test(){
+		//Dans ce Test nous allons tester que les parmètre soit négative
+		try{
+			bloc.init(Type.VIDE, Tresor.RIEN);
+		}catch(PreconditionError e){
+			Assert.assertTrue(e.toString(),false);
+		}catch(PostconditionError e){
+			Assert.assertTrue(e.toString(),false);
+		}catch(InvariantError e){
+			Assert.assertTrue(e.toString(),false);
+		}
+	}
+
+	@org.junit.Test
+	public void InitPre2Test(){
+		//Dans ce Test nous allons tester que les parmètre soit négative
+		try{
+			bloc.init(Type.MURBRIQUE,Tresor.BOMBPASS);
+		}catch(PreconditionError e){
+			Assert.assertTrue(e.toString(),false);
+		}catch(PostconditionError e){
+			Assert.assertTrue(e.toString(),false);
+		}catch(InvariantError e){
+			Assert.assertTrue(e.toString(),false);
+		}
+	}
+
+	@org.junit.Test
+	public void InitPre3Test(){
+		//Dans ce Test nous allons tester que les parmètre soit négative
+		try{
+			bloc.init(null,null);
+			Assert.assertTrue("Erreur aurait du catche Précondition Init(tresor,type) => type et tresor non null ",false);
+		}catch(PreconditionError e){
+			System.out.println("Precondition : " + e + " catcher");
+			Assert.assertTrue(true);
+		}catch(PostconditionError e){
+			Assert.assertTrue("Post "+ e.toString(), false);
+		}catch(InvariantError e){
+			Assert.assertTrue("Invariant : " + e + "catcher", false);
+		}
+	}
+
+	@org.junit.Test
+	public void setTypePre1Test(){
+		//Dans ce Test nous allons tester que les parmètre soit négative
+		try {
+			bloc.init(Type.VIDE, Tresor.RIEN);
+		}catch(Error e){
+			Assert.assertTrue(e.toString(), false);
+		}
+		try{
+			bloc.setTYPE(Type.MURBRIQUE);
+		}catch(PreconditionError e){
+			Assert.assertTrue(e.toString(),false);
+		}catch(PostconditionError e){
+			Assert.assertTrue(e.toString(),false);
+		}catch(InvariantError e){
+			Assert.assertTrue(e.toString(),false);
+		}
+	}
+
+	@org.junit.Test
+	public void setTypePre2Test(){
+		//Dans ce Test nous allons tester que les parmètre soit négative
+		try {
+			bloc.init(Type.VIDE, Tresor.RIEN);
+		}catch(Error e){
+			Assert.assertTrue(e.toString(), false);
+		}
+		try{
+			bloc.setTYPE(null);
+			Assert.assertTrue("setType(type) => Erreur Paramètre type null",false);
+		}catch(PreconditionError e){
+			System.out.println("Precondition : " + e + " catcher");
+			Assert.assertTrue(true);
+		}catch(PostconditionError e){
+			Assert.assertTrue(e.toString(),false);
+		}catch(InvariantError e){
+			Assert.assertTrue(e.toString(),false);
+		}
+	}
+
+	@org.junit.Test
+	public void setTresorPre1Test(){
+		//Dans ce Test nous allons tester que les parmètre soit négative
+		try {
+			bloc.init(Type.VIDE, Tresor.RIEN);
+		}catch(Error e){
+			Assert.assertTrue(e.toString(), false);
+		}
+		try{
+			bloc.setTresor(Tresor.FIRESUIT);
+		}catch(PreconditionError e){
+			Assert.assertTrue(e.toString(),false);
+		}catch(PostconditionError e){
+			Assert.assertTrue(e.toString(),false);
+		}catch(InvariantError e){
+			Assert.assertTrue(e.toString(),false);
+		}
+	}
+
+	@org.junit.Test
+	public void setTresorPre2Test(){
+		//Dans ce Test nous allons tester que les parmètre soit négative
+		try {
+			bloc.init(Type.VIDE, Tresor.RIEN);
+		}catch(Error e){
+			Assert.assertTrue(e.toString(), false);
+		}
+		try{
+			bloc.setTresor(null);
+			Assert.assertTrue("setTresor(tresor) => Erreur Paramètre Tresors null",false);
+		}catch(PreconditionError e){
+			System.out.println("Precondition : " + e + " catcher");
+			Assert.assertTrue(true);
+		}catch(PostconditionError e){
+			Assert.assertTrue(e.toString(),false);
+		}catch(InvariantError e){
+			Assert.assertTrue(e.toString(),false);
+		}
+	}
+
+	/** Teste sur les post-conditions */
+
+	@org.junit.Test
+	public void InitPostTest(){
+		//Dans ce Test nous allons tester que les parmètre soit négative
+		try{
+			bloc.init(Type.MURBRIQUE, Tresor.BOMBPASS);
+		}catch(Error e){
+			Assert.assertTrue(e.toString(), false);
+		}// Post Condition
+		Assert.assertTrue("Paramètre tansmie type pas vide",bloc.getType() == Type.MURBRIQUE);
+		Assert.assertTrue("Paramètre tansmie trésor pas vide",bloc.getTresor() == Tresor.BOMBPASS);
+
+	}
+
+	@org.junit.Test
+	public void setTypePostTest(){
+		//Dans ce Test nous allons tester que les parmètre soit négative
+		try {
+			bloc.init(Type.VIDE, Tresor.RIEN);
+			bloc.setTYPE(Type.MURBRIQUE);
+		}catch(Error e){
+			Assert.assertTrue(e.toString(), false);
+		}
+		Assert.assertTrue("Paramètre tansmie type pas vide",bloc.getType() == Type.MURBRIQUE);
+		Assert.assertTrue("Paramètre tansmie tresor pas vide",bloc.getTresor() == Tresor.RIEN);
+	}
+
+	@org.junit.Test
+	public void setTresorPostTest(){
+		//Dans ce Test nous allons tester que les parmètre soit négative
+		try {
+			bloc.init(Type.VIDE, Tresor.RIEN);
+			bloc.setTresor(Tresor.BOMBPASS);
+		}catch(Error e){
+			Assert.assertTrue(e.toString(), false);
+		}
+		Assert.assertTrue("Paramètre tansmie type pas vide",bloc.getTresor() == Tresor.BOMBPASS);
+		Assert.assertTrue("Paramètre tansmie trésors pas vide",bloc.getType() == Type.VIDE);
+	}
+}

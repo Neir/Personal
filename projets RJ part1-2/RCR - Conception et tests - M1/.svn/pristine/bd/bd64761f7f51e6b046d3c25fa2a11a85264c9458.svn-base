@@ -1,0 +1,146 @@
+/**
+ * 
+ */
+package rivercityrandom.impl;
+
+import java.util.Random;
+
+import rivercityrandom.enumerations.COMMANDE;
+import rivercityrandom.enumerations.CONTENU_OBJET;
+import rivercityrandom.enumerations.TYPE_GANGSTER;
+import rivercityrandom.services.Gangster;
+import rivercityrandom.services.GestionCombat;
+import rivercityrandom.services.Joueur;
+import rivercityrandom.services.Objet;
+import rivercityrandom.services.Personnage;
+import rivercityrandom.services.Terrain;
+
+/**
+ * @author Thibaut FLEURY & Jerome RAHAULT
+ *
+ */
+public class GestionCombatImpl implements GestionCombat {
+	private Joueur alex = new JoueurImpl();
+	private Joueur ryan = new JoueurImpl();
+	private Gangster slick = new GangsterImpl();
+	private Gangster[] listGangster;
+	private Terrain niveau1 = new TerrainImpl();
+	
+	@Override
+	public Joueur getAlex() {
+		return alex;
+	}
+
+	/* (non-Javadoc)
+	 * @see rivercityrandom.services.GestionCombat#getRyan()
+	 */
+	@Override
+	public Joueur getRyan() {
+		return ryan;
+	}
+
+	/* (non-Javadoc)
+	 * @see rivercityrandom.services.GestionCombat#getSlick()
+	 */
+	@Override
+	public Gangster getSlick() {
+		return slick;
+	}
+
+	/* (non-Javadoc)
+	 * @see rivercityrandom.services.GestionCombat#getListGangster()
+	 */
+	@Override
+	public Gangster[] getListGangster() {
+		return listGangster;
+	}
+
+	/* (non-Javadoc)
+	 * @see rivercityrandom.services.GestionCombat#getTerrain()
+	 */
+	@Override
+	public Terrain getTerrain() {
+		return niveau1;
+	}
+
+	/* (non-Javadoc)
+	 * @see rivercityrandom.services.GestionCombat#gerer()
+	 */
+	@Override
+	public void gerer(COMMANDE cR, COMMANDE cA) {
+	//	RIEN, GAUCHE, DROITE, HAUT, BAS, FRAPPE, SAUT, PREND, JET	
+		gerer1Joueur(ryan, cR);
+		gerer1Joueur(alex, cA);
+	}
+
+	private void gerer1Joueur(Joueur j, COMMANDE c){
+		switch(c){
+		case GAUCHE :
+			j.se_deplacer(j.getPos_x()-1, j.getPos_y());
+			break;
+		case DROITE :
+			j.se_deplacer(j.getPos_x()+1, j.getPos_y());
+			break;
+		case BAS :
+			j.se_deplacer(j.getPos_x(), j.getPos_y()+1);
+			break;
+		case HAUT :
+			j.se_deplacer(j.getPos_x(), j.getPos_y()-1);
+			break;
+		case FRAPPE :
+			// Regarder collision entre perso
+			break;
+		case SAUT :
+			j.sauter(j.getPos_x(), j.getPos_y(), j.getPos_z()+1); // à améliorer
+			break;
+		case PREND :
+			Objet o;
+			if(!j.a_equipement()){ // Ne peux pas s'équipé s'il est déjà équipé d'une chose
+				if((o = (niveau1.getBloc(j.getPos_x(), j.getPos_y(), j.getPos_z()).getTresor())) != null)
+					j.ramasserObjet(o);
+				else {
+					for(Personnage p : listGangster){ // NON ! Liste de personnage !
+						if(p.getPos_x() == j.getPos_x() &&
+								p.getPos_y() == j.getPos_y() &&
+								p.getPos_z() == j.getPos_z() && 
+								p.estGele()>0){
+							j.ramasserPersonnage(p); // p.setEstPorte(true) ?
+							break;
+						}
+					}
+				}
+			}
+			break;
+		case JET :
+			if(j.a_equipement()){
+				j.jeter();
+			}
+			break;
+		default: // RIEN ou autre
+			break;
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see rivercityrandom.services.GestionCombat#init(int, int, int)
+	 */
+	@Override
+	public void init(int largeur, int hauteur, int profondeur) {
+		Objet[] listObjet = new Objet[5];
+		for(int i=0; i<5; i++){
+			listObjet[i] = new ObjetImpl();
+			listObjet[i].init(CONTENU_OBJET.values()[i], 5, true, 5);
+		}
+		niveau1.init(largeur, hauteur, profondeur);
+		alex.init("Alex");
+		ryan.init("Ryan");
+		slick.init("Slick", TYPE_GANGSTER.SQUIDS, null, 0);
+		listGangster = new Gangster[4];
+		Random r = new Random();
+		for(int i=0; i<4; i++){
+			listGangster[i] = new GangsterImpl();
+			listGangster[i].init("Toufik "+i, TYPE_GANGSTER.values()[r.nextInt(3)], listObjet[r.nextInt()], 0);
+		}
+	}
+
+}

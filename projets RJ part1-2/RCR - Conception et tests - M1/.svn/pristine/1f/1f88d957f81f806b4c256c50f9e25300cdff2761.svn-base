@@ -1,0 +1,100 @@
+package vilain;
+
+import error.InvariantError;
+import error.PostconditionError;
+import error.PreconditionError;
+
+public class VilainContract extends VilainDecorateur {
+
+	public VilainContract(VilainService v) {
+		super(v);
+	}
+
+	//Invariant: 
+	public void checkInvariant(){
+		//\Inv: getPower()>=0;
+		if(super.getPower()<0) 
+			throw new InvariantError("Invariant: getPower()>=0 non vérifié");
+	}
+
+	//init:
+	public void init(TypeVilain type, int power){
+		//\pre: init(t,power) require t in {BALLON_ORANGE,FANTOM_BLEU;}
+		//							 and  power>=0;
+		if(type == null)
+			throw new PreconditionError("le type du vilain ne peut pas être null");
+		if(power < 0) 
+			throw new PreconditionError("le power doit être positive");
+
+		super.init(type, power);
+
+		checkInvariant();
+
+		//\post: if t=FANTOM_BLEU alors getPower(init(t,power))=0 else getPower(init(t,power))=power;
+		if(type.equals(TypeVilain.BALLON_ORANGE))
+			if(super.getPower()!=power) 
+				throw new PostconditionError("postcondition:" +
+						"if t=BALLON_ORANGE alors getPower(init(t,power))=power");
+		if(type.equals(TypeVilain.FANTOM_BLEU))
+			if (super.getPower()!=0) 
+				throw new PostconditionError("Postcondition:" +
+						"if t=FANTOM_BLEU alors getPower(init(t,power))=0");
+		//\post: getType(init(t,power))=t;
+		if (super.getType()!=type) 
+			throw new PostconditionError("Postcondition: getType(init(t,power))=t;");	
+	}
+
+
+	public void setPower(){
+		//\pre setPower(V) require getPower(T)>0 ;
+		if(super.getPower()<=0)
+			throw new PreconditionError("Precondition:setPower(V) require getPower(T)>0 ;");
+
+		checkInvariant();
+		int old= super.getPower();
+		int x = super.getIndexX();
+		int y = super.getIndexY();
+		
+		super.setPower();
+
+		checkInvariant();
+
+		//\post: getPower(setPower(V))=getPower(V)-1;
+		if(super.getPower()!=old-1) throw new PostconditionError("Postcondition:" +
+				"getPower(setPower(V))=getPower(V)-1");
+		if(getIndexX() != x || getIndexY() != y)
+			throw new PostconditionError("La position du fantome à été changée ");
+	}
+
+
+	public void deplacer(){
+		//\pre: deplacer(V) require getPower(V)>0 ou getType(V)=FANTOM_BLEU;
+		if (super.getPower()<=0 && super.getType()!= TypeVilain.FANTOM_BLEU )
+			throw new PreconditionError("Precondition: deplacer(V) " +
+					"require getPower(V)>=0 ou getType(V)=FANTOM_BLEU;");
+		
+		checkInvariant();
+		
+		int old=super.getPower();
+
+		int x = super.getIndexX();
+		int y = super.getIndexY();
+		super.deplacer();
+		
+		checkInvariant();
+
+		//\post: if getType(V)=BALLAN_ORANGE    getPower(deplacer(V))=getPower(V)-1
+		if (super.getType().equals(TypeVilain.BALLON_ORANGE)){
+			if(super.getPower()!=old-1)
+				throw new PostconditionError("if getType(V)=BALLAN_ORANGE    " +
+						"alors getPower(deplacer(V))=getPower(V)-1");
+		}else{
+			//else    getPower(deplacer(V))=getPower(V)
+			if(super.getPower()!=old)
+				throw new PostconditionError("if getType(V)=FANTOM_BLEU  " +
+						"alors getPower(deplacer(V))=getPower(V)");
+		}
+		if(getIndexX() != x || getIndexY() != y)
+			throw new PostconditionError("La position du fantome à été changée ");	
+	}
+}

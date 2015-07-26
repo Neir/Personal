@@ -1,0 +1,5 @@
+package MoteurJeu;
+
+public enum COMMANDE {
+	RIEN,GAUCHE,DROITE,HAUT,BAS,BOMBE;
+}

@@ -1,0 +1,15 @@
+package vilain.Test;
+
+import org.junit.Before;
+
+import vilain.Vilain;
+import vilain.VilainContract;
+
+public class TestNotContarct extends VilainTest {
+
+	@Before
+	public void before(){
+		vilain = new Vilain();
+	}
+
+}

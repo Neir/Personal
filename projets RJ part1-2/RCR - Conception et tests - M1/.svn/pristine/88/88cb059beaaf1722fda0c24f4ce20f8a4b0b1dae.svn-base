@@ -1,0 +1,7 @@
+package bloc;
+
+public enum Type{
+	VIDE,			// aucun mur
+	MURBRIQUE,		// ce mur peut être détruit
+	MURMETAL,		// ce mur ne put pas être détruit
+}

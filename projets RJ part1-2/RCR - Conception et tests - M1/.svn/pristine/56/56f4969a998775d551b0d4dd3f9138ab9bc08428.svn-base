@@ -1,0 +1,21 @@
+/**
+ * 
+ */
+package rivercityrandom.services;
+
+/**
+ * @author Thibaut FLEURY & Jerome RAHAULT
+ *
+ */
+public interface GestionCombat {
+	
+	
+	public Joueur		getAlex();
+	public Joueur		getRyan();
+	public Gangster		getSlick();
+	
+	public Terrain		getTerrain();
+	
+	public void			gerer();
+	public void			init(int largeur, int hauteur, int profondeur);
+}

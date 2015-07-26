@@ -1,0 +1,13 @@
+package terrain.Test;
+
+import org.junit.Before;
+import terrain.TerrainImpl;
+
+public class TestNotContarct extends Test {
+
+	@Before
+	public void initilisation(){
+		terrain = new TerrainImpl();
+	}
+
+}

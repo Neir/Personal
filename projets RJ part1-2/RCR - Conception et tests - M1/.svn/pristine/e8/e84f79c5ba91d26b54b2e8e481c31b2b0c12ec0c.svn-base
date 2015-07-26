@@ -1,0 +1,93 @@
+package terrain;
+
+import java.util.Random;
+
+import bloc.BlocContract;
+import bloc.BlocImpl;
+import bloc.BlocService;
+import bloc.Tresor;
+import bloc.Type;
+
+public class TerrainImpl implements TerrainService {
+
+	private BlocService[][] terrain = null; 
+	private int MaxCol, MaxLig;
+
+	public TerrainImpl(){}
+
+	@Override
+	public int getNombreColonnes() {
+		return this.MaxCol;
+	}
+
+	@Override
+	public int getNombreLignes() {
+		return this.MaxLig;
+	}
+
+	@Override
+	public BlocService getBloc(int x, int y) {
+		return this.terrain[x][y];
+	}
+
+	@Override
+	public void init(int SizeCol, int SizeLig) {
+		//effectue la génération alea
+		this.MaxCol = SizeCol;
+		this.MaxLig = SizeLig;
+		terrain = new BlocService[MaxLig][MaxCol];
+		Random r = new Random();
+		for(int i = 0; i < MaxLig;  i++){
+			terrain[i] = new BlocService[MaxCol];
+			for(int j = 0; j < MaxCol; j++){
+				BlocService b =  new BlocContract(new BlocImpl());
+				if(i == 0 || j == 0 || i == (MaxLig-1) || j==(MaxCol-1) || i%2==0 && j%2==0){
+					b.init(Type.MURMETAL, Tresor.RIEN);
+					terrain[i][j] = b;
+				}
+				else if((i == 1 && j == 1) || (i == (MaxLig-2) && j == (MaxCol-2))) {
+					b.init(Type.VIDE, Tresor.RIEN);
+					terrain[i][j] = b;
+				}
+				else if(r.nextInt(3) == 0) {
+					int tr = r.nextInt(6); 
+					if(tr==0)
+						b.init(Type.MURBRIQUE, Tresor.BOMBPASS);
+					else if(tr==1)
+						b.init(Type.MURBRIQUE, Tresor.BOMBUP);
+					else if(tr==2)
+						b.init(Type.MURBRIQUE, Tresor.FIRESUIT);
+					else if(tr==3)
+						b.init(Type.MURBRIQUE, Tresor.FIREUP);
+					else if(tr==4)
+						b.init(Type.MURBRIQUE, Tresor.WALLPASS);
+					else
+						b.init(Type.MURBRIQUE, Tresor.RIEN);
+					terrain[i][j] = b;
+				}
+				else {
+					b.init(Type.VIDE, Tresor.RIEN);
+					terrain[i][j] = b;
+				}
+
+			}
+		}
+		System.out.println();
+	}
+
+	@Override
+	public void setBloc(BlocService bloc, int x, int y) {
+		terrain[x][y] = bloc;
+	}
+
+	@Override
+	public String toString(){
+		String s = "";
+		for(int i = 0; i < getNombreLignes(); i++){
+			for(int j=0; j < getNombreColonnes(); j++)
+				s+= getBloc(i, j).toString();
+			s+= "\n";
+		}
+		return s;
+	}
+}

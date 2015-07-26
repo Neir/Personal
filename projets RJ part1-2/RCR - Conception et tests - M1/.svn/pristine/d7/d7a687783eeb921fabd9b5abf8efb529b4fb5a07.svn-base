@@ -1,0 +1,56 @@
+/**
+ * 
+ */
+package rivercityrandom.services;
+
+/**
+ * @author Thibaut FLEURY & Jerome RAHAULT
+ *
+ */
+public interface Personnage {
+
+	// ------------------------------------------------------------------------
+	// Observators
+	// ------------------------------------------------------------------------
+	
+	public String 		getNom();
+	
+	public int 			getLargeur();
+	
+	public int 			getHauteur();
+	
+	public int 			getPronfondeur();
+	
+	public int 			getPvMax();
+	
+	public int 			getForce();
+	
+	public int 			getPv();
+	
+	public int 			getPos_x();
+	
+	public int 			getPos_y();
+	
+	public int 			getPos_z();
+	
+	public int			estGele();
+	
+	public boolean 		estVaincu();
+	/** Le personnage est-il armé (d'un équipement)	*/
+	public boolean 		estArme();
+	
+	// inv:
+	// inv:
+	// inv:
+	
+	
+	// ------------------------------------------------------------------------
+	// Constructors
+	// ------------------------------------------------------------------------
+	
+	public void 		init(String nom, int largeur, int hauteur, 
+					int profondeur, int force, int pvMax, int argent,
+					int pos_x, int pos_y, int pos_z);
+		
+	
+}

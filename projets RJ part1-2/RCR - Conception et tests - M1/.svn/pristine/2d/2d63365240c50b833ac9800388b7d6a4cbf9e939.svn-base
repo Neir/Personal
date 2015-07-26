@@ -1,0 +1,46 @@
+package terrain;
+
+import bloc.BlocService;
+
+public interface TerrainService {
+	
+	/* Observateur */
+	public int getNombreColonnes(); //\const
+	public int getNombreLignes(); //\const
+	//\pre  : 0 <= x < getNombreColonnes(T) and 0 <= getNombreLignes(T)
+	public BlocService getBloc(int x, int y);
+	
+	/* Initializer */
+	
+	//\pre  : init(x,y) require x > 0 and y > 0 and 
+	//					        x mod 2 = 1 and y mod 2 = 1 (x et y doivent être impaire)		
+	//\post : getNombreColonnes(init(x,y)) = X
+	//\post : getNombreLigne(init(x,y)) = Y
+	//\post : Pour Tout Bloc du Terrain : getBloc(init(X,Y),x,y) != null
+	//\post : BLOC::getType(getBloc(init(X,Y),1,1)) = BLOC::VIDE
+	//\post : BLOC::getType(getBloc(init(f),getNombreLigness(init(x,y))-2,getNombreColonnes(init(x,y))-2)) = BLOC::VIDE
+	public void init(int SizeCol, int SizeLig);
+	
+	
+	/* Operateur */
+	
+	//\pre  : 0 <= x < getNombreColonnes(T) and 0 <= getNombreLignes(T) anD bloc != null
+	//\post : getBloc(setBloc(B,x,y),x,y) = B
+	public void setBloc(BlocService bloc, int x, int y);
+
+	//************** Invariant *************************/
+	//\Inv : getNombreColonne(T) > 0 
+	//\Inv : getNombreLigne(T) > 0 
+	//\Inv : getBloc(T,i,j) != null
+	//\Inv : getBloc(T,1,1) = BLOC::VIDE
+	//\Inv : getBloc(T,getColonne(T)-2,getLigne(T)-2) = BLOC::VIDE
+	//\Inv : Pour tout (i,j) telque i=0 or j=0 or i= getNombreColonnes(T)-1 or 
+	//									j==getNombreLigne(T)-1
+	//					alors BLOC::getType(getBloc(T,i,j)) = BLOC::MURMETAL
+	//\Inv : Pour tout (i,j) telque i mod 2 = 0 and j mod 2 = 0
+	//					alors BLOC::getType(getBloc(T,i,j)) = BLOC::MURMETAL
+	//					and  BLOC::getType(getBloc(T,i-1,j-1)) != BLOC::MURMETAL
+	//					and  BLOC::getType(getBloc(T,i+1,j-1)) != BLOC::MURMETAL
+	//					and  BLOC::getType(getBloc(T,i-1,j+1)) != BLOC::MURMETAL
+	//					and  BLOC::getType(getBloc(T,i+1,j+1)) != BLOC::MURMETAL
+}

@@ -1,0 +1,50 @@
+Service : Joueur
+Refine : Personnage
+Use : Objet
+Types : List<Objet>, int
+
+Observators :
+	somme_d_argent : [Joueur] → int
+	inventaire : [Joueur] → List<Objet>
+	
+Constructors :
+	init : String →  [Joueur]
+		pre init(nom) require nom ≠ ""
+		
+Operators :
+	retrait_de_l_argent : [Joueur] × int → [Joueur]
+		pre retrait_de_l_argent(J,a) require : a≤somme_d_argent  & a>0
+	depot_de_l_argent : [Joueur] × int → [Joueur]
+		pre depot_de_l_argent(J,a) require : a>0
+	retrait_objet_de_l_inventaire : [Joueur] × Objet → [Joueur]
+	depot_objet_de_l_inventaire : [Joueur] × Objet → [Joueur]
+	
+Observations :
+[init]
+    Personnage.nom(init(n))= n
+    Personnage.largeur (init(n))=30
+	Personnage.hauteur(init(n))=50
+	Personnage.profondeur(init(n))=10
+	Personnage.force(init(n))=10
+	Personnage.pvMax(init(n))=100
+    somme_d_argent(init(n))=20
+	inventaire(init(n))= EMPTY
+	
+[retrait_de_l_argent]
+	somme_d_argent(retrait_de_l_argent(J,a))= somme_d_argent(J) - a
+	inventaire(retrait_de_l_argent(J,a))= inventaire(J)
+	
+[depot_de_l_argent]
+	somme_d_argent(depot_de_l_argent(J,a))= somme_d_argent(J) + a
+	inventaire(depot_de_l_argent(J,a))= inventaire(J)
+	
+[retrait_objet_de_l_inventaire]
+	somme_d_argent(retrait_objet_de_l_inventaire(J,a))= somme_d_argent(J)
+    inventaire(retrait_objet_de_l_inventaire(J,O))= inventaire(J) ∖ {O}
+    
+[depot_objet_de_l_inventaire ]
+	somme_d_argent(depot_objet_de_l_inventaire(J,a))= somme_d_argent(J)
+    inventaire(depot_objet_de_l_inventaire (J,O))= inventaire(J) ∪ {O}
+    
+    
+    

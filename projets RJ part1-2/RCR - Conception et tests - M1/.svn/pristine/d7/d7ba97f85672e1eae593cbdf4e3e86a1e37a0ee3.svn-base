@@ -1,0 +1,16 @@
+package MoteurJeu.Test;
+
+import org.junit.Before;
+
+import MoteurJeu.MoteurJeuContrat;
+import MoteurJeu.MoteurJeuErr;
+
+
+public class MoteurJeuTestErr extends Test {
+
+	@Before
+	public void initilisation(){
+		jeu = new MoteurJeuContrat(new MoteurJeuErr());
+	}
+
+}

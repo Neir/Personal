@@ -1,0 +1,38 @@
+// ----------------------------------------------------------------------------
+// OBJECTIF DE TEST : Initialisation d'un bloc
+// ----------------------------------------------------------------------------
+
+Cas de test :
+	Bloc::initOK
+Condition initiale : 
+	p_type = VIDE, p_tresor = null
+Operation : 
+	B = init(p_type, p_tresor)
+Oracle : 
+	getType(B) = p_type
+	getTresor(B) = p_tresor
+
+
+Cas de test :
+	Bloc::initKO1
+Condition initiale : 
+	p_type = null, p_tresor = null
+Operation : 
+	B = init(p_type, p_tresor)
+Oracle : 
+	p_type = null
+	# exception levée
+
+
+// ----------------------------------------------------------------------------
+// OBJECTIF DE TEST : Changer tresor modifie bien le tresor du bloc
+// ----------------------------------------------------------------------------
+
+Cas de test :
+	Bloc::changerTresorOK
+Condition initiale : 
+	p_tresor = Objet::init(POUBELLEMETALLIQUE, 10, false, 0)
+Operation : 
+	B = changerTresor(p_tresor)
+Oracle : 
+	getTresor(P) = p_tresor

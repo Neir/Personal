@@ -1,0 +1,46 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Beige"
+    android:orientation="vertical"
+    tools:context=".FavoriteBeerActivity" >
+
+    <TextView
+        android:id="@+id/favoriteBeerTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/Brown"
+        android:gravity="center"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:text="@string/beerResults"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/Beige"
+        android:textSize="30sp" />
+    
+    <TextView
+        android:id="@+id/nbResults"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/Beige"
+        android:gravity="left"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:text="@string/beerResults"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/Brown"
+        android:textSize="22sp" />
+    
+    
+    <ListView
+        android:id="@+id/listViewResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/Beige"
+        android:cacheColorHint="@color/Beige"
+        android:textColor="@color/Black" >
+
+    </ListView>
+
+</LinearLayout>

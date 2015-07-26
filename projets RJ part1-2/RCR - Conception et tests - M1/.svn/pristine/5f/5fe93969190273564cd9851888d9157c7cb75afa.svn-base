@@ -1,0 +1,47 @@
+package Acteur;
+
+import MoteurJeu.SANTE;
+
+public interface ActeurService {
+
+	/** Observateur Pour le Heros 
+	 */
+	public int getX();
+	public int getY();
+	public SANTE getSante();
+	public int getForceVitale();
+
+	/** Init
+	 */
+	public void init(int x, int y);
+
+
+	public void setPos(int x, int y);
+
+
+	public void setSante(SANTE s);
+
+	public void setForceVitale(int f);
+
+	public int getNbBombe();
+
+
+	public void setNbBombe(int x);
+
+	public boolean getWallPass();
+
+	public void setWallPass();
+
+	public boolean getBombePass();
+
+	public void setBombePass();
+
+	public int getFireSuit();
+
+	public void setFireSuit(int x);
+
+	/** Invariant */
+	//\Inv: getX(A) >= 0 && getY(A) >=0
+	//\Inv: 3 <= getHerosForceVitale(A) <= 11
+	//\Inv: getNbBombe(A) >= 1
+}

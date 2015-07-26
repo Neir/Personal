@@ -1,0 +1,12 @@
+/**
+ * 
+ */
+package rivercityrandom.enumerations;
+
+/**
+ * @author Thibaut FLEURY & Jerome RAHAULT
+ *
+ */
+public enum CONTENU_OBJET {
+	RIEN, UNDOLLAR, CINQUANTECENTIMES, CHAINEDEVELO, POUBELLEMETALLIQUE
+}

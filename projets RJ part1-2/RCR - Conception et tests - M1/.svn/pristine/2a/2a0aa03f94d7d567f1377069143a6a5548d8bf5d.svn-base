@@ -1,0 +1,980 @@
+// ----------------------------------------------------------------------------
+// OBJECTIF DE TEST : Initialisation d'un personnage
+// ----------------------------------------------------------------------------
+
+Cas de test :
+	Personnage::initOK
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5
+Operation : 
+	P = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+Oracle : 
+	getNom(P) = nom
+	getLargeur(P) = largeur
+	getHauteur(P) = hauteur
+	getProfondeur(P) = profondeur
+	getForce(P) = force
+	getPvMax(P) = pvMax
+	getPv(P) = pvMax
+	getPos_x(P) = pos_x
+	getPos_y(P) = pos_y
+	getPos_z(P) = pos_z
+	orientation_a_droite(P) = true
+	en_saut(P) = false
+	l_objet_equipe(P) = null
+	le_personnage_equipe(P) = null
+	estPorte(P) = false
+	estGele(P) = 0
+
+
+Cas de test :
+	Personnage::initKO1
+Condition initiale : 
+	nom = "",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5
+Operation : 
+	P = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+Oracle : 
+	nom != ""
+	# exception levée
+	
+	
+Cas de test :
+	Personnage::initKO2
+Condition initiale : 
+	nom = "Toto",
+	largeur = 0, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5
+Operation : 
+	P = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+Oracle : 
+	largeur <= 0
+	# exception levée
+	
+	
+Cas de test :
+	Personnage::initKO3
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 0, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5
+Operation : 
+	P = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+Oracle : 
+	hauteur <= 0
+	# exception levée
+	
+	
+Cas de test :
+	Personnage::initKO4
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 0,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5
+Operation : 
+	P = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+Oracle : 
+	profondeur <= 0
+	# exception levée
+
+
+Cas de test :
+	Personnage::initKO5
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = -1, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5
+Operation : 
+	P = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+Oracle : 
+	force < 0
+	# exception levée (InvariantError)
+	
+	
+Cas de test :
+	Personnage::initKO6
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 100, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5
+Operation : 
+	P = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+Oracle : 
+	force >= pvMax
+	# exception levée
+	
+	
+Cas de test :
+	Personnage::initKO7
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = -1, pos_y = 5, pos_z = 5
+Operation : 
+	P = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+Oracle : 
+	pos_x < 0
+	# exception levée (InvariantError)
+	
+	
+Cas de test :
+	Personnage::initKO8
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = -1, pos_z = 5
+Operation : 
+	P = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+Oracle : 
+	pos_y < 0
+	# exception levée (InvariantError)
+	
+	
+Cas de test :
+	Personnage::initKO9
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = -1
+Operation : 
+	P = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+Oracle : 
+	pos_z < 0
+	# exception levée (InvariantError)
+	
+
+
+// ----------------------------------------------------------------------------
+// OBJECTIF DE TEST : retrait_de_pv retire les degats de la vie du personnage
+// ----------------------------------------------------------------------------
+
+Cas de test :
+	Personnage::retrait_de_pvOK
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	pv = 5
+Operation : 
+	PP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	P = retrait_de_pv(PP, pv)
+Oracle : 
+	getPv(P) = pvMax - pv
+	
+
+Cas de test :
+	Personnage::retrait_de_pvKO1
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	pv = 5
+Operation : 
+	PPP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	PP = retrait_de_pv(PPP, pvMax)
+	P = retrait_de_pv(PP, pv)
+Oracle : 
+	estVaincu = true
+	# exception levée
+
+
+Cas de test :
+	Personnage::retrait_de_pvKO2
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	pv = -1
+Operation : 
+	PP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	P = retrait_de_pv(PP, pv)
+Oracle : 
+	pv < 0
+	# exception levée
+
+
+
+// ----------------------------------------------------------------------------
+// OBJECTIF DE TEST : depot_de_pv ajoute le bonus à la vie du personnage
+// ----------------------------------------------------------------------------
+
+Cas de test :
+	Personnage::depot_de_pvOK1
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	pv = 10
+Operation : 
+	PPP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	PP = retrait_de_pv(PPP, pv - 1)
+	P = depot_de_pv(PP, pv)
+Oracle : 
+	getPv(P) = pvMax
+	
+	
+Cas de test :
+	Personnage::depot_de_pvOK2
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	pv = 10
+Operation : 
+	PPP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	PP = retrait_de_pv(PPP, pv + 1)
+	P = depot_de_pv(PP, pv)
+Oracle : 
+	getPv(P) = pvMax - 1
+
+
+Cas de test :
+	Personnage::depot_de_pvKO1
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	pv = 10
+Operation : 
+	PP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	P = depot_de_pv(PP, pv)
+Oracle : 
+	getPv(P)@pre = pvMax
+	# exception levée
+	
+	
+Cas de test :
+	Personnage::depot_de_pvKO2
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	pv = -1
+Operation : 
+	PPP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	PP = retrait_de_pv(PPP, 10)
+	P = depot_de_pv(PP, pv)
+Oracle : 
+	pv < 0
+	# exception levée
+	
+	
+Cas de test :
+	Personnage::depot_de_pvKO3
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	pv = 10
+Operation : 
+	PPP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	PP = retrait_de_pv(PPP, pvMax)
+	P = depot_de_pv(PP, pv)
+Oracle : 
+	estVaincu(P) = true
+	# exception levée
+
+	
+	
+// ----------------------------------------------------------------------------
+// OBJECTIF DE TEST : Frapper inflige bien les dégats de force du frappeur
+// 						et de son objet équipé à la cible
+// ----------------------------------------------------------------------------
+
+Cas de test :
+	Personnage::frapperOK1
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	target =
+		Personnage::init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+Operation : 
+	PP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	P = frapper(PP, target)
+Oracle : 
+	estGele(P) = 1
+	getPv(target) = pvMax - force
+	estGele(target) = 3
+	
+	
+Cas de test :
+	Personnage::frapperOK2
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	objet = Objet::init(POUBELLEMETALLIQUE, 10, false, 0),
+	target =
+		Personnage::init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+Operation : 
+	PPP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	PP = ramasserObjet(PPP, objet)
+	P = frapper(PP, target)
+Oracle : 
+	estGele(P) = 1
+	getPv(target) = pvMax - (force + Objet::getValeur(objet))
+	estGele(target) = 3
+	
+	
+Cas de test :
+	Personnage::frapperKO1
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	target = null
+Operation : 
+	PP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	P = frapper(PP, target)
+Oracle : 
+	target = null
+	# exception levée
+	
+
+Cas de test :
+	Personnage::frapperKO2
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	target =
+		Personnage::init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+Operation : 
+	PPP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	PP = estFrappe(PPP, 1)
+	P = frapper(PP, target)
+Oracle : 
+	estGele() >= 0
+	# exception levée
+	
+	
+Cas de test :
+	Personnage::frapperKO3
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	target =
+		Personnage::init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+Operation : 
+	PPP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	PP = retrait_de_pv(PPP, pvMax)
+	P = frapper(PP, target)
+Oracle : 
+	estVaincu() = true
+	# exception levée
+	
+	
+	
+
+// ----------------------------------------------------------------------------
+// OBJECTIF DE TEST : ramasserPersonnage équipe bien le personnage ramassé
+// 						et celui-ci est dans l'état porté
+// ----------------------------------------------------------------------------
+
+Cas de test :
+	Personnage::ramasserPersonnageOK
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	perso = 
+		Personnage::init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+Operation :
+	Personnage::estFrappe(perso, pvMax-1) 
+	PP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	P = ramasserPersonnage(PP, perso)
+Oracle : 
+	le_personnage_equipe(P) = perso
+	estPorte(perso) = true
+	estGele(perso) = 1
+	
+
+Cas de test :
+	Personnage::ramasserPersonnageKO1
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	objet = Objet::init(POUBELLEMETALLIQUE, 10, false, 0),
+	perso = 
+		Personnage::init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+Operation :
+	Personnage::estFrappe(perso, pvMax-1) 
+	PPP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	PP = ramasserObjet(PPP, objet)
+	P = ramasserPersonnage(PP, perso)
+Oracle : 
+	a_equipement() = true
+	# exception levée
+	
+	
+Cas de test :
+	Personnage::ramasserPersonnageKO2
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	perso = 
+		Personnage::init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+Operation :
+	Personnage::estFrappe(perso, pvMax-1) 
+	PPP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	PP = estFrappe(PPP, pvMax-1)
+	P = ramasserPersonnage(PP, perso)
+Oracle : 
+	estGele() > 0
+	# exception levée
+	
+	
+Cas de test :
+	Personnage::ramasserPersonnageKO3
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	perso = 
+		Personnage::init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+Operation :
+	Personnage::estFrappe(perso, pvMax-1) 
+	PPP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	PP = retrait_de_pv(PPP, pvMax)
+	P = ramasserPersonnage(PP, perso)
+Oracle : 
+	estVaincu() = true
+	# exception levée
+	
+	
+Cas de test :
+	Personnage::ramasserPersonnageKO4
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	perso = 
+		Personnage::init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+Operation :
+	PP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	P = ramasserPersonnage(PP, perso)
+Oracle : 
+	estGele(perso) = 0
+	# exception levée
+	
+
+Cas de test :
+	Personnage::ramasserPersonnageKO5
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	perso = 
+		Personnage::init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+Operation :
+	Personnage::estFrappe(perso, pvMax)
+	PP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	P = ramasserPersonnage(PP, perso)
+Oracle : 
+	estVaincu(perso) = true
+	# exception levée
+
+
+
+// ----------------------------------------------------------------------------
+// OBJECTIF DE TEST : ramasserObjet équipe bien l'objet ramassé
+// ----------------------------------------------------------------------------
+
+Cas de test :
+	Personnage::ramasserObjetOK
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	objet = Objet::init(POUBELLEMETALLIQUE, 10, false, 0)
+Operation :
+	PP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	P = ramasserObjet(PP, objet)
+Oracle : 
+	l_objet_equipe(P) = perso
+	
+	
+Cas de test :
+	Personnage::ramasserObjetKO1
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	objet = Objet::init(POUBELLEMETALLIQUE, 10, false, 0)
+Operation :
+	PPP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	PP = ramasserObjet(PP, objet)
+	P = ramasserObjet(PP, objet)
+Oracle : 
+	a_equipement() = true
+	# exception levée
+	
+	
+Cas de test :
+	Personnage::ramasserObjetKO2
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	objet = Objet::init(POUBELLEMETALLIQUE, 10, false, 0)
+Operation :
+	PPP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	PP = estFrappe(PP, pvMax-1)
+	P = ramasserObjet(PP, objet)
+Oracle : 
+	estGele() > 0
+	# exception levée
+	
+	
+Cas de test :
+	Personnage::ramasserObjetKO3
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	objet = Objet::init(POUBELLEMETALLIQUE, 10, false, 0)
+Operation :
+	PPP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	PP = retrait_de_pv(PP, pvMax)
+	P = ramasserObjet(PP, objet)
+Oracle : 
+	estVaincu() = true
+	# exception levée
+
+
+// ----------------------------------------------------------------------------
+// OBJECTIF DE TEST : jeter retire bien tout équipement et si l'équipement
+// 						était un personnage, celui-ci n'est plus dans
+// 						l'état porté
+// ----------------------------------------------------------------------------
+
+Cas de test :
+	Personnage::jeterOK1
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	objet = Objet::init(POUBELLEMETALLIQUE, 10, false, 0)
+Operation :
+	PPP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	PP = ramasserObjet(PP, objet)
+	P = jeter(PP)
+Oracle : 
+	l_objet_equipe(P) = null
+	le_personnage_equipe(P) = null
+	
+	
+Cas de test :
+	Personnage::jeterOK2
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	perso = 
+		Personnage::init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+Operation :
+	PPP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	Personnage::estFrappe(perso, pvMax - 1)
+	PP = ramasserPersonnage(PP, perso)
+	P = jeter(PP)
+Oracle : 
+	l_objet_equipe(P) = null
+	le_personnage_equipe(P) = null
+	estGele(perso) = 1
+	estPorte(perso) = false
+	
+	
+Cas de test :
+	Personnage::jeterKO1
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5
+Operation :
+	PP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	P = jeter(PP)
+Oracle : 
+	a_equipement() = false
+	# exception levée
+	
+	
+Cas de test :
+	Personnage::jeterKO2
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	objet = Objet::init(POUBELLEMETALLIQUE, 10, false, 0)
+Operation :
+	PPPP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	PPP = ramasserObjet(PPPP, objet)
+	PP = estFrappe(PPP, pvMax-1)
+	P = jeter(PP)
+Oracle : 
+	estGele() > 0
+	# exception levée
+	
+	
+Cas de test :
+	Personnage::jeterKO3
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	objet = Objet::init(POUBELLEMETALLIQUE, 10, false, 0)
+Operation :
+	PPPP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	PPP = ramasserObjet(PPPP, objet)
+	PP = retrait_de_pv(PPP, pvMax)
+	P = jeter(PP)
+Oracle : 
+	estVaincu() = true
+	# exception levée
+	
+	
+Cas de test :
+	Personnage::jeterKO4
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	perso = 
+		Personnage::init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+Operation :
+	PPPP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	PPP = ramasserPersonnage(PPPP, perso)
+	Personnage::retrait_de_pv(perso, pvMax)
+	P = jeter(PP)
+Oracle : 
+	estVaincu(perso) = true
+	# exception levée
+	
+	
+Cas de test :
+	Personnage::jeterKO5
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	perso = 
+		Personnage::init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+Operation :
+	PPPP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	PPP = ramasserPersonnage(PPPP, perso)
+	Personnage::se_fait_jeter(perso)
+	P = jeter(PP)
+Oracle : 
+	estPorte(perso) = false
+	# exception levée
+
+
+// ----------------------------------------------------------------------------
+// OBJECTIF DE TEST : degeler retire un tour de gèle si le personnage 
+// 						est gelé et n'est pas porté
+// ----------------------------------------------------------------------------
+
+Cas de test :
+	Personnage::degelerOK1
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5
+Operation :
+	PPP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	PP = estFrappe(PPP, pvMax-1)
+	P = degeler(PP)
+Oracle : 
+	estGele(P) = estGele(PP) - 1
+
+	
+Cas de test :
+	Personnage::degelerOK2
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5
+Operation :
+	PP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	P = degeler(PP)
+Oracle : 
+	estGele(P) = 0
+	
+	
+Cas de test :
+	Personnage::degelerOK3
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5
+Operation :
+	PPPP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	PPP = estFrappe(PPPP, pvMax-1)
+	PP = se_fait_porter(PPP)
+	P = degeler(PP)
+Oracle : 
+	estGele(P) = estGele(PP)
+	
+	
+Cas de test :
+	Personnage::degelerKO1
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5
+Operation :
+	PPP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	PP = retrait_de_pv(PPP, pvMax)
+	P = degeler(PP)
+Oracle : 
+	estVaincu() = true
+	# exception levée
+	
+	
+	
+// ----------------------------------------------------------------------------
+// OBJECTIF DE TEST : se_deplacer modifie les coordonnées du personnage et
+// 						change son orientation en fonction de la position
+// 						précédente
+// ----------------------------------------------------------------------------
+	
+Cas de test :
+	Personnage::se_deplacerOK1
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	x = 6, y = 6
+Operation :
+	PP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	P = se_deplacer(PP, x, y)
+Oracle : 
+	getPos_x(P) = x
+	getPos_y(P) = y
+	getPos_z(P) = pos_z
+	orientation_a_droite(P) = true
+	
+	
+Cas de test :
+	Personnage::se_deplacerOK2
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	x = 4, y = 6
+Operation :
+	PP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	P = se_deplacer(PP, x, y)
+Oracle : 
+	getPos_x(P) = x
+	getPos_y(P) = y
+	getPos_z(P) = pos_z
+	orientation_a_droite(P) = false
+	
+	
+Cas de test :
+	Personnage::se_deplacerKO1
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	x = 6, y = 6
+Operation :
+	PPP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	PP = sauter(PPP, x, y, pos_z + 1)
+	P = se_deplacer(PP, x, y)
+Oracle : 
+	en_saut() = true
+	# exception levée
+	
+	
+Cas de test :
+	Personnage::se_deplacerKO2
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	x = 6, y = 6
+Operation :
+	PPP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	PP = estFrappe(PPP, pvMax - 1)
+	P = se_deplacer(PP, x, y)
+Oracle : 
+	estGele() = true
+	# exception levée
+	
+	
+Cas de test :
+	Personnage::se_deplacerKO3
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	x = 6, y = 6
+Operation :
+	PPP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	PP = retrait_de_pv(PPP, pvMax)
+	P = se_deplacer(PP, x, y)
+Oracle : 
+	estVaincu() = true
+	# exception levée
+	
+	
+Cas de test :
+	Personnage::se_deplacerKO4
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	x = -1, y = 6
+Operation :
+	PP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	P = se_deplacer(PP, x, y)
+Oracle : 
+	x < 0
+	# exception levée (invariant error)
+	
+	
+Cas de test :
+	Personnage::se_deplacerKO5
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	x = 6, y = -1
+Operation :
+	PP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	P = se_deplacer(PP, x, y)
+Oracle : 
+	y < 0
+	# exception levée (invariant error)
+	
+	
+	
+// ----------------------------------------------------------------------------
+// OBJECTIF DE TEST : sauter modifie les coordonnées du personnage et
+// 						change son orientation en fonction de la position
+// 						précédente
+// ----------------------------------------------------------------------------
+	
+Cas de test :
+	Personnage::sauterOK1
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	x = 6, y = 6, z = 6
+Operation :
+	PP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	P = sauter(PP, x, y, z)
+Oracle : 
+	getPos_x(P) = x
+	getPos_y(P) = y
+	getPos_z(P) = z
+	en_saut(P) = true
+	orientation_a_droite(P) = true
+	
+	
+Cas de test :
+	Personnage::sauterOK2
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	x = 4, y = 6, z = 6
+Operation :
+	PP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	P = sauter(PP, x, y, z)
+Oracle : 
+	getPos_x(P) = x
+	getPos_y(P) = y
+	getPos_z(P) = z
+	en_saut(P) = true
+	orientation_a_droite(P) = false
+	
+	
+Cas de test :
+	Personnage::sauterKO1
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	x = 6, y = 6, z = 6
+Operation :
+	PPP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	PP = estFrappe(PPP, pvMax - 1)
+	P = sauter(PP, x, y, z)
+Oracle : 
+	estGele() > 0
+	# exception levée
+	
+	
+Cas de test :
+	Personnage::sauterKO2
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	x = 6, y = 6, z = 6
+Operation :
+	PPP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	PP = retrait_de_pv(PPP, pvMax)
+	P = sauter(PP, x, y, z)
+Oracle : 
+	estVaincu() = true
+	# exception levée
+	
+	
+Cas de test :
+	Personnage::sauterKO3
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	x = -1, y = 6, z = 6
+Operation :
+	PPP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	P = sauter(PP, x, y, z)
+Oracle : 
+	x < 0
+	# exception levée (invariant error)
+	
+	
+Cas de test :
+	Personnage::sauterKO4
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	x = 6, y = -1, z = 6
+Operation :
+	PPP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	P = sauter(PP, x, y, z)
+Oracle : 
+	y < 0
+	# exception levée (invariant error)
+	
+	
+Cas de test :
+	Personnage::sauterKO5
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5,
+	x = 6, y = 6, z = -1
+Operation :
+	PPP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	P = sauter(PP, x, y, z)
+Oracle : 
+	z < 0
+	# exception levée (invariant error)
+	
+	
+	
+	

@@ -1,0 +1,14 @@
+package terrain.Test;
+
+import org.junit.Before;
+
+import terrain.TerrainContract;
+import terrain.TerrainErr;
+
+public class TestErr extends Test {
+	@Before
+	public void initilisation(){
+		terrain = new TerrainContract(new TerrainErr());
+	}
+
+}

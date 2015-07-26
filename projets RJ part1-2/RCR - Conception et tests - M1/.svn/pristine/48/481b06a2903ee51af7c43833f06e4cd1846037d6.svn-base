@@ -1,0 +1,319 @@
+/**
+ * 
+ */
+package rivercityrandom.impl;
+
+import rivercityrandom.services.Objet;
+import rivercityrandom.services.Personnage;
+
+/**
+ * @author Thibaut FLEURY & Jerome RAHAULT
+ *
+ */
+public class PersonnageImpl implements Personnage {
+
+	private String 			nom;
+	private int 			largeur;
+	private int 			hauteur;
+	private int 			profondeur;
+	private int 			pvMax;
+	private int 			force;
+	private int 			pv;
+	private int 			pos_x;
+	private int 			pos_y;
+	private int 			pos_z;
+	private boolean 		orientation_a_droite;
+	private boolean 		en_saut;
+	private Objet 			l_objet_equipe;
+	private Personnage 		le_personnage_equipe;
+	private boolean 		estPorte;
+	private int 			estGele;
+	
+	
+	// Petit hack pour que le personnage ne soit pas vaincu dès le début
+	public PersonnageImpl() { pv = 1; }
+
+	/**
+	 * @see rivercityrandom.services.Personnage#getNom()
+	 */
+	@Override
+	public String getNom() {
+		return nom;
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#getLargeur()
+	 */
+	@Override
+	public int getLargeur() {
+		return largeur;
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#getHauteur()
+	 */
+	@Override
+	public int getHauteur() {
+		return hauteur;
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#getProfondeur()
+	 */
+	@Override
+	public int getProfondeur() {
+		return profondeur;
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#getPvMax()
+	 */
+	@Override
+	public int getPvMax() {
+		return pvMax;
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#getForce()
+	 */
+	@Override
+	public int getForce() {
+		return force;
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#getPv()
+	 */
+	@Override
+	public int getPv() {
+		return pv;
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#getPos_x()
+	 */
+	@Override
+	public int getPos_x() {
+		return pos_x;
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#getPos_y()
+	 */
+	@Override
+	public int getPos_y() {
+		return pos_y;
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#getPos_z()
+	 */
+	@Override
+	public int getPos_z() {
+		return pos_z;
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#orientation_a_droite()
+	 */
+	@Override
+	public boolean orientation_a_droite() {
+		return orientation_a_droite;
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#en_saut()
+	 */
+	@Override
+	public boolean en_saut() {
+		return en_saut;
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#a_equipement()
+	 */
+	@Override
+	public boolean a_equipement() {
+		return l_objet_equipe != null || le_personnage_equipe != null;
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#l_objet_equipe()
+	 */
+	@Override
+	public Objet l_objet_equipe() {
+		return l_objet_equipe;
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#le_personnage_equipe()
+	 */
+	@Override
+	public Personnage le_personnage_equipe() {
+		return le_personnage_equipe;
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#estPorte()
+	 */
+	@Override
+	public boolean estPorte() {
+		return estPorte;
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#estGele()
+	 */
+	@Override
+	public int estGele() {
+		return estGele;
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#estVaincu()
+	 */
+	@Override
+	public boolean estVaincu() {
+		return pv <= 0;
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#init(java.lang.String, int, int, int, int, int, int, int, int)
+	 */
+	@Override
+	public void init(String nom, int largeur, int hauteur, int profondeur,
+			int force, int pvMax, int pos_x, int pos_y, int pos_z) {
+		
+		this.nom = nom;
+		this.largeur = largeur;
+		this.hauteur = hauteur;
+		this.profondeur = profondeur;
+		this.force = force;
+		this.pvMax = pvMax;
+		this.pv = pvMax;
+		this.pos_x = pos_x;
+		this.pos_y = pos_y;
+		this.pos_z = pos_z;
+		this.orientation_a_droite = true;
+		this.en_saut = false;
+		this.l_objet_equipe = null;
+		this.le_personnage_equipe = null;
+		this.estPorte = false;
+		this.estGele = 0;
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#retrait_de_pv(int)
+	 */
+	@Override
+	public void retrait_de_pv(int pv) {
+		this.pv -= pv;
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#depot_de_pv(int)
+	 */
+	@Override
+	public void depot_de_pv(int pv) {
+		
+		if (this.pv + pv > pvMax) {
+			this.pv = pvMax;
+		} else {
+			this.pv += pv;
+		}
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#ramasserPersonnage(rivercityrandom.services.Personnage)
+	 */
+	@Override
+	public void ramasserPersonnage(Personnage perso) {
+		this.le_personnage_equipe = perso;
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#ramasserObjet(rivercityrandom.services.Objet)
+	 */
+	@Override
+	public void ramasserObjet(Objet objet) {
+		this.l_objet_equipe = objet;
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#jeter()
+	 */
+	@Override
+	public void jeter() {
+		
+		if (le_personnage_equipe != null) {
+			le_personnage_equipe.se_fait_jeter();
+			le_personnage_equipe = null;
+		}
+		else {
+			le_personnage_equipe = null;
+			l_objet_equipe = null;
+		}
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#se_deplacer(int, int)
+	 */
+	@Override
+	public void se_deplacer(int x, int y) {
+		pos_x = x;
+		pos_y = y;
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#sauter(int, int, int)
+	 */
+	@Override
+	public void sauter(int x, int y, int z) {
+		pos_x = x;
+		pos_y = y;
+		pos_z = z;
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#se_fait_porter()
+	 */
+	@Override
+	public void se_fait_porter() {
+		estPorte = true;
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#se_fait_jeter()
+	 */
+	@Override
+	public void se_fait_jeter() {
+		estPorte = false;
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#degeler()
+	 */
+	@Override
+	public void degeler() {
+		if(!estPorte && estGele - 1 >= 0)
+			estGele--;
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#frapper(rivercityrandom.services.Personnage)
+	 */
+	@Override
+	public void frapper(Personnage target) {
+		estGele = 1;
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#estFrappe(int)
+	 */
+	@Override
+	public void estFrappe(int degats) {
+		pv -= degats;
+		estGele = 3;
+	}
+
+}

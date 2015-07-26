@@ -1,0 +1,12 @@
+/**
+ * 
+ */
+package rivercityrandom.enumerations;
+
+/**
+ * @author Thibaut FLEURY & Jerome RAHAULT
+ *
+ */
+public enum COMMANDE {
+	RIEN, GAUCHE, DROITE, HAUT, BAS, FRAPPE, SAUT, PREND, JET
+}

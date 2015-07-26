@@ -1,0 +1,45 @@
+package vilain;
+
+public interface VilainService {
+    
+	//init 
+	//\pre:init(t,power) require t in {BALLON_ORANGE,FANTOM_BLEU;}
+	//							 and  power>=0;
+	public void init(TypeVilain t, int power);
+	//\post: if t=FANTOM_BLEU alors getPower(init(t,power))=0 else getPower(init(t,power))=power;
+	//\post: getType(init(t,power))=t;
+	
+	//observateur:
+	public TypeVilain getType();//constant
+	public int getPower();
+	public int getIndexX();
+	public int getIndexY();
+	
+	//operation:
+	
+	//\pre setPower(V) require getPower(T)>0 ;
+	//\post: getPower(setPower(V))=getPower(V)-1;
+	public void setPower();
+	
+	
+	//\pre: deplacer(V) require getPower(V)>0 ou getType(V)=FANTOM_BLEU;
+	//\post: if getType(V)=BALLAN_ORANGE    getPower(deplacer(V))=getPower(V)-1 
+	//          else    getPower(deplacer(V))=getPower(V) 
+	//\post: getType(deplcer(V))=getType(V) 
+	public void deplacer();
+	
+	
+	
+	//\post:getIndexX(setIndexX(V,x))=x
+	//\post:getIndexY(setIndexX(V,x))=getIndexY(V)
+	//\post:getPower(setIndexX(V,x))=getPower(V)
+	public void setIndexX(int x);
+	
+	//\post:getIndexX(setIndexY(V,y))=getIndexX(V)
+	//\post:getIndexY(setIndexY(V,y))=y
+	//\post:getPower(setIndexY(V,y))=getPower(V)
+	public void setIndexY(int y);
+	
+	/*** Invariant */
+	//\Inv: getPower()>=0;
+}

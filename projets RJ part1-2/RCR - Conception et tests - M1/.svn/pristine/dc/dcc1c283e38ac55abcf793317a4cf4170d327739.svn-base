@@ -1,0 +1,23 @@
+/**
+ * 
+ */
+package rivercityrandom.services;
+
+/**
+ * @author Thibaut FLEURY & Jerome RAHAULT
+ *
+ */
+public interface Equipable {
+
+	public boolean estEquipe();
+	
+	public Personnage getUtilisateur();
+	
+	public void ramasse();
+	
+	public void estDeplace();
+	
+	public void frappeAvec();
+	
+	public void jette();
+}

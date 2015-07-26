@@ -1,0 +1,77 @@
+<project name="RiverCityRandom" default="compile" basedir=".">
+
+	<description>
+		Fichier de construction pour le projet RiverCityRandom
+	</description>
+	
+	<!-- Set global properties for this build -->
+	<property name="src" location="src"/>
+	<property name="build" location="build"/>
+	<property name="jars" location="jars"/>
+
+	<!-- NOM DU BINOME -->
+	<property name="nom1" value="FLEURY"/>
+	<property name="nom2" value="RAHAULT"/>
+
+	
+	<!-- TARGETS -->
+	
+	<!-- INIT -->
+	<target name="init">
+		<!-- Create the time stamp -->
+		<tstamp/>
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${build}"/>
+	</target>
+
+	<!-- COMPILE -->
+	<target name="compile" depends="init" description="compile the source">
+		<!-- Compile the java code from ${src} into ${build} -->
+		<javac debug="true" classpath="${jars}/junit-4.11.jar" 
+			srcdir="${src}" excludes="" destdir="${build}" />
+	</target>
+
+	<!-- TESTS -->
+	<target name="tests" depends="compile"
+			description="test of the implementation">
+		<echo>================ Run first test ================</echo>
+		<junit printsummary="yes">
+			<classpath>
+				<pathelement location="${build}"/>
+				<pathelement location="${jars}/junit-4.11.jar"/>
+				<pathelement location="${jars}/hamcrest-core-1.3.jar"/>
+			</classpath>
+	
+			<formatter type="plain"/>
+			
+			<test name="rivercityrandom.tests.BlocTest" outfile="report1"/>
+			<test name="rivercityrandom.tests.GangsterTest" outfile="report2"/>
+			<test name="rivercityrandom.tests.JoueurTest" outfile="report3"/>
+			<test name="rivercityrandom.tests.MoteurJeuTest" outfile="report4"/>
+			<test name="rivercityrandom.tests.ObjetTest" outfile="report5"/>
+			<test name="rivercityrandom.tests.PersonnageTest" outfile="report6"/>
+			<test name="rivercityrandom.tests.TerrainTest" outfile="report7"/>
+		</junit>
+	</target>
+
+	<!-- CLEAN -->
+	<target name="clean" description="clean up"> 
+		<echo>============= Removing temporary files... =============</echo>
+		<delete verbose="true"> <!-- Remove all *~ files -->
+			<fileset dir="${basedir}" defaultexcludes="no">
+				<include name="**/*~"/>
+			</fileset>
+		</delete>
+		<echo>============= Removing build directory =============</echo> 
+		<delete dir="${build}"/>
+	</target>
+
+	<!-- DIST -->
+	<target name="dist" depends="init" description="Generer la distribution">
+		<!-- tout mettre dans l'archive -->
+		<jar jarfile="../RiverCityRandom-${nom1}-${nom2}-${DSTAMP}.jar" 
+			basedir="../">
+		</jar>
+	</target>
+
+</project>

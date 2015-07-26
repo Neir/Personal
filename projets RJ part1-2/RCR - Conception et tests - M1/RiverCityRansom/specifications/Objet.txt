@@ -1,0 +1,24 @@
+Service : Objet
+Types : int, boolean,
+enum CONTENU_OBJET{UNDOLLAR, CHAINEDEVELO, 
+								POUBELLEMETALLIQUE, POTIONVIE, POTIONFORCE}
+Observators : 
+    const contenu : [Objet] → CONTENU_OBJET
+	const valeur : [Objet] → int
+	// arme ⇔ dégat, marchandable ⇔ valeur de l’effet
+	const marchandable : [Objet] → boolean
+	const cout : [Objet] → int
+
+Constructors : 
+    init : CONTENU_OBJET × int × boolean × int → [Objet]
+        pre init(p_contenu, p_valeur, p_marchand, p_cout)
+			require p_contenu <> null & 0 ≤ p_valeur & 0 ≤ p_cout
+			
+Operators :
+
+Observations :
+[init]
+	contenu(init(p_contenu, p_valeur, p_marchand, p_cout)) = p_contenu
+    valeur(init(p_contenu, p_valeur, p_marchand, p_cout)) = p_valeur
+    marchandable(init(p_contenu, p_valeur, p_marchand, p_cout)) = p_marchandable
+    cout(init(p_contenu, p_valeur, p_marchand, p_cout)) = p_cout

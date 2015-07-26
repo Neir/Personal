@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SmartBrewery</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_beer">Fiche biere</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_beeralyzer">Beeralyzer</string>
+    <string name="menu_search">Advanced search</string>
+    <string name="menu_settings">Settings</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_result">SmartBrewery</string>
+    <string name="title_activity_search">SmartBrewery</string>
+    <string name="title_activity_beer">SmartBrewery</string>
+    <string name="title_activity_beeralyzer">SmartBrewery</string>
+    <string name="beerName"></string>
+    <string name="searchBar">Beer\'s Name :</string>
+    <string name="recherche">Search</string>
+    <string name="beerAbv">The abv isn\'t available.</string>
+    <string name="beerDescription">The description isn\'t available.</string>
+    <string name="beerCategoryName">The category isn\'t available.</string>
+    <string name="beerStyleName">The style isn\'t available.</string>
+    <string name="beerStyleDescription">The style description isn\'t available.</string>
+    <string name="title_activity_favorite_beer">SmartBrewery</string>
+    <string name="menu_favorites">Favorites</string>
+    <string name="beerResults">Results</string>
+    <string name="favoriteBeers">Favorite Beers</string>
+    <string name="homeTitle">Home</string>
+    <string name="beeralyzerTitle">Beeralyzer</string>
+    <string name="searchTitle">Advanced search</string>
+    <string name="searchDegree">Alcohol degree</string>
+    <string name="randomSearch">Random search</string>
+    <string name="doAdvancedSearch">Search</string>
+    <string name="alcoolPercentage">Alcohol by volume (%):</string>
+    <string name="history">History:</string>
+    <string name="raz">RAZ</string>
+	<string name="calculer">calculate</string>
+	<string name="poids">Weigh</string>
+	<string name="homme">Man</string>
+	<string name="femme">Woman</string>
+</resources>

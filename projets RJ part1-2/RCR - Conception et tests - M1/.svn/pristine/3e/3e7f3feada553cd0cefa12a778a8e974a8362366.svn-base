@@ -1,0 +1,113 @@
+/**
+ * 
+ */
+package rivercityrandom.decorators;
+
+import java.util.ArrayList;
+
+import rivercityrandom.enumerations.COMMANDE;
+import rivercityrandom.services.Gangster;
+import rivercityrandom.services.GestionCombat;
+import rivercityrandom.services.Joueur;
+import rivercityrandom.services.Personnage;
+import rivercityrandom.services.Terrain;
+
+/**
+ * @author Thibaut FLEURY & Jerome RAHAULT
+ *
+ */
+public class GestionCombatDecorator implements GestionCombat{
+	protected final GestionCombat delegate;
+	
+	public GestionCombatDecorator(GestionCombat delegate){
+		this.delegate = delegate;
+	}
+
+	/**
+	 * @see rivercityrandom.services.GestionCombat#getAlex()
+	 */
+	@Override
+	public Joueur getAlex() {
+		return delegate.getAlex();
+	}
+
+	/**
+	 * @see rivercityrandom.services.GestionCombat#getRyan()
+	 */
+	@Override
+	public Joueur getRyan() {
+		return delegate.getRyan();
+	}
+
+	/**
+	 * @see rivercityrandom.services.GestionCombat#getSlick()
+	 */
+	@Override
+	public Personnage getSlick() {
+		return delegate.getSlick();
+	}
+
+	/**
+	 * @see rivercityrandom.services.GestionCombat#getListGangster()
+	 */
+	@Override
+	public ArrayList<Gangster> getListGangster() {
+		return delegate.getListGangster();
+	}
+	
+	/**
+	 * @see rivercityrandom.services.GestionCombat#getListGangster()
+	 */
+	@Override
+	public ArrayList<Personnage> getListPersonnages() {
+		return delegate.getListPersonnages();
+	}
+
+	/**
+	 * @see rivercityrandom.services.GestionCombat#getTerrain()
+	 */
+	@Override
+	public Terrain getTerrain() {
+		return delegate.getTerrain();
+	}
+
+	/**
+	 * @see rivercityrandom.services.GestionCombat#gerer(rivercityrandom.enumerations.COMMANDE, rivercityrandom.enumerations.COMMANDE)
+	 */
+	@Override
+	public void gerer(COMMANDE cR, COMMANDE cA) {
+		delegate.gerer(cR, cA);	
+	}
+	
+	/**
+	 * @see rivercityrandom.services.GestionCombat#gerer(rivercityrandom.enumerations.COMMANDE, rivercityrandom.enumerations.COMMANDE)
+	 */
+	@Override
+	public void gerer1Joueur(Joueur j, COMMANDE c) {
+		delegate.gerer1Joueur(j, c);	
+	}
+
+	/**
+	 * @see rivercityrandom.services.GestionCombat#init(int, int, int)
+	 */
+	@Override
+	public void init(int largeur, int hauteur, int profondeur) {
+		delegate.init(largeur, hauteur, profondeur);
+	}
+
+	/**
+	 * @see rivercityrandom.services.GestionCombat#tomber(rivercityrandom.services.Personnage)
+	 */
+	@Override
+	public void tomber(Personnage p) {
+		delegate.tomber(p);
+	}
+
+	/**
+	 * @see rivercityrandom.services.GestionCombat#frappe(rivercityrandom.services.Personnage)
+	 */
+	@Override
+	public void frappe(Personnage a) {
+		delegate.frappe(a);
+	}
+}

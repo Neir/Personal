@@ -1,0 +1,115 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentTop="true"
+    android:background="@color/Beige"
+    android:orientation="vertical"
+    tools:context=".HomeActivity" >
+
+    <TextView
+        android:id="@+id/advancedSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/Brown"
+        android:gravity="center"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:text="@string/searchTitle"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/Beige"
+        android:textSize="30sp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".RechercheActivity" >
+
+        <TextView
+            android:id="@+id/nbResults"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/Beige"
+            android:gravity="left"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:text="@string/alcoolPercentage"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/Brown"
+            android:textSize="22sp" />
+
+        <Spinner
+            android:id="@+id/spinner1"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="34dp"
+            android:layout_toRightOf="@+id/checkBox1"
+            android:prompt="@string/alcoolPercentage" />
+
+        <CheckBox
+            android:id="@+id/checkBox1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/nbResults"
+            android:layout_marginTop="14dp"
+            android:checked="false" />
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="64dp"
+            android:background="@color/Brown"
+            android:padding="5dp"
+            android:text="@string/randomSearch"
+            android:textColor="@color/Beige" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_above="@+id/button1"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="59dp"
+            android:background="@color/Brown"
+            android:text="@string/doAdvancedSearch"
+            android:textColor="@color/Beige" />
+
+        <Spinner
+            android:id="@+id/spinner2"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_above="@+id/button2"
+            android:layout_toRightOf="@+id/checkBox2" />
+
+        <CheckBox
+            android:id="@+id/checkBox2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/spinner2"
+            android:layout_marginTop="16dp"
+            android:layout_toLeftOf="@+id/spinner1"
+            android:checked="false" />
+
+        <TextView
+            android:id="@+id/nbResults2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/spinner2"
+            android:layout_alignParentLeft="true"
+
+            android:background="@color/Beige"
+            android:gravity="left"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:text="Category :"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/Brown"
+            android:textSize="22sp" />
+
+    </RelativeLayout>
+</LinearLayout>

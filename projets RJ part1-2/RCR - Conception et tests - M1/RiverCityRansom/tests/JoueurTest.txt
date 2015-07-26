@@ -1,0 +1,129 @@
+// ----------------------------------------------------------------------------
+// OBJECTIF DE TEST : Initialisation d'un joueur
+// ----------------------------------------------------------------------------
+
+Cas de test :
+	Joueur::initOK1
+Condition initiale : 
+	nom = "Toto"
+Operation : 
+	J = init(nom)
+Oracle : 
+	getNom(J) = nom
+	getLargeur(J) = 30
+	getHauteur(J) = 50
+	getProfondeur(J) = 10
+	getForce(J) = 10
+	getPvMax(J) = 100
+	getSomme_d_argent(J) = 20
+	inventaire(J) = EMPTY
+	
+	
+Cas de test :
+	Joueur::initKO1
+Condition initiale : 
+	nom = ""
+Operation : 
+	J = init(nom)
+Oracle : 
+	nom = ""
+	# exception levée
+	
+	
+	
+// ----------------------------------------------------------------------------
+// OBJECTIF DE TEST : Le retrait d'argent retire la bonne somme d'argent
+// ----------------------------------------------------------------------------
+	
+Cas de test :
+	Joueur::retrait_de_l_argentOK1
+Condition initiale : 
+	nom = "Toto"
+	argent = 10
+Operation : 
+	JJ = init(nom)
+	J = retrait_de_l_argent(JJ, argent)
+Oracle : 
+	somme_d_argent(J) = 20 - argent
+	
+	
+Cas de test :
+	Joueur::retrait_de_l_argentKO1
+Condition initiale : 
+	nom = "Toto"
+	argent = 0
+Operation : 
+	JJ = init(nom)
+	J = retrait_de_l_argent(JJ, argent)
+Oracle : 
+	argent <= 0
+	# exception levée
+	
+	
+	
+// ----------------------------------------------------------------------------
+// OBJECTIF DE TEST : Le depot d'argent retire la bonne somme d'argent
+// ----------------------------------------------------------------------------
+	
+Cas de test :
+	Joueur::depot_de_l_argentOK1
+Condition initiale : 
+	nom = "Toto"
+	argent = 10
+Operation : 
+	JJ = init(nom)
+	J = retrait_de_l_argent(JJ, argent)
+Oracle : 
+	somme_d_argent(J) = 20 + argent
+	
+	
+Cas de test :
+	Joueur::depot_de_l_argentKO1
+Condition initiale : 
+	nom = "Toto"
+	argent = 0
+Operation : 
+	JJ = init(nom)
+	J = depot_de_l_argent(JJ, argent)
+Oracle : 
+	argent <= 0
+	# exception levée
+	
+	
+	
+	
+/!\ Attention ici on teste pas si les objets ajoutés et retirés de l'inventaire
+	sont non équipable (non marchandable)
+	
+// ----------------------------------------------------------------------------
+// OBJECTIF DE TEST : Le retrait d'objet retire bien l'objet de l'inventaire
+// ----------------------------------------------------------------------------
+	
+Cas de test :
+	Joueur::retrait_objet_de_l_inventaireOK1
+Condition initiale : 
+	nom = "Toto"
+	objet = Objet::init(POTIONVIE, 10, true, 10)
+Operation : 
+	JJ = init(nom)
+	J = retrait_objet_de_l_inventaire(JJ, objet)
+Oracle : 
+	inventaire(J) not contains objet
+	
+	
+	
+// ----------------------------------------------------------------------------
+// OBJECTIF DE TEST : Le depot d'objet ajoute bien l'objet à l'inventaire
+// ----------------------------------------------------------------------------
+	
+Cas de test :
+	Joueur::depot_objet_de_l_inventaireOK1
+Condition initiale : 
+	nom = "Toto"
+	objet = Objet::init(POTIONVIE, 10, true, 10)
+Operation : 
+	JJ = init(nom)
+	J = depot_objet_de_l_inventaire(JJ, objet)
+Oracle : 
+	inventaire(J) contains objet
+	

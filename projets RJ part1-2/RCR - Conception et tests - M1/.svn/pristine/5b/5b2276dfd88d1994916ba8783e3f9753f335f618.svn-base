@@ -1,0 +1,14 @@
+package vilain.Test;
+
+import org.junit.Before;
+
+import vilain.VilainContract;
+import vilain.VilainImplErr;
+
+public class VilaiTestErr extends VilainTest {
+
+	@Before
+	public void before(){
+		vilain = new VilainContract(new VilainImplErr());
+	}
+}

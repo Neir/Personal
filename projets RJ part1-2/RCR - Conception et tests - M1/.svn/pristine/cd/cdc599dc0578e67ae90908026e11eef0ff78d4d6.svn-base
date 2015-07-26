@@ -1,0 +1,969 @@
+/**
+ * 
+ */
+package rivercityrandom.contracts;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import rivercityrandom.decorators.PersonnageDecorator;
+import rivercityrandom.errors.InvariantError;
+import rivercityrandom.errors.PostconditionError;
+import rivercityrandom.errors.PreconditionError;
+import rivercityrandom.services.Objet;
+import rivercityrandom.services.Personnage;
+
+/**
+ * @author Thibaut FLEURY & Jerome RAHAULT
+ *
+ */
+public class PersonnageContract extends PersonnageDecorator {
+	
+	// @pre
+	private int 		getForcePre;
+	private int 		getPvPre;
+	private int 		getPos_xPre;
+	private int 		getPos_yPre;
+	private int 		getPos_zPre;
+	private boolean 	orientation_a_droitePre;
+	private boolean 	en_sautPre;
+	private Objet 		l_objet_equipePre;
+	private Personnage 	le_personnage_equipePre;
+	private boolean 	estPortePre;
+	private int 		estGelePre;
+
+	public PersonnageContract(Personnage delegate) {
+		super(delegate);
+	}
+	
+	
+	// ------------------------------------------------------------------------
+	// TOOLS
+	// ------------------------------------------------------------------------
+	
+	/**
+	 * Permet de prendre une capture des observateurs du personnage
+	 */
+	public void captureImage() {
+		getForcePre 				= getForce();
+		getPvPre 					= getPv();
+		getPos_xPre 				= getPos_x();
+		getPos_yPre 				= getPos_y();
+		getPos_zPre 				= getPos_z();
+		orientation_a_droitePre 	= orientation_a_droite();
+		en_sautPre 					= en_saut();
+		l_objet_equipePre 			= l_objet_equipe();
+		le_personnage_equipePre 	= le_personnage_equipe();
+		estPortePre 				= estPorte();
+		estGelePre 					= estGele();
+	}
+	
+	/**
+	 * Permet de factoriser les tests de postconditions génériques.
+	 * La méthode captureImage doit avoir été appelée précédemment.
+	 * @param cond_exclues Les postConditions à exclure du test
+	 */
+	public void checkGenericPostcondition(List<Integer> cond_exclues) {
+		
+		if (cond_exclues.contains(1)) {
+			// post: getForce() == getForce()@pre
+			if (!(getForce() == getForcePre)) {
+				throw new PostconditionError("La force a été modifiée.");
+			}
+		}
+		
+		if (cond_exclues.contains(2)) {
+			// post: getPv() == getPv()@pre
+			if (getPv() == getPvPre) {
+				throw new PostconditionError(
+						"Les pv n'ont pas été correctement augmentés.");
+			}
+		}
+		
+		if (cond_exclues.contains(3)) {
+			// post: getPos_x() == getPos_x()@pre
+			if (!(getPos_x() == getPos_xPre)) {
+				throw new PostconditionError("La coordonnées X a été modifiée.");
+			}
+		}
+		
+		if (cond_exclues.contains(4)) {
+			// post: getPos_y() == getPos_y()@pre
+			if (!(getPos_y() == getPos_yPre)) {
+				throw new PostconditionError("La coordonnées Y a été modifiée.");
+			}
+		}
+		
+		if (cond_exclues.contains(5)) {
+			// post: getPos_z() == getPos_z()@pre
+			if (!(getPos_z() == getPos_zPre)) {
+				throw new PostconditionError("La coordonnées Z a été modifiée.");
+			}
+		}
+		
+		if (cond_exclues.contains(6)) {
+			// post: orientation_a_droite() == orientation_a_droite()@pre
+			if (!(orientation_a_droite() == orientation_a_droitePre)) {
+				throw new PostconditionError("L'orientation a été modifiée.");
+			}
+		}
+		
+		if (cond_exclues.contains(7)) {
+			// post: en_saut() == en_saut()@pre
+			if (!(en_saut() == en_sautPre)) {
+				throw new PostconditionError("L'état en_saut a été modifié.");
+			}
+		}
+		
+		if (cond_exclues.contains(8)) {
+			// post: l_objet_equipe() == l_objet_equipe()@pre
+			if (!(l_objet_equipe() == l_objet_equipePre)) {
+				throw new PostconditionError ("L'objet équipé a été modifié.");
+			}
+		}
+		
+		if (cond_exclues.contains(9)) {
+			// post: le_personnage_equipe() == le_personnage_equipe()@pre
+			if (!(le_personnage_equipe() == le_personnage_equipePre)) {
+				throw new PostconditionError("Le personnage équipé a été modifié.");
+			}
+		}
+		
+		if (cond_exclues.contains(10)) {
+			// post: estPorte() == estPorte()@pre
+			if (!(estPorte() == estPortePre)) {
+				throw new PostconditionError("L'état estPorte a été modifié.");
+			}
+		}
+		
+		if (cond_exclues.contains(11)) {
+			// post: estGele() == estGele()@pre
+			if (!(estGele() == estGelePre)) {
+				throw new PostconditionError("L'état estGelé a été modifié.");
+			}
+		}
+	}
+
+	
+	public void checkInvariant() {
+		
+		// inv: estVaincu() [min]== getPv() <= 0
+		if (getPv() <= 0 && !estVaincu()) {
+			throw new InvariantError("Personnage non vaincu avec aucun PV.");
+		}
+		
+		// inv: a_equipement() [min]== l_objet_equipe() != null 
+		// 									|| le_personnage_equipe() != null
+		if ((l_objet_equipe() != null || le_personnage_equipe() != null)
+				&& !a_equipement()) {
+			throw new InvariantError(
+					"Personnage non équipé mais possédant un équipement.");
+		}
+		
+		// inv: if estPorte() == true
+		//		then
+		// 			estGele() > 0
+		if (estPorte() && !(estGele() > 0)) {
+			throw new InvariantError("Personnage porté mais non gelé.");
+		}
+		
+		// inv: if en_saut() == true
+		//		then
+		//			estGele() > 0
+		if (en_saut() && !(estGele() > 0)) {
+			throw new InvariantError("Personnage en saut mais non gelé.");
+		}
+		
+		// inv: getPos_x() >= 0
+		if (!(getPos_x() >= 0)) {
+			throw new InvariantError("Coordonnée X négative.");
+		}
+		
+		// inv: getPos_y() >= 0
+		if (!(getPos_y() >= 0)) {
+			throw new InvariantError("Coordonnée Y négative.");
+		}
+		
+		// inv: getPos_z() >= 0
+		if (!(getPos_z() >= 0)) {
+			throw new InvariantError("Coordonnée Z négative.");
+		}
+		
+		// inv: getForce() >= 0
+		if (!(getForce() >= 0)) {
+			throw new InvariantError("Force négative.");
+		}
+	}
+	
+	
+	// ------------------------------------------------------------------------
+	// Constructors
+	// ------------------------------------------------------------------------
+	
+	/**
+	 * @see rivercityrandom.services.Personnage#init(java.lang.String, int, int, int, int, int, int, int, int)
+	 */
+	@Override
+	public void init(String nom, int largeur, int hauteur, int profondeur,
+			int force, int pvMax, int pos_x, int pos_y, int pos_z) {
+		
+		
+		// Préconditions
+		
+		// pre: nom != ""
+		if (nom == null || nom.trim().equals("")) {
+			throw new PreconditionError("Param nom vide");
+		}
+		
+		// pre: largeur > 0
+		if (!(largeur > 0)) {
+			throw new PreconditionError("Largeur nulle ou négative");
+		}
+		
+		// pre: hauteur > 0
+		if (!(hauteur > 0)) {
+			throw new PreconditionError("Hauteur nulle ou négative");
+		}
+		
+		// pre: profondeur > 0
+		if (!(profondeur > 0)) {
+			throw new PreconditionError("Profondeur nulle ou négative");
+		}
+		
+		// pre: pvMax > force
+		if (!(pvMax > force)) {
+			throw new PreconditionError("La force est supérieure à la vie");
+		}
+		
+		// Invariants
+		checkInvariant();
+		
+		// run
+		super.init(nom, largeur, hauteur, profondeur,
+				force, pvMax, pos_x, pos_y, pos_z);
+		
+		// Invariants
+		checkInvariant();
+		
+		// Postconditions
+		
+		// post: getNom() == nom
+		if (!(getNom() == nom)) {
+			throw new PostconditionError("Le nom n'est pas bien initialisé");
+		}
+		
+		// post: getLargeur() == largeur
+		if (!(getLargeur() == largeur)) {
+			throw new PostconditionError("La largeur n'est pas bien initialisée");
+		}
+		
+		// post: getHauteur() == hauteur
+		if (!(getHauteur() == hauteur)) {
+			throw new PostconditionError("La largeur n'est pas bien initialisée");
+		}
+		
+		// post: getProfondeur() == profondeur
+		if (!(getProfondeur() == profondeur)) {
+			throw new PostconditionError("La profondeur n'est pas bien initialisée");
+		}
+		
+		// post: getPvMax() == pvMax
+		if (!(getPvMax() == pvMax)) {
+			throw new PostconditionError("Les pvMax ne sont pas bien initialisés");
+		}
+		
+		// post: getForce() == force
+		if (!(getForce() == force)) {
+			throw new PostconditionError("La force n'est pas bien initialisée");
+		}
+		
+		// post: getPv() == pvMax
+		if (!(getPv() == pvMax)) {
+			throw new PostconditionError("Les pv ne sont pas bien initialisés");
+		}
+		
+		// post: getPos_x() == pos_x
+		if (!(getPos_x() == pos_x)) {
+			throw new PostconditionError("La coordonnée X n'est pas bien initialisée");
+		}
+		
+		// post: getPos_y() == pos_y
+		if (!(getPos_y() == pos_y)) {
+			throw new PostconditionError("La coordonnée Y n'est pas bien initialisée");
+		}
+		
+		// post: getPos_z() == pos_z
+		if (!(getPos_z() == pos_z)) {
+			throw new PostconditionError("La coordonnée Z n'est pas bien initialisée");
+		}
+		
+		// post: orientation_a_droite() == true
+		if (!(orientation_a_droite() == true)) {
+			throw new PostconditionError("L'orientation à droite n'est pas bien initialisée");
+		}
+		
+		// post: en_saut() == false
+		if (!(en_saut() == false)) {
+			throw new PostconditionError("Le saut n'est pas bien initialisé");
+		}
+		
+		// post: l_objet_equipe() == null
+		if (!(l_objet_equipe() == null)) {
+			throw new PostconditionError("L'objet équipé n'est pas bien initialisé");
+		}
+		
+		// post: le_personnage_equipe() == null
+		if (!(le_personnage_equipe() == null)) {
+			throw new PostconditionError("Le personnage équipé n'est pas bien initialisé");
+		}
+		
+		// post: estPorte() == false
+		if (!(estPorte() == false)) {
+			throw new PostconditionError("Le personnage est porté dès le début");
+		}
+		
+		// post: estGele() == 0
+		if (!(estGele() == 0)) {
+			throw new PostconditionError("Le personnage est gelé dès le début");
+		}
+	}
+	
+	
+	// ------------------------------------------------------------------------
+	// Operators
+	// ------------------------------------------------------------------------
+	
+	@Override
+	public void retrait_de_pv(int pv) {
+		
+		// Préconditions
+		
+		// pre: pv >= 0
+		if (!(pv >= 0)) {
+			throw new PreconditionError("Les pv sont négatifs.");
+		}
+		
+		// pre: estVaincu() == false
+		if (!(estVaincu() == false)) {
+			throw new PreconditionError("Le personnage est vaincu.");
+		}
+		
+		// Invariants
+		checkInvariant();
+		
+		// get @pre
+		captureImage();
+		
+		// run
+		super.retrait_de_pv(pv);
+		
+		// Invariants
+		checkInvariant();
+		
+		// Postconditions
+		
+		List<Integer> list_exclusion = new ArrayList<Integer>();
+		list_exclusion.add(2); // getPv
+		checkGenericPostcondition(list_exclusion);
+		
+		// post: getPv() == getPv()@pre - pv
+		if (!(getPv() == getPvPre - pv)) {
+			throw new PostconditionError(
+					"Les pv n'ont pas été réduits correctement.");
+		}
+	}
+	
+	@Override
+	public void depot_de_pv(int pv) {
+		
+		// Préconditions
+
+		// pre: pv >= 0
+		if (!(pv >= 0)) {
+			throw new PreconditionError("Les pv sont négatifs.");
+		}
+		
+		// pre: getPv() < getPvMax()
+		if (!(getPv() < getPvMax())) {
+			throw new PreconditionError("Les pv sont déjà au maximum.");
+		}
+		
+		// pre: estVaincu() == false
+		if (!(estVaincu() == false)) {
+			throw new PreconditionError("Le personnage est déjà vaincu.");
+		}
+		
+		// Invariants
+		checkInvariant();
+		
+		// get @pre
+		captureImage();
+		
+		// run
+		super.depot_de_pv(pv);
+		
+		// Invariants
+		checkInvariant();
+		
+		// Postconditions
+		
+		List<Integer> list_exclusion = new ArrayList<Integer>();
+		list_exclusion.add(2); // getPv
+		checkGenericPostcondition(list_exclusion);
+		
+		// post: if  getPv()@pre + pv  > getPvMax()
+		//       then
+		// 			getPv() == getPvMax()
+		// 		 else
+		// 		 	getPv() == getPv()@pre + pv
+		if (getPvPre + pv  > getPvMax() 
+				&& !(getPv() == getPvMax())) {
+			throw new PostconditionError("Les pv n'ont pas été remis au max.");
+		} else if (!(getPvPre + pv  > getPvMax()) 
+				&& !(getPv() == getPvPre + pv)) {
+			throw new PostconditionError(
+					"Les pv n'ont pas été correctement augmentés.");
+		}
+	}
+	
+	@Override
+	public void ramasserPersonnage(Personnage perso) {
+		
+		// Préconditions
+
+		// pre: a_equipement() == false
+		if (!(a_equipement() == false)) {
+			throw new PreconditionError("Le personnage est déjà équipé.");
+		}
+		
+		// pre: estGele() == 0
+		if (!(estGele() == 0)) {
+			throw new PreconditionError(
+					"Le personnage est gelé et ne peut pas bouger.");
+		}
+		
+		// pre: estVaincu() == false
+		if (!(estVaincu() == false)) {
+			throw new PreconditionError("Le personnage est déjà vaincu.");
+		}
+		
+		// Invariants
+		checkInvariant();
+		
+		// get @pre
+		captureImage();
+		
+		// run
+		super.ramasserPersonnage(perso);
+		
+		// Invariants
+		checkInvariant();
+		
+		// Postconditions
+		
+		List<Integer> list_exclusion = new ArrayList<Integer>();
+		list_exclusion.add(9); // le_personnage_equipe
+		checkGenericPostcondition(list_exclusion);
+		
+		// post: le_personnage_equipe() == perso
+		if (!(le_personnage_equipe() == perso)) {
+			throw new PostconditionError(
+					"Le personnage équipé n'a pas été correctement modifié.");
+		}
+	}
+	
+	@Override
+	public void ramasserObjet(Objet objet) {
+		
+		// Préconditions
+
+		// pre: a_equipement() == false
+		if (!(a_equipement() == false)) {
+			throw new PreconditionError("Le personnage est déjà équipé.");
+		}
+		
+		// pre: estGele() == 0
+		if (!(estGele() == 0)) {
+			throw new PreconditionError(
+					"Le ersonnage est gelé et ne peut pas bouger.");
+		}
+		
+		// pre: estVaincu() == false
+		if (!(estVaincu() == false)) {
+			throw new PreconditionError("Le personnage est déjà vaincu.");
+		}
+		
+		// Invariants
+		checkInvariant();
+		
+		// get @pre
+		captureImage();
+		
+		// run
+		super.ramasserObjet(objet);
+		
+		// Invariants
+		checkInvariant();
+		
+		// Postconditions
+		
+		List<Integer> list_exclusion = new ArrayList<Integer>();
+		list_exclusion.add(8); // l_objet_equipe
+		checkGenericPostcondition(list_exclusion);
+		
+		// post: l_objet_equipe() == objet
+		if (!(l_objet_equipe() == objet)) {
+			throw new PostconditionError(
+					"L'objet équipé n'a pas été correctement modifié.");
+		}
+	}
+	
+	@Override
+	public void jeter() {
+		
+		// Préconditions
+
+		// pre: a_equipement() == true
+		if (!(a_equipement() == true)) {
+			throw new PreconditionError("Le personnage n'est pas équipé.");
+		}
+		
+		// pre: estGele() == 0
+		if (!(estGele() == 0)) {
+			throw new PreconditionError(
+					"LePersonnage est gelé et ne peut pas bouger.");
+		}
+		
+		// pre: estVaincu() == false
+		if (!(estVaincu() == false)) {
+			throw new PreconditionError("Le personnage est déjà vaincu.");
+		}
+		
+		// Invariants
+		checkInvariant();
+		
+		// get @pre
+		captureImage();
+		
+		// run
+		super.jeter();
+		
+		// Invariants
+		checkInvariant();
+		
+		// Postconditions
+		
+		List<Integer> list_exclusion = new ArrayList<Integer>();
+		list_exclusion.add(8); // l_objet_equipe
+		list_exclusion.add(9); // le_personnage_equipe
+		checkGenericPostcondition(list_exclusion);
+		
+		// post: l_objet_equipe() == null
+		if (!(l_objet_equipe() == null)) {
+			throw new PostconditionError(
+					"Le personnage a toujours un objet équipé.");
+		}
+		
+		// post: le_personnage_equipe() == null
+		if (!(le_personnage_equipe() == null)) {
+			throw new PostconditionError(
+					"Le personnage a toujours un autre personnage équipé.");
+		}
+	}
+	
+	@Override
+	public void se_deplacer(int x, int y) {
+		
+		// Préconditions
+		
+		// pre: estGele() == 0
+		if (!(estGele() == 0)) {
+			throw new PreconditionError(
+					"Le personnage est gelé et ne peut pas bouger.");
+		}
+		
+		// pre: estVaincu() == false
+		if (!(estVaincu() == false)) {
+			throw new PreconditionError("Le personnage est déjà vaincu.");
+		}
+		
+		// Invariants
+		checkInvariant();
+		
+		// get @pre
+		captureImage();
+		
+		// run
+		super.se_deplacer(x, y);
+		
+		// Invariants
+		checkInvariant();
+		
+		// Postconditions
+		
+		List<Integer> list_exclusion = new ArrayList<Integer>();
+		list_exclusion.add(3); // getPos_x
+		list_exclusion.add(4); // getPos_y
+		list_exclusion.add(6); // orientation_a_droite
+		checkGenericPostcondition(list_exclusion);
+		
+		// post: getPos_x() == x
+		if (!(getPos_x() == x)) {
+			throw new PostconditionError(
+					"Le personnage n'a pas correctement bougé sur l'axe X.");
+		}
+		
+		// post: getPos_y() == y
+		if (!(getPos_y() == y)) {
+			throw new PostconditionError(
+					"Le personnage n'a pas correctement bougé sur l'axe Y.");
+		}
+		
+		// post: if getPos_x() > getPos_x()@pre
+		// 		 then
+		// 			orientation_a_droite() == true
+		// 		 else if getPos_x() < getPos_x()@pre
+		// 			orientation_a_droite() == false
+		//		 else
+		//			orientation_a_droite() == orientation_a_droite()@pre
+		if (getPos_x() > getPos_xPre 
+				&& !(orientation_a_droite() == true)) {
+			throw  new PostconditionError(
+					"Le personnage n'est pas orienté à droite.");
+		} else if (getPos_x() < getPos_xPre 
+				&& !(orientation_a_droite() == false)) {
+			throw  new PostconditionError(
+					"Le personnage est orienté à droite.");
+		} else if (getPos_x() == getPos_xPre 
+				&& orientation_a_droite() == orientation_a_droitePre) {
+			throw  new PostconditionError(
+					"Le personnage a changé son orientation.");
+		}
+	}
+	
+	@Override
+	public void sauter(int x, int y, int z) {
+
+		
+		// Préconditions
+		
+		// pre: estGele() == 0
+		if (!(estGele() == 0)) {
+			throw new PreconditionError(
+					"Le personnage est gelé et ne peut pas bouger.");
+		}
+		
+		// pre: estVaincu() == false
+		if (!(estVaincu() == false)) {
+			throw new PreconditionError("Le personnage est déjà vaincu.");
+		}
+		
+		// Invariants
+		checkInvariant();
+		
+		// get @pre
+		captureImage();
+		
+		// run
+		super.sauter(x, y, z);
+		
+		// Invariants
+		checkInvariant();
+		
+		// Postconditions
+		
+		List<Integer> list_exclusion = new ArrayList<Integer>();
+		list_exclusion.add(3); // getPos_x
+		list_exclusion.add(4); // getPos_y
+		list_exclusion.add(5); // getPos_z
+		list_exclusion.add(6); // orientation_a_droite
+		list_exclusion.add(7); // en_saut
+		checkGenericPostcondition(list_exclusion);
+		
+		// post: getPos_x() == x
+		if (!(getPos_x() == x)) {
+			throw new PostconditionError(
+					"Le personnage n'a pas correctement bougé sur l'axe X.");
+		}
+		
+		// post: getPos_y() == y
+		if (!(getPos_y() == y)) {
+			throw new PostconditionError(
+					"Le personnage n'a pas correctement bougé sur l'axe Y.");
+		}
+		
+		// post: getPos_z() == z
+		if (!(getPos_z() == z)) {
+			throw new PostconditionError(
+					"Le personnage n'a pas correctement bougé sur l'axe Z.");
+		}
+		
+		// post: if getPos_x() > getPos_x()@pre
+		// 		 then
+		// 			orientation_a_droite() == true
+		// 		 else if getPos_x() < getPos_x()@pre
+		// 			orientation_a_droite() == false
+		//		 else
+		//			orientation_a_droite() == orientation_a_droite()@pre
+		if (getPos_x() > getPos_xPre 
+				&& !(orientation_a_droite() == true)) {
+			throw  new PostconditionError(
+					"Le personnage n'est pas orienté à droite.");
+		} else if (getPos_x() < getPos_xPre 
+				&& !(orientation_a_droite() == false)) {
+			throw  new PostconditionError(
+					"Le personnage est orienté à droite.");
+		} else if (getPos_x() == getPos_xPre 
+				&& orientation_a_droite() == orientation_a_droitePre) {
+			throw  new PostconditionError(
+					"Le personnage a changé son orientation.");
+		}
+		
+		// post: en_saut() == true
+		if (!(en_saut() == true)) {
+			throw new PostconditionError("Le personnage n'est pas en saut.");
+		}
+	}
+
+	@Override
+	public void se_fait_porter() {
+		
+		// Préconditions
+		
+		// pre: estPorte() == false
+		if (!(estPorte() == false)) {
+			throw new PreconditionError("Le personnage est déjà porté.");
+		}
+		
+		// pre: estGele() > 0
+		if (!(estGele() > 0)) {
+			throw new PreconditionError(
+					"Le personnage n'est pas gelé.");
+		}
+		
+		// pre: estVaincu() == false
+		if (!(estVaincu() == false)) {
+			throw new PreconditionError("Le personnage est déjà vaincu.");
+		}
+		
+		// Invariants
+		checkInvariant();
+		
+		// get @pre
+		captureImage();
+		
+		// run
+		super.se_fait_porter();
+		
+		// Invariants
+		checkInvariant();
+		
+		// Postconditions
+		
+		List<Integer> list_exclusion = new ArrayList<Integer>();
+		list_exclusion.add(10); // estPorte
+		list_exclusion.add(11); // estGele
+		checkGenericPostcondition(list_exclusion);
+		
+		// post: estPorte() == true
+		if (!(estPorte() == true)) {
+			throw new PostconditionError(
+					"Le personnage n'est pas porté.");
+		}
+		
+		// post: estGele() == 1
+		if (!(estGele() == 1)) {
+			throw new PostconditionError(
+					"Le personnage n'est pas gelé.");
+		}
+	}
+
+	@Override
+	public void se_fait_jeter() {
+		
+		// Préconditions
+		
+		// pre: estPorte() == true
+		if (!(estPorte() == true)) {
+			throw new PreconditionError("Le personnage n'est pas porté.");
+		}
+		
+		// pre: estVaincu() == false
+		if (!(estVaincu() == false)) {
+			throw new PreconditionError("Le personnage est déjà vaincu.");
+		}
+		
+		// Invariants
+		checkInvariant();
+		
+		// get @pre
+		captureImage();
+		
+		// run
+		super.se_fait_jeter();
+		
+		// Invariants
+		checkInvariant();
+		
+		// Postconditions
+		
+		List<Integer> list_exclusion = new ArrayList<Integer>();
+		list_exclusion.add(10); // estPorte
+		list_exclusion.add(11); // estGele
+		checkGenericPostcondition(list_exclusion);
+		
+		// post: estPorte() == true
+		if (!(estPorte() == true)) {
+			throw new PostconditionError(
+					"Le personnage n'est pas porté.");
+		}
+		
+		// post: estGele() == 1
+		if (!(estGele() == 1)) {
+			throw new PostconditionError(
+					"Le personnage n'est pas gelé.");
+		}
+	}
+
+	@Override
+	public void degeler() {
+		
+		// Préconditions
+		
+		// pre: estVaincu() == false
+		if (!(estVaincu() == false)) {
+			throw new PreconditionError("Le personnage est déjà vaincu.");
+		}
+		
+		// Invariants
+		checkInvariant();
+		
+		// get @pre
+		captureImage();
+		
+		// run
+		super.degeler();
+		
+		// Invariants
+		checkInvariant();
+		
+		// Postconditions
+		
+		List<Integer> list_exclusion = new ArrayList<Integer>();
+		list_exclusion.add(11); // estGele
+		checkGenericPostcondition(list_exclusion);
+		
+		// post: if estPorte()@pre == false && estGele()@pre - 1 >= 0
+		// 		 then
+		// 			estGele() == estGele()@pre - 1
+		// 		 else
+		// 			estGele() == estGele()@pre
+		if (estPortePre == false && estGelePre - 1 >= 0 
+				&& !(estGele() == estGelePre - 1)) {
+			throw new PostconditionError(
+					"Le gel du personnage n'a pas été diminué de 1.");
+		} else if (!(estPortePre == false && estGelePre - 1 >= 0) 
+				&& !(estGele() == estGelePre)) {
+			throw new PostconditionError(
+					"Le gel du personnage a été modifié.");
+		}
+	}
+	
+	@Override
+	public void frapper(Personnage target) {
+		
+		// Preconditions
+		
+		// pre: target != null
+		if (!(target != null)) {
+			throw new PreconditionError(
+					"La cible devant être frappée est nulle.");
+		}
+		
+		// pre: estGele() == 0
+		if (!(estGele() == 0)) {
+			throw new PreconditionError(
+					"Le personnage est gelé et ne peut pas frapper.");
+		}
+		
+		// pre: estVaincu() == false
+		if (!(estVaincu() == false)) {
+			throw new PreconditionError(
+					"Le personnage est vaincu et ne peut pas frapper.");
+		}
+		
+		// Invariants
+		checkInvariant();
+		
+		// get @pre
+		captureImage();
+		
+		// run
+		super.frapper(target);
+		
+		// Invariants
+		checkInvariant();
+		
+		// Postconditions
+		
+		List<Integer> list_exclusion = new ArrayList<Integer>();
+		list_exclusion.add(11); // estGele
+		checkGenericPostcondition(list_exclusion);
+		
+		// post: estGele() == 1
+		if (!(estGele() == 1)) {
+			throw new PostconditionError(
+					"Le personnage n'a pas été gelé pour un tour "
+					+ "après avoir frappé.");
+		}
+	}
+	
+	@Override
+	public void estFrappe(int degats) {
+		
+		// Preconditions
+		
+		// pre: degats >= 0
+		if (!(degats >= 0)) {
+			throw new PreconditionError(
+					"Lest dégats en paramètre sont négatifs.");
+		}
+		
+		// pre: estVaincu() == false
+		if (!(estVaincu() == false)) {
+			throw new PreconditionError(
+					"Le personnage est vaincu et ne peut pas être frappé.");
+		}
+		
+		// Invariants
+		checkInvariant();
+		
+		// get @pre
+		captureImage();
+		
+		// run
+		super.estFrappe(degats);
+		
+		// Invariants
+		checkInvariant();
+		
+		// Postconditions
+		
+		List<Integer> list_exclusion = new ArrayList<Integer>();
+		list_exclusion.add(2); // getPv
+		list_exclusion.add(11); // estGele
+		checkGenericPostcondition(list_exclusion);
+		
+		// post: getPv() == getPv()@pre - degats
+		if (!(getPv() == getPvPre - degats)) {
+			throw new PostconditionError("");
+		}
+		
+		// post: estGele() == 3
+		if (!(estGele() == 3)) {
+			throw new PostconditionError(
+					"Le personnage n'a pas été gelé pour trois tours "
+					+ "après avoir été frappé.");
+		}
+	}
+}

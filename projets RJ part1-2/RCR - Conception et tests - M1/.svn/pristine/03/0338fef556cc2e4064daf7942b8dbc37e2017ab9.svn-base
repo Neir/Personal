@@ -1,0 +1,44 @@
+/**
+ * 
+ */
+package rivercityrandom.decorators;
+
+import rivercityrandom.enumerations.TYPE_GANGSTER;
+import rivercityrandom.services.Gangster;
+import rivercityrandom.services.Objet;
+
+/**
+ * @author Thibaut FLEURY & Jerome RAHAULT
+ *
+ */
+public class GangsterDecorator extends PersonnageDecorator implements Gangster {
+
+	public GangsterDecorator(Gangster delegate) {
+		super(delegate);
+	}
+
+	/**
+	 * @see rivercityrandom.services.Gangster#getType()
+	 */
+	@Override
+	public TYPE_GANGSTER getType() {
+		return ((Gangster)super.delegate).getType();
+	}
+
+	/**
+	 * @see rivercityrandom.services.Gangster#getDrop()
+	 */
+	@Override
+	public Objet getDrop() {
+		return ((Gangster)super.delegate).getDrop();
+	}
+
+	/**
+	 * @see rivercityrandom.services.Gangster#init(java.lang.String, rivercityrandom.enumerations.TYPE_GANGSTER, rivercityrandom.services.Objet, int)
+	 */
+	@Override
+	public void init(String nom, TYPE_GANGSTER type, Objet drop, int pos_z) {
+		((Gangster)super.delegate).init(nom, type, drop, pos_z);
+	}
+
+}

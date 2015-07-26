@@ -1,0 +1,12 @@
+/**
+ * 
+ */
+package rivercityrandom.services;
+
+/**
+ * @author Thibaut FLEURY & Jerome RAHAULT
+ *
+ */
+public interface Terrain {
+
+}

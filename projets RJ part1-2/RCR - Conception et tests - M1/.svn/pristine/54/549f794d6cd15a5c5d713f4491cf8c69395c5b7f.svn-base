@@ -1,0 +1,48 @@
+/**
+ * 
+ */
+package rivercityrandom.services;
+
+/**
+ * @author Thibaut FLEURY & Jerome RAHAULT
+ *
+ */
+public interface Terrain {
+
+	// ------------------------------------------------------------------------
+	// Observators
+	// ------------------------------------------------------------------------
+	public int 		getLargeur(); // const
+	public int 		getHauteur(); // const
+	public int 		getProfondeur(); // const
+	public Bloc 	getBloc(int x, int y, int z);
+	
+	/* Invariants */
+	
+	
+	// ------------------------------------------------------------------------
+	// Constructors
+	// ------------------------------------------------------------------------	
+	
+	// pre: largeur > 0
+	// pre: hauteur > 0
+	// pre: profondeur > 0
+	// post: getLargeur() == largeur
+	// post: getHauteur() == hauteur
+	// post: getProfondeur() == profondeur
+	// post: forall x:Integer \in [0..largeur - 1] {
+	//          forall y:Integer \in [0..profondeur - 1] {
+	//				\exists z:Integer \in [0..hauteur-1] {
+	//					getBloc(x, y, z) != null
+	//				}
+	//			}
+	//      }
+	public void 	init(int largeur, int hauteur, int profondeur);
+	
+	
+	
+	// ------------------------------------------------------------------------
+	// Operators
+	// ------------------------------------------------------------------------
+	
+}

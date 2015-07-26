@@ -1,0 +1,90 @@
+/**
+ * 
+ */
+package rivercityrandom.impl;
+
+import java.util.Random;
+
+import rivercityrandom.enumerations.TYPE_GANGSTER;
+import rivercityrandom.services.Gangster;
+import rivercityrandom.services.Objet;
+
+/**
+ * @author Thibaut FLEURY & Jerome RAHAULT
+ *
+ */
+public class GangsterImpl extends PersonnageImpl implements Gangster {
+	
+	private TYPE_GANGSTER	type;
+	private Objet			drop;
+	
+	/**
+	 * @see rivercityrandom.services.Gangster#getType()
+	 */
+	@Override
+	public TYPE_GANGSTER getType() {
+		return type;
+	}
+
+	/**
+	 * @see rivercityrandom.services.Gangster#getDrop()
+	 */
+	@Override
+	public Objet getDrop() {
+		return drop;
+	}
+
+	/**
+	 * @see rivercityrandom.services.Gangster#init(java.lang.String, rivercityrandom.enumerations.TYPE_GANGSTER, rivercityrandom.services.Objet, int)
+	 */
+	@Override
+	public void init(String nom, TYPE_GANGSTER type, Objet drop, int pos_z) {
+		// Paramètre des getter à choisir par défaut
+		Random r = new Random();
+		int largeur;
+		int hauteur;
+		int profondeur;
+		int force;
+		int pvMax;
+		int x = r.nextInt(10); // taille du terrain ?
+		int y = r.nextInt(10);
+		
+		// J'ai déclaré beaucoup de variables inutiles pour mieux voir quels arguments sont modifiés
+		switch(type){
+		case GENERIC_DUDES :
+			largeur = 30;
+			hauteur = 50;
+			profondeur = 10;
+			force = 5;
+			pvMax = 20;
+			super.init(nom, largeur, hauteur, profondeur, force, pvMax, x, y, pos_z);
+			break;
+		case HOME_BOYS :
+			largeur = 30;
+			hauteur = 50;
+			profondeur = 10;
+			force = 10;
+			pvMax = 30;
+			super.init(nom, largeur, hauteur, profondeur, force, pvMax, x, y, pos_z);
+			break;
+		case SQUIDS :
+			largeur = 30;
+			hauteur = 50;
+			profondeur = 10;
+			force = 15;
+			pvMax = 50;
+			super.init(nom, largeur, hauteur, profondeur, force, pvMax, x, y, pos_z);
+			break;
+		default :
+			largeur = 30;
+			hauteur = 50;
+			profondeur = 10;
+			force = 5;
+			pvMax = 20;
+			super.init(nom, largeur, hauteur, profondeur, force, pvMax, x, y, pos_z);
+		}
+
+		this.type = type;
+		this.drop = drop;
+	}
+}

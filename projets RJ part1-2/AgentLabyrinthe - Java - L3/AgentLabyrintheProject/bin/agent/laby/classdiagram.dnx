@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--xtools2_universal_type_manager-->
+<?com.ibm.xtools.emf.core.signature <signature id="com.ibm.xtools.mmi.ui.signatures.diagram" version="7.0.0"><feature description="" name="Rational Modeling Platform (com.ibm.xtools.rmp)" url="" version="7.0.0"/></signature>?>
+<umlnotation:UMLDiagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:uml="http://www.eclipse.org/uml2/3.0.0/UML" xmlns:umlnotation="http://www.ibm.com/xtools/1.5.3/Umlnotation" xmi:id="_WfBowEtBEeC6Ud3Q3B6Hdg" type="Class" name="classdiagram.dnx">
+  <eAnnotations xmi:id="_WfBowUtBEeC6Ud3Q3B6Hdg" source="com.ibm.xtools.common.ui.reduction.editingCapabilities">
+    <details xmi:id="_WfBowktBEeC6Ud3Q3B6Hdg" key="com.ibm.xtools.activities.javaVisualizerActivity" value="1"/>
+  </eAnnotations>
+  <children xmi:type="umlnotation:UMLShape" xmi:id="_WmLZoEtBEeC6Ud3Q3B6Hdg" fontHeight="8" showListVisibility="Text" showListSignature="true" transparency="0" lineColor="14263149" lineWidth="1" showStereotype="Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_WmLZoktBEeC6Ud3Q3B6Hdg" type="ImageCompartment">
+      <layoutConstraint xmi:type="notation:Size" xmi:id="_WmLZo0tBEeC6Ud3Q3B6Hdg" width="1320" height="1320"/>
+    </children>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_WmLZpEtBEeC6Ud3Q3B6Hdg" type="Stereotype"/>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_WmLZpUtBEeC6Ud3Q3B6Hdg" type="Name"/>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_WmLZpktBEeC6Ud3Q3B6Hdg" type="Parent"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_WmLZp0tBEeC6Ud3Q3B6Hdg" visible="false" type="ANNOTATION_COMPARTMENT"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_WmLZqEtBEeC6Ud3Q3B6Hdg" type="ANNOTATED_ATTRIBUTE_COMPARTMENT"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_WmLZqUtBEeC6Ud3Q3B6Hdg" type="ANNOTATED_OPERATION_COMPARTMENT"/>
+    <element xmi:type="uml:Class" href="mmi:///#jsrctype%5Ename=Labyrinthe%5Bjcu%5Ename=Labyrinthe.java%5Bjpack%5Ename=agent.laby%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=agent%5D%5D%5D%5D$uml.Class"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_WmLZoUtBEeC6Ud3Q3B6Hdg" x="264" y="4620"/>
+  </children>
+  <children xmi:type="umlnotation:UMLShape" xmi:id="_WmLZqktBEeC6Ud3Q3B6Hdg" fontHeight="8" showListVisibility="Text" showListSignature="true" transparency="0" lineColor="14263149" lineWidth="1" showStereotype="Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_WmLZrEtBEeC6Ud3Q3B6Hdg" type="ImageCompartment">
+      <layoutConstraint xmi:type="notation:Size" xmi:id="_WmLZrUtBEeC6Ud3Q3B6Hdg" width="1320" height="1320"/>
+    </children>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_WmUjkEtBEeC6Ud3Q3B6Hdg" type="Stereotype"/>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_WmUjkUtBEeC6Ud3Q3B6Hdg" type="Kind"/>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_WmUjkktBEeC6Ud3Q3B6Hdg" type="Name"/>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_WmUjk0tBEeC6Ud3Q3B6Hdg" type="Parent"/>
+    <children xmi:type="notation:SemanticListCompartment" xmi:id="_WmUjlEtBEeC6Ud3Q3B6Hdg" type="EnumerationCompartment"/>
+    <children xmi:type="notation:SemanticListCompartment" xmi:id="_WmUjlUtBEeC6Ud3Q3B6Hdg" visible="false" type="AttributeCompartment"/>
+    <children xmi:type="notation:SemanticListCompartment" xmi:id="_WmUjlktBEeC6Ud3Q3B6Hdg" visible="false" type="OperationCompartment"/>
+    <element xmi:type="uml:Enumeration" href="mmi:///#jsrctype%5Ename=ContenuCase%5Bjcu%5Ename=ContenuCase.java%5Bjpack%5Ename=agent.laby%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=agent%5D%5D%5D%5D$uml.Enumeration"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_WmLZq0tBEeC6Ud3Q3B6Hdg" x="8712" y="8184"/>
+  </children>
+  <children xmi:type="umlnotation:UMLShape" xmi:id="_WmUjl0tBEeC6Ud3Q3B6Hdg" fontHeight="8" showListVisibility="Text" showListSignature="true" transparency="0" lineColor="14263149" lineWidth="1" showStereotype="Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_WmUjmUtBEeC6Ud3Q3B6Hdg" type="ImageCompartment">
+      <layoutConstraint xmi:type="notation:Size" xmi:id="_WmUjmktBEeC6Ud3Q3B6Hdg" width="1320" height="1320"/>
+    </children>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_WmUjm0tBEeC6Ud3Q3B6Hdg" type="Stereotype"/>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_WmUjnEtBEeC6Ud3Q3B6Hdg" type="Name"/>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_WmUjnUtBEeC6Ud3Q3B6Hdg" type="Parent"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_WmUjnktBEeC6Ud3Q3B6Hdg" visible="false" type="ANNOTATION_COMPARTMENT"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_WmUjn0tBEeC6Ud3Q3B6Hdg" type="ANNOTATED_ATTRIBUTE_COMPARTMENT"/>
+    <children xmi:type="notation:ListCompartment" xmi:id="_WmUjoEtBEeC6Ud3Q3B6Hdg" type="ANNOTATED_OPERATION_COMPARTMENT"/>
+    <element xmi:type="uml:Class" href="mmi:///#jsrctype%5Ename=ChargeurLabyrinthe%5Bjcu%5Ename=ChargeurLabyrinthe.java%5Bjpack%5Ename=agent.laby%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=agent%5D%5D%5D%5D$uml.Class"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_WmUjmEtBEeC6Ud3Q3B6Hdg" x="264" y="792"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_ir2K8EtBEeC6Ud3Q3B6Hdg" type="Note" fontHeight="8" description="&lt;p>Permet de charger/sauver des Labyrinthes dans un fichier.&lt;/p>&lt;p>S'appuie sur la sérialisation.&lt;/p>" fillColor="13956346" transparency="0" lineColor="12632258" lineWidth="1">
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_ir2K9EtBEeC6Ud3Q3B6Hdg" type="DiagramName">
+      <element xsi:nil="true"/>
+    </children>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_ir2K9UtBEeC6Ud3Q3B6Hdg" type="Description">
+      <element xsi:nil="true"/>
+    </children>
+    <styles xmi:type="notation:TextStyle" xmi:id="_ir2K8UtBEeC6Ud3Q3B6Hdg"/>
+    <styles xmi:type="notation:LineTypeStyle" xmi:id="_ir2K8ktBEeC6Ud3Q3B6Hdg"/>
+    <element xsi:nil="true"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ir2K80tBEeC6Ud3Q3B6Hdg" x="8572" y="899" width="6985" height="2778"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_oXk-sEtBEeC6Ud3Q3B6Hdg" type="Note" fontHeight="8" description="&lt;p>Un labyrinthe est une grille de Xsize sur Ysize cellules.&lt;/p>&lt;p>Chaque cellule à un contenu. Les coordonnées sont données en repère graphique standard : y vertical croissant vers le bas, x horizontal croissant vers la droite, (0,0) est l'angle en haut à gauche.&lt;/p>" fillColor="13956346" transparency="0" lineColor="12632258" lineWidth="1">
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_oXk-tEtBEeC6Ud3Q3B6Hdg" type="DiagramName">
+      <element xsi:nil="true"/>
+    </children>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_oXk-tUtBEeC6Ud3Q3B6Hdg" type="Description">
+      <element xsi:nil="true"/>
+    </children>
+    <styles xmi:type="notation:TextStyle" xmi:id="_oXk-sUtBEeC6Ud3Q3B6Hdg"/>
+    <styles xmi:type="notation:LineTypeStyle" xmi:id="_oXk-sktBEeC6Ud3Q3B6Hdg"/>
+    <element xsi:nil="true"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_oXk-s0tBEeC6Ud3Q3B6Hdg" x="8043" y="4603" width="7778" height="3306"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_IIi18EtCEeC6Ud3Q3B6Hdg" type="Note" fontHeight="8" description="&lt;p>Le contenu &quot;ANY&quot; est utilisé dans les règles du package contrôleur.&lt;/p>" fillColor="13956346" transparency="0" lineColor="12632258" lineWidth="1">
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_IIi19EtCEeC6Ud3Q3B6Hdg" type="DiagramName">
+      <element xsi:nil="true"/>
+    </children>
+    <children xmi:type="notation:BasicDecorationNode" xmi:id="_IIi19UtCEeC6Ud3Q3B6Hdg" type="Description">
+      <element xsi:nil="true"/>
+    </children>
+    <styles xmi:type="notation:TextStyle" xmi:id="_IIi18UtCEeC6Ud3Q3B6Hdg"/>
+    <styles xmi:type="notation:LineTypeStyle" xmi:id="_IIi18ktCEeC6Ud3Q3B6Hdg"/>
+    <element xsi:nil="true"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_IIi180tCEeC6Ud3Q3B6Hdg" x="12382" y="8307" width="3571" height="1984"/>
+  </children>
+  <element xsi:nil="true"/>
+  <edges xmi:type="umlnotation:UMLConnector" xmi:id="_WoQdSEtBEeC6Ud3Q3B6Hdg" source="_WmUjl0tBEeC6Ud3Q3B6Hdg" target="_WmLZoEtBEeC6Ud3Q3B6Hdg" fontHeight="8" roundedBendpointsRadius="4" routing="Rectilinear" lineColor="8421504" lineWidth="1" showStereotype="Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_WoQdSktBEeC6Ud3Q3B6Hdg" type="KindLabel">
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_WoQdTEtBEeC6Ud3Q3B6Hdg" type="Stereotype"/>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_WoQdTktBEeC6Ud3Q3B6Hdg" type="Kind"/>
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_WoQdTUtBEeC6Ud3Q3B6Hdg" type="Name"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_WoQdS0tBEeC6Ud3Q3B6Hdg" x="-377" y="117"/>
+    </children>
+    <element xmi:type="uml:Usage" href="mmi:///#jdep%5Bjsrctype%5Ename=ChargeurLabyrinthe%5Bjcu%5Ename=ChargeurLabyrinthe.java%5Bjpack%5Ename=agent.laby%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=agent%5D%5D%5D%5D%5D%5Bjsrctype%5Ename=Labyrinthe%5Bjcu%5Ename=Labyrinthe.java%5Bjpack%5Ename=agent.laby%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=agent%5D%5D%5D%5D%5D$uml.Usage"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_WoQdSUtBEeC6Ud3Q3B6Hdg" points="[40, 102, 40, -2221]$[40, 2323, 40, 0]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_Wo26MEtBEeC6Ud3Q3B6Hdg" id="(0.5,0.9641148325358851)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_Wo26MUtBEeC6Ud3Q3B6Hdg" id="(0.5000716229766508,0.0)"/>
+  </edges>
+  <edges xmi:type="umlnotation:UMLConnector" xmi:id="_Z7HVIEtBEeC6Ud3Q3B6Hdg" source="_WmLZoEtBEeC6Ud3Q3B6Hdg" target="_WmLZqktBEeC6Ud3Q3B6Hdg" fontHeight="8" roundedBendpointsRadius="4" routing="Rectilinear" lineColor="8421504" lineWidth="1" showStereotype="Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_Z7HVIktBEeC6Ud3Q3B6Hdg" type="FromMultiplicityLabel">
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_Z7HVJEtBEeC6Ud3Q3B6Hdg" type="FromMultiplicity"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_Z7HVI0tBEeC6Ud3Q3B6Hdg" y="396"/>
+    </children>
+    <children xmi:type="notation:DecorationNode" xmi:id="_Z7HVJUtBEeC6Ud3Q3B6Hdg" type="FromRoleLabel">
+      <children xmi:type="notation:BasicDecorationNode" xmi:id="_Z7HVJ0tBEeC6Ud3Q3B6Hdg" type="FromRole"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_Z7HVJktBEeC6Ud3Q3B6Hdg" x="-381" y="-426"/>
+    </children>
+    <children xmi:type="notation:DecorationNode" xmi:id="_Z7HVKEtBEeC6Ud3Q3B6Hdg" visible="false" type="associationTypeLabel">
+      <children xmi:id="_Z7HVKktBEeC6Ud3Q3B6Hdg" type="associationTypeCompartment"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_Z7HVKUtBEeC6Ud3Q3B6Hdg" y="-186"/>
+    </children>
+    <element xmi:type="uml:Property" href="mmi:///#jfield%5Ename=carte%5Bjsrctype%5Ename=Labyrinthe%5Bjcu%5Ename=Labyrinthe.java%5Bjpack%5Ename=agent.laby%5Bjsrcroot%5Esrcfolder=src%5Bproject%5Eid=agent%5D%5D%5D%5D%5D$uml.Property"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_Z7HVIUtBEeC6Ud3Q3B6Hdg" points="[0, 0, 0, 0]$[0, 0, 0, 0]"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_NmH48EtCEeC6Ud3Q3B6Hdg" type="NoteAttachment" source="_IIi18EtCEeC6Ud3Q3B6Hdg" target="_WmLZqktBEeC6Ud3Q3B6Hdg" lineWidth="1">
+    <styles xmi:type="notation:ArrowStyle" xmi:id="_NmH48UtCEeC6Ud3Q3B6Hdg"/>
+    <styles xmi:type="notation:LineTypeStyle" xmi:id="_NmH48ktCEeC6Ud3Q3B6Hdg"/>
+    <element xsi:nil="true"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_NmH480tCEeC6Ud3Q3B6Hdg" points="[0, 0, 78, 9]$[-138, -6, -60, 3]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_NmH49EtCEeC6Ud3Q3B6Hdg" id="(0.0,0.7338709677419355)"/>
+  </edges>
+</umlnotation:UMLDiagram>

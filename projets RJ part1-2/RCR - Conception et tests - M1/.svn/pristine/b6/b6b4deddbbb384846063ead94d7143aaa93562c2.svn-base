@@ -1,0 +1,90 @@
+// ----------------------------------------------------------------------------
+// OBJECTIF DE TEST : Initialisation d'un gangster
+// ----------------------------------------------------------------------------
+
+Cas de test :
+	Gangster::initOK1
+Condition initiale : 
+	nom = "Toto", type = GENERIC_DUDES, drop = null, z = 0
+Operation : 
+	G = init(nom, type, drop, z)
+Oracle : 
+	getNom(G) = nom
+	getType(G) = type
+	getDrop(G) = drop
+	getPos_z(G) = z
+	getLargeur(G) = 30
+	getHauteur(G) = 50
+	getProfondeur(G) = 10
+	getForce(G) = 5
+	getPvMax(G) = 20
+	
+	
+Cas de test :
+	Gangster::initOK2
+Condition initiale : 
+	nom = "Toto", type = HOME_BOYS, drop = null, z = 0
+Operation : 
+	G = init(nom, type, drop, z)
+Oracle : 
+	getNom(G) = nom
+	getType(G) = type
+	getDrop(G) = drop
+	getPos_z(G) = z
+	getLargeur(G) = 30
+	getHauteur(G) = 50
+	getProfondeur(G) = 10
+	getForce(G) = 10
+	getPvMax(G) = 30
+	
+	
+Cas de test :
+	Gangster::initOK3
+Condition initiale : 
+	nom = "Toto", type = SQUIDS, drop = null, z = 0
+Operation : 
+	G = init(nom, type, drop, z)
+Oracle : 
+	getNom(G) = nom
+	getType(G) = type
+	getDrop(G) = drop
+	getPos_z(G) = z
+	getLargeur(G) = 30
+	getHauteur(G) = 50
+	getProfondeur(G) = 10
+	getForce(G) = 15
+	getPvMax(G) = 50
+	
+	
+Cas de test :
+	Gangster::initKO1
+Condition initiale : 
+	nom = "", type = GENERIC_DUDES, drop = null, z = 0
+Operation : 
+	G = init(nom, type, drop, z)
+Oracle : 
+	nom = ""
+	# exception levée
+	
+	
+Cas de test :
+	Gangster::initKO2
+Condition initiale : 
+	nom = "Toto", type = null, drop = null, z = 0
+Operation : 
+	G = init(nom, type, drop, z)
+Oracle : 
+	type = null
+	# exception levée
+	
+	
+Cas de test :
+	Gangster::initKO3
+Condition initiale : 
+	nom = "Toto", type = GENERIC_DUDES, drop = null, z = -1
+Operation : 
+	G = init(nom, type, drop, z)
+Oracle : 
+	z < 0
+	# exception levée (InvariantError)
+	

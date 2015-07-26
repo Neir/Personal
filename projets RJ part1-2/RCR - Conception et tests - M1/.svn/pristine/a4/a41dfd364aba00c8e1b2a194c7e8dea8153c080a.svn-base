@@ -1,0 +1,254 @@
+package vilain.Test;
+
+import junit.framework.Assert;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import error.InvariantError;
+import error.PostconditionError;
+import error.PreconditionError;
+
+import vilain.TypeVilain;
+import vilain.Vilain;
+import vilain.VilainContract;
+import vilain.VilainService;
+
+public class VilainTest {
+
+	protected VilainService vilain;
+
+	@Before
+	public void before(){
+		vilain = new VilainContract(new Vilain());
+	}
+
+	@Test
+	public void initPre1Test(){
+		try{
+			vilain.init(TypeVilain.BALLON_ORANGE, 6);
+			Assert.assertTrue(true);
+		}catch(PreconditionError e){
+			System.out.println(e);
+			Assert.assertTrue(false);
+		}catch(PostconditionError e){
+			System.out.println(e);
+			Assert.assertTrue(false);
+		}catch(InvariantError e){
+			System.out.println(e);
+			Assert.assertTrue(false);
+		}
+	}
+
+	@Test
+	public void initPre2Test(){
+		try{
+			vilain.init(TypeVilain.FANTOM_BLEU, 0);
+			Assert.assertTrue(true);
+		}catch(PreconditionError e){
+			System.out.println(e);
+			Assert.assertTrue(false);
+		}catch(PostconditionError e){
+			System.out.println(e);
+			Assert.assertTrue(false);
+		}catch(InvariantError e){
+			System.out.println(e);
+			Assert.assertTrue(false);
+		}
+	}
+
+	@Test
+	public void initPre3Test(){
+		try{
+			vilain.init(null, 0);
+			Assert.assertTrue(false);
+			System.out.println("Précondition non vérifier : Type ne peut pas être null");
+		}catch(PreconditionError e){
+			System.out.println(e);
+			Assert.assertTrue(true);
+		}catch(PostconditionError e){
+			System.out.println(e);
+			Assert.assertTrue(false);
+		}catch(InvariantError e){
+			System.out.println(e);
+			Assert.assertTrue(false);
+		}
+	}
+
+	@Test
+	public void initPre4Test(){
+		try{
+			vilain.init(TypeVilain.FANTOM_BLEU, -1);
+			Assert.assertTrue(false);
+			System.out.println("Précondition non vérifier : power ne peut pas être négative");
+		}catch(PreconditionError e){
+			System.out.println(e);
+			Assert.assertTrue(true);
+		}catch(PostconditionError e){
+			System.out.println(e);
+			Assert.assertTrue(false);
+		}catch(InvariantError e){
+			System.out.println(e);
+			Assert.assertTrue(false);
+		}
+	}
+
+	@Test
+	public void initPostTest(){
+		try{
+			vilain.init(TypeVilain.FANTOM_BLEU, 6);
+		}catch(Error e){
+			System.err.println(e);
+			Assert.assertTrue(false);	
+		}
+
+		Assert.assertTrue(vilain.getPower() == 0);
+		Assert.assertTrue(vilain.getType() == TypeVilain.FANTOM_BLEU);	
+
+		try{
+			vilain.init(TypeVilain.BALLON_ORANGE, 6);
+		}catch(Error e){
+			System.err.println(e);
+			Assert.assertTrue(false);	
+		}
+
+		Assert.assertTrue(vilain.getPower() == 6);
+		Assert.assertTrue(vilain.getType() == TypeVilain.BALLON_ORANGE);
+	}
+	
+	@Test
+	public void setPowerPre1Test(){
+		try{
+			vilain.init(TypeVilain.BALLON_ORANGE, 6);
+			vilain.setPower();
+			Assert.assertTrue(true);
+		}catch(PreconditionError e){
+			System.out.println(e);
+			Assert.assertTrue(false);
+		}catch(PostconditionError e){
+			System.out.println(e);
+			Assert.assertTrue(false);
+		}catch(InvariantError e){
+			System.out.println(e);
+			Assert.assertTrue(false);
+		}
+	}
+	
+	@Test
+	public void setPowerPre2Test(){
+		try{
+			vilain.init(TypeVilain.FANTOM_BLEU, 5);
+			vilain.setPower();
+			Assert.assertTrue(false);
+			System.out.println("Précondition non vérifier : power = 0");
+		}catch(PreconditionError e){
+			System.out.println(e);
+			Assert.assertTrue(true);
+		}catch(PostconditionError e){
+			System.out.println(e);
+			Assert.assertTrue(false);
+		}catch(InvariantError e){
+			System.out.println(e);
+			Assert.assertTrue(false);
+		}
+	}
+	
+	@Test
+	public void setPowerPostTest(){
+		try{
+			vilain.init(TypeVilain.BALLON_ORANGE, 5);
+			vilain.setPower();
+		}catch(PreconditionError e){
+			System.out.println(e);
+			Assert.assertTrue(false);
+		}
+
+		Assert.assertTrue(vilain.getPower() == 4);
+		Assert.assertTrue(vilain.getIndexX() == 0 && vilain.getIndexY() ==0);
+	}
+	
+	@Test
+	public void deplacerPre1Test(){
+		try{
+			vilain.init(TypeVilain.BALLON_ORANGE, 6);
+			vilain.deplacer();
+		}catch(Error e){
+			System.out.println(e);
+			Assert.assertTrue(false);
+		}
+	}
+	
+	@Test
+	public void deplacerPre2Test(){
+		try{
+			vilain.init(TypeVilain.FANTOM_BLEU, 6);
+			vilain.deplacer();
+		}catch(Error e){
+			System.out.println(e);
+			Assert.assertTrue(false);
+		}
+	}
+	
+	@Test
+	public void deplacerPre3Test(){
+		try{
+			vilain.init(TypeVilain.BALLON_ORANGE, 0);
+			vilain.deplacer();
+			Assert.assertTrue(false);
+			System.out.println("Impossible de se déplacer");
+		}catch(PreconditionError e){
+			System.out.println(e);
+			Assert.assertTrue(true);
+		}catch(PostconditionError e){
+			System.out.println(e);
+			Assert.assertTrue(false);
+		}catch(InvariantError e){
+			System.out.println(e);
+			Assert.assertTrue(false);
+		}
+	}
+
+	@Test
+	public void deplacerPostTest(){
+		try{
+			vilain.init(TypeVilain.FANTOM_BLEU, 6);
+			vilain.deplacer();
+		}catch(Error e){
+			System.out.println(e);
+			Assert.assertTrue(false);
+		}
+		Assert.assertTrue(vilain.getPower() == 0);
+		
+		try{
+			vilain.init(TypeVilain.BALLON_ORANGE, 7);
+			vilain.deplacer();
+		}catch(Error e){
+			System.out.println(e);
+			Assert.assertTrue(false);
+		}
+		Assert.assertTrue(vilain.getPower() == 6);
+		Assert.assertTrue(vilain.getIndexX() == 0 && vilain.getIndexY() ==0);
+	}
+	
+	@Test 
+	public void setIndexPost(){
+		try{
+			vilain.init(TypeVilain.FANTOM_BLEU, 6);
+			vilain.setIndexX(3);
+		}catch(Error e){
+			System.out.println(e);
+			Assert.assertTrue(false);
+		}
+		Assert.assertTrue(vilain.getPower()==0 && vilain.getIndexX() == 3 && vilain.getIndexY() == 0);
+		
+		try{
+			vilain.init(TypeVilain.FANTOM_BLEU, 6);
+			vilain.setIndexY(3);
+		}catch(Error e){
+			System.out.println(e);
+			Assert.assertTrue(false);
+		}
+		Assert.assertTrue(vilain.getPower()==0 && vilain.getIndexX() == 0 && vilain.getIndexY() == 3);
+	
+	}
+}

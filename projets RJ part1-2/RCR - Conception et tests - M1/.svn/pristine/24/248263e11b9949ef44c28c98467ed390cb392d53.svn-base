@@ -1,0 +1,292 @@
+package ihm;
+
+import java.awt.GridLayout;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+import vilain.TypeVilain;
+import vilain.VilainService;
+
+import bloc.Tresor;
+import bloc.Type;
+
+import Bombe.BombeService;
+import MoteurJeu.COMMANDE;
+import MoteurJeu.MoteurJeu;
+import MoteurJeu.RESULTAT;
+import MoteurJeu.SANTE;
+
+public class JeuPanel extends JPanel implements KeyListener{
+
+	private static final long serialVersionUID = 1L;
+	private Case[][] cases;
+	private MoteurJeu jeu;
+	private JLabel label;
+	public boolean verif=false;
+	private int xHero;
+	private int yHero;
+	private int xKid;
+	private int ykid;
+
+	public JeuPanel(MoteurJeu jeu, JLabel l){
+		this.jeu=jeu;
+		this.label=l;
+		setLayout(new GridLayout(jeu.getTerrain().getNombreLignes(),
+				jeu.getTerrain().getNombreColonnes()));
+		cases= new Case[jeu.getTerrain().getNombreLignes()]
+				[jeu.getTerrain().getNombreColonnes()];
+		for(int i=0; i<jeu.getTerrain().getNombreLignes();i++){
+			for(int j=0;j<jeu.getTerrain().getNombreColonnes();j++){
+				Case c=null;
+
+				if(jeu.getTerrain().getBloc(i, j).getType().equals(Type.VIDE)){
+					if(jeu.getTerrain().getBloc(i, j).getTresor().equals(Tresor.BOMBPASS))
+						c=new Case(TypeG.BOMBPASS);
+					else if(jeu.getTerrain().getBloc(i, j).getTresor().equals(Tresor.BOMBUP))
+						c=new Case(TypeG.BOMBUP);
+					else if(jeu.getTerrain().getBloc(i, j).getTresor().equals(Tresor.FIREUP))
+						c=new Case(TypeG.FIREUP);
+					else if(jeu.getTerrain().getBloc(i, j).getTresor().equals(Tresor.FIRESUIT))
+						c= new Case(TypeG.FIRESUIT);
+					else if(jeu.getTerrain().getBloc(i, j).getTresor().equals(Tresor.WALLPASS))
+						c=new Case(TypeG.WALLPASS);
+					else c=new Case(TypeG.VIDE);
+					add(c);
+					c.addKeyListener(this);
+				}
+				if(jeu.getTerrain().getBloc(i, j).getType().equals(Type.MURBRIQUE)){//brique
+					c=new Case(TypeG.MURBRIQUE);
+					add(c);
+					c.addKeyListener(this);
+				}
+				if(jeu.getTerrain().getBloc(i, j).getType().equals(Type.MURMETAL)){
+					c=new Case(TypeG.MURMETAL);
+					add(c);
+					c.addKeyListener(this);
+				}
+				cases[i][j] = c;
+			}
+		}
+		int i,j;
+		i = jeu.getHeros().getX();
+		j = jeu.getHeros().getY();
+		xHero=i;
+		yHero=j;
+		cases[i][j] = new Case(TypeG.Heros);
+		remove((i*jeu.getTerrain().getNombreColonnes())+j);
+		add(cases[i][j],(i*jeu.getTerrain().getNombreColonnes())+j);
+		cases[i][j].addKeyListener(this);
+
+		i = jeu.getKidnappeur().getX();
+		j = jeu.getKidnappeur().getY();
+		xKid=i;
+		ykid=j;
+		cases[i][j] = new Case(TypeG.Kidnappeur);
+		remove((i*jeu.getTerrain().getNombreColonnes())+j);
+		add(cases[i][j],(i*jeu.getTerrain().getNombreColonnes())+j);
+		cases[i][j].addKeyListener(this);
+
+		for(VilainService v : jeu.getVilains()){
+			i = v.getIndexX();
+			j = v.getIndexY();
+			Case c=null;
+			if(v.getType().equals(TypeVilain.FANTOM_BLEU)){
+				c =new Case(TypeG.FANTOM_BLEU);
+			}else{
+				c=new Case(TypeG.BALLON_ORANGE);
+
+			}
+			cases[i][j] = c;
+			remove((i*jeu.getTerrain().getNombreColonnes())+j);
+			add(c,(i*jeu.getTerrain().getNombreColonnes())+j);
+			c.addKeyListener(this);
+		}
+
+		for(Integer in : jeu.getBombeNumeros()){
+			i=jeu.getBombe(in).getX();
+			j = jeu.getBombe(in).getY();
+			Case c= new Case(TypeG.BOMBE);
+			cases[i][j]=c;
+			remove(i*jeu.getTerrain().getNombreColonnes()+j);
+			add(c,(i*jeu.getTerrain().getNombreColonnes()+j));
+			c.addKeyListener(this);
+
+		}
+
+	}
+
+
+
+	public void updateGui(){
+		//mise du panel
+		Case c=null;
+
+		//mise a jours des blocs pour faire aparaitre les tresor caché derniere les bloc brique explosés maintenant
+		for(int i=0; i<jeu.getTerrain().getNombreLignes();i++){
+			for(int j=0;j<jeu.getTerrain().getNombreColonnes();j++){
+				c=null;
+				if(jeu.getTerrain().getBloc(i, j).getType().equals(Type.VIDE)){
+					if(jeu.getTerrain().getBloc(i, j).getTresor().equals(Tresor.BOMBPASS))
+						c=new Case(TypeG.BOMBPASS);
+					else if(jeu.getTerrain().getBloc(i, j).getTresor().equals(Tresor.BOMBUP))
+						c=new Case(TypeG.BOMBUP);
+					else if(jeu.getTerrain().getBloc(i, j).getTresor().equals(Tresor.FIREUP)){
+						c=new Case(TypeG.FIREUP);
+					}else if(jeu.getTerrain().getBloc(i, j).getTresor().equals(Tresor.FIRESUIT)){
+						c=new Case(TypeG.FIRESUIT);
+					}else if(jeu.getTerrain().getBloc(i, j).getTresor().equals(Tresor.WALLPASS)){
+						c=new Case(TypeG.WALLPASS);
+					}
+					else c=new Case(TypeG.VIDE);
+
+					cases[i][j] = c;
+					remove((i*jeu.getTerrain().getNombreColonnes())+j);
+					add(cases[i][j],(i*jeu.getTerrain().getNombreColonnes())+j);
+					cases[i][j].addKeyListener(this);
+
+				}else if(jeu.getTerrain().getBloc(i, j).getType().equals(Type.MURBRIQUE)){
+					c = new Case(TypeG.MURBRIQUE);
+					cases[i][j] = c;
+					remove((i*jeu.getTerrain().getNombreColonnes())+j);
+					add(cases[i][j],(i*jeu.getTerrain().getNombreColonnes())+j);
+					cases[i][j].addKeyListener(this);
+				}
+
+			}
+		}
+
+		//remise a jour de la position du heros
+		if(jeu.getTerrain().getBloc(xHero, yHero).getType().equals(Type.VIDE)){
+			c=new Case(TypeG.VIDE);
+		}else if(jeu.getTerrain().getBloc(xHero, yHero).getType().equals(Type.MURBRIQUE)){
+			c=new Case(TypeG.MURBRIQUE);
+		}
+		cases[xHero][yHero]=c;
+		remove((xHero*jeu.getTerrain().getNombreColonnes())+yHero);
+		add(cases[xHero][yHero],(xHero*jeu.getTerrain().getNombreColonnes())+yHero);
+		cases[xHero][yHero].addKeyListener(this);
+
+
+		int i,j;
+		i = jeu.getHeros().getX();
+		j = jeu.getHeros().getY();
+		xHero=i;
+		yHero=j;
+		cases[i][j] = new Case(TypeG.Heros);
+		remove((i*jeu.getTerrain().getNombreColonnes())+j);
+		add(cases[i][j],(i*jeu.getTerrain().getNombreColonnes())+j);
+		cases[i][j].addKeyListener(this);
+
+
+		if(jeu.getTerrain().getBloc(xKid, ykid).getType().equals(Type.VIDE))
+			c=new Case(TypeG.VIDE);
+		cases[xKid][ykid]=c;
+		remove((xKid*jeu.getTerrain().getNombreColonnes())+ykid);
+		add(cases[xKid][ykid],(xKid*jeu.getTerrain().getNombreColonnes())+ykid);
+		cases[xKid][ykid].addKeyListener(this);
+
+
+		int ii = jeu.getKidnappeur().getX();	
+		int jj = jeu.getKidnappeur().getY();	
+		xKid=ii;
+		ykid=jj;
+
+		cases[ii][jj] = new Case(TypeG.Kidnappeur);
+		remove((ii*jeu.getTerrain().getNombreColonnes())+jj);
+		add(cases[ii][jj],(ii*jeu.getTerrain().getNombreColonnes())+jj);
+		cases[ii][jj].addKeyListener(this);
+
+		for(VilainService v : jeu.getVilains()){
+			i = v.getIndexX();
+			j = v.getIndexY();
+			c=null;
+			if(v.getType().equals(TypeVilain.FANTOM_BLEU)){
+				c =new Case(TypeG.FANTOM_BLEU);
+			}else{
+				c=new Case(TypeG.BALLON_ORANGE);
+
+			}
+			cases[i][j] = c;
+			remove((i*jeu.getTerrain().getNombreColonnes())+j);
+			add(c,(i*jeu.getTerrain().getNombreColonnes())+j);
+			c.addKeyListener(this);
+		}
+
+		for(Integer in : jeu.getBombeNumeros()){
+			if(jeu.getBombe(in)==null)continue;
+			i=jeu.getBombe(in).getX();
+			j = jeu.getBombe(in).getY();
+			c= new Case(TypeG.BOMBE);
+			cases[i][j]=c;
+			remove(i*jeu.getTerrain().getNombreColonnes()+j);
+			add(c,(i*jeu.getTerrain().getNombreColonnes()+j));
+			c.addKeyListener(this);
+
+		}
+
+		//mise a jour du score
+		System.out.println("pas jeu restant "+(jeu.getMaxPasJeu()-jeu.getPasJeuCourrant()));
+		label.setText("Pas restant "+(jeu.getMaxPasJeu()-jeu.getPasJeuCourrant()));
+		verifierFin();
+		repaint();
+
+	}
+
+	public void verifierFin(){
+		if(verif) return;
+		if(jeu.estFini()){
+			verif=true;
+			if(jeu.resultatFinal().equals(RESULTAT.HEROSGAGNE))
+				JOptionPane.showMessageDialog(this,"Le heros gagne !!!!");
+			if(jeu.resultatFinal().equals(RESULTAT.KIDNAPPEURGAGNE))
+				JOptionPane.showMessageDialog(this,"Kidnappeur gagne !!!!");
+			if(jeu.resultatFinal().equals(RESULTAT.PARTIENULLE))
+				JOptionPane.showMessageDialog(this,"NULL !!!!");
+			else  JOptionPane.showMessageDialog(this,"Perdu!!!!");
+		}
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if(verif) return;
+		if(jeu.getHeros().getSante().equals(SANTE.MORT)) 
+			return ;
+		if(e.getKeyCode()==KeyEvent.VK_UP)
+			jeu.pasJeu(COMMANDE.HAUT,true);
+		else if(e.getKeyCode()==KeyEvent.VK_DOWN)
+			jeu.pasJeu(COMMANDE.BAS,true);
+		else if(e.getKeyCode()==KeyEvent.VK_LEFT)
+			jeu.pasJeu(COMMANDE.GAUCHE,true);
+		else if(e.getKeyCode()==KeyEvent.VK_RIGHT)
+			jeu.pasJeu(COMMANDE.DROITE,true);
+		else if(e.getKeyCode()==KeyEvent.VK_ENTER)
+			jeu.pasJeu(COMMANDE.BOMBE,true);
+		//kidnappeur
+		else if(e.getKeyCode()==KeyEvent.VK_D)//2: bas
+			jeu.pasJeu(COMMANDE.BAS,false);
+		else if(e.getKeyCode()==KeyEvent.VK_U)//8:haut
+			jeu.pasJeu(COMMANDE.HAUT, false);
+		else if(e.getKeyCode()==KeyEvent.VK_L)
+			jeu.pasJeu(COMMANDE.GAUCHE, false);
+		else if(e.getKeyCode()==KeyEvent.VK_R)
+			jeu.pasJeu(COMMANDE.DROITE, false);
+		else if(e.getKeyCode()==KeyEvent.VK_B)
+			jeu.pasJeu(COMMANDE.BOMBE, false);
+		updateGui();
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+
+	}
+
+}

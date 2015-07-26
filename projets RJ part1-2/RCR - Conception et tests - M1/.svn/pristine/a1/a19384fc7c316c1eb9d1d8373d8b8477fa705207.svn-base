@@ -1,0 +1,54 @@
+/**
+ * 
+ */
+package rivercityrandom.tests;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import rivercityrandom.contracts.TerrainContract;
+import rivercityrandom.impl.TerrainImpl;
+
+/**
+ * @author Thibaut FLEURY & Jerome RAHAULT
+ *
+ */
+public class TerrainTest {
+
+	private TerrainContract terrain;
+	
+	public TerrainTest() {
+		terrain = null;
+	}
+
+	@Before
+	public void initialisation() {
+		terrain = new TerrainContract(new TerrainImpl());
+	}
+	
+	@After
+	public void afterTests() {
+		terrain = null;
+	}
+	
+	@Test
+	public void preInitOk() {
+		terrain.init(500, 500, 500);
+	}
+	
+	@Test
+	public void preInitFail1() {
+		terrain.init(0, 500, 500);
+	}
+	
+	@Test
+	public void preInitFail2() {
+		terrain.init(500, 0, 500);
+	}
+	
+	@Test
+	public void preInitFail3() {
+		terrain.init(500, 500, 0);
+	}
+}

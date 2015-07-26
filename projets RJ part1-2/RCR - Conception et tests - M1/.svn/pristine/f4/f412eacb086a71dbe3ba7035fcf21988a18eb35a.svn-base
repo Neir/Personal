@@ -1,0 +1,44 @@
+Service : Gangster
+Refine : Personnage
+Use : Objet
+Types : enum TYPE_GANGSTER{ GENERIC_DUDES, HOME_BOYS, SQUIDS } 
+
+Observators :
+	const type : [Gangster] → TYPE_GANGSTER
+	const drop : [Gangster] → Objet
+	
+Constructors :
+	init : String × TYPE_GANGSTER × int × int →  [Gangster]
+		pre init(nom,type,drop,z) require nom ≠ "" 
+			& type= (GENERIC_DUDES ∪ HOME_BOYS ∪ SQUIDS)
+			
+Operators :
+
+Observations :
+[init]
+	Personnage.nom(init(n,t,d,z))=n
+	Personnage.pos_x(init(n,t,d,z))= rand
+	Personnage.pos_y(init(n,t,d,z))= rand
+	Personnage.pos_z(init(n,t,d,z))= z
+	type(init(n,t,d,z))=t
+	drop(init(n,t,d,z))=d
+
+	si t = GENERIC_DUDES
+		Personnage.largeur(init(n,t,d,z))=30
+		Personnage.hauteur(init(n,t,d,z))=50
+		Personnage.profondeur(init(n,t,d,z))=10
+		Personnage.force(init(n,t,d,z))=5
+		Personnage.pvMax(init(n,t,d,z))=Personnage.pointsDeVie(init(n,t,d,z))=20
+	si t = HOME_BOYS
+		Personnage.largeur(init(n,t,d,z))=30
+		Personnage.hauteur(init(n,t,d,z))=50
+		Personnage.profondeur(init(n,t,d,z))=10
+		Personnage.force(init(n,t,d,z))=10
+		Personnage.pvMax(init(n,t,d,z))=Personnage.pointsDeVie(init(n,t,d,z))=30
+	si t = SQUIDS
+		Personnage.largeur(init(n,t,d,z))=30
+		Personnage.hauteur(init(n,t,d,z))=50
+		Personnage.profondeur(init(n,t,d,z))=10
+		Personnage.force(init(n,t,d,z))=15
+		Personnage.pvMax(init(n,t,d,z))=Personnage.pointsDeVie(init(n,t,d,z))=50
+

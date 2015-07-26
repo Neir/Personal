@@ -1,0 +1,411 @@
+package Acteur.Test;
+
+import org.junit.Assert;
+import org.junit.Before;
+
+import Acteur.ActeurContrat;
+import Acteur.ActeurImpl;
+import Acteur.ActeurService;
+import MoteurJeu.SANTE;
+import error.InvariantError;
+import error.PostconditionError;
+import error.PreconditionError;
+
+public class Test {
+	 ActeurService acteur;
+
+	@Before
+	public void initilisation(){
+		acteur = new ActeurContrat(new ActeurImpl());
+	}
+
+	@org.junit.Test
+	public void InitPre1Test(){
+		//Dans ce Test nous allons tester que les parmètre soit négative
+		try{
+			acteur.init(-1, 0);
+			Assert.assertTrue("Précondition non catchée :Init(x,y) => x >= 0"+ "False", false);
+		}catch(PreconditionError e){
+			System.out.println("Precondition : " + e + " bien catchée ");
+			Assert.assertTrue(true);
+		}catch(PostconditionError e){
+			Assert.assertTrue("Postcondition :" + e + "catchée"+ "False", false);
+		}catch(InvariantError e){
+			Assert.assertTrue("Invariant : " + e + "catchée"+ "False", false);
+		}
+	}
+
+	@org.junit.Test
+	public void InitPre2Test(){
+		//Dans ce Test nous allons tester que les parmètre soit négative
+		try{
+			acteur.init(1, -1);
+			Assert.assertTrue("Précondition non catchée : Init(x,y) => y >= 0", false);
+		}catch(PreconditionError e){
+			System.out.println("Precondition : " + e + " bien catchée");
+			Assert.assertTrue(true);
+		}catch(PostconditionError e){
+			Assert.assertTrue("Postcondition :" + e + "catchée"+ "False", false);
+		}catch(InvariantError e){
+			Assert.assertTrue("Invariant : " + e + "catchée"+ "False", false);
+		}
+	}
+
+	@org.junit.Test
+	public void InitPre3Test(){
+		//Dans ce Test nous allons tester que les parmètre soit négative
+		try{
+			acteur.init(1, 1);
+		}catch(PreconditionError e){
+			Assert.assertTrue("Precondition : " + e + " catchée"+ "False", false);
+		}catch(PostconditionError e){
+			Assert.assertTrue("Postcondition :" + e + "catchée"+ "False", false);
+		}catch(InvariantError e){
+			Assert.assertTrue("Invariant : " + e + "catchée"+ "False", false);
+		}
+	}
+
+	@org.junit.Test
+	public void setPosPre1Test(){
+		//Dans ce Test nous allons tester que les parmètre soit négative
+		try {
+			acteur.init(1, 1);
+		}catch(Error e ){
+			Assert.assertFalse(e.toString() + "False", false);
+		}
+		try{
+			acteur.setPos(3,4);
+		}catch(PreconditionError e){
+			Assert.assertTrue("Precondition : " + e + " catchée"+ "False", false);
+		}catch(PostconditionError e){
+			Assert.assertTrue("Postcondition :" + e + "catchée"+ "False", false);
+		}catch(InvariantError e){
+			Assert.assertTrue("Invariant : " + e + "catchée"+ "False", false);
+		}
+	}
+
+	@org.junit.Test
+	public void setPosPre2Test(){
+		//Dans ce Test nous allons tester que les parmètre soit négative
+		try {
+			acteur.init(1, 1);
+		}catch(Error e ){
+			Assert.assertFalse(e.toString() + "False", false);
+		}
+		try{
+			acteur.setPos(-1,4);
+			Assert.assertTrue("Pre condition non catchée : setPos(A,x,y) => x >=0"+ "False", false);
+		}catch(PreconditionError e){
+			System.out.println("Precondition : " + e + " bien catchée");
+			Assert.assertTrue(true);
+		}catch(PostconditionError e){
+			Assert.assertTrue("Postcondition :" + e + "catchée"+ "False", false);
+		}catch(InvariantError e){
+			Assert.assertTrue("Invariant : " + e + "catchée"+ "False", false);
+		}
+	}
+
+	@org.junit.Test
+	public void setSantePre1Test(){
+		//Dans ce Test nous allons tester que les parmètre soit négative
+		try {
+			acteur.init(1, 1);
+		}catch(Error e ){
+			Assert.assertFalse(e.toString() + "False", false);
+		}
+		try{
+			acteur.setSante(SANTE.MORT);
+		}catch(PreconditionError e){
+			System.out.println();
+			Assert.assertTrue("Precondition : " + e + " catchée"+ "False", false);
+		}catch(PostconditionError e){
+			Assert.assertTrue("Postcondition :" + e + "catchée"+ "False", false);
+		}catch(InvariantError e){
+			Assert.assertTrue("Invariant : " + e + "catchée"+ "False", false);
+		}
+	}
+
+	@org.junit.Test
+	public void setSantePre2Test(){
+		//Dans ce Test nous allons tester que les parmètre soit négative
+		try {
+			acteur.init(1, 1);
+		}catch(Error e ){
+			Assert.assertFalse(e.toString()+ "False", false);
+		}
+		try{
+			acteur.setSante(null);
+			Assert.assertTrue("Pre condition non catchée : setSante(s) => s != null"+ "False", false);
+		}catch(PreconditionError e){
+			System.out.println("Precondition : " + e + " bien catchée");
+			Assert.assertTrue(true);
+		}catch(PostconditionError e){
+			Assert.assertTrue("Postcondition :" + e + "catchée"+ "False", false);
+		}catch(InvariantError e){
+			Assert.assertTrue("Invariant : " + e + "catchée"+ "False", false);
+		}
+	}
+
+	@org.junit.Test
+	public void setForcePre1Test(){
+		//Dans ce Test nous allons tester que les parmètre soit négative
+		try {
+			acteur.init(1, 1);
+		}catch(Error e ){
+			Assert.assertFalse(e.toString() + "False", false);
+		}
+		try{
+			acteur.setForceVitale(2);
+			Assert.assertTrue("Pre condition non catchée : setForceVitale(x) => x in [3,11]", false);
+		}catch(PreconditionError e){
+			System.out.println("Precondition : " + e + " bien catchée");
+			Assert.assertTrue(true);
+		}catch(PostconditionError e){
+			Assert.assertTrue("Postcondition :" + e + "catchée"+ "False", false);
+		}catch(InvariantError e){
+			Assert.assertTrue("Invariant : " + e + "catchée"+ "False", false);
+		}
+	}
+
+	@org.junit.Test
+	public void setForcePre2Test(){
+		//Dans ce Test nous allons tester que les parmètre soit négative
+		try {
+			acteur.init(1, 1);
+		}catch(Error e ){
+			Assert.assertFalse(e.toString() + "False", false);
+		}
+		try{
+			acteur.setForceVitale(13);
+			Assert.assertTrue("Pre condition non catchée : setForceVitale(x) => x in [3,11] False", false);
+		}catch(PreconditionError e){
+			System.out.println("Precondition : " + e + " bien catchée");
+			Assert.assertTrue(true);
+		}catch(PostconditionError e){
+			Assert.assertTrue("Postcondition :" + e + "catchée"+ "False", false);
+		}catch(InvariantError e){
+			System.out.println();
+			Assert.assertTrue("Invariant : " + e + "catchée"+ "False", false);
+		}
+	}
+
+	@org.junit.Test
+	public void setForcePre3Test(){
+		//Dans ce Test nous allons tester que les parmètre soit négative
+		try {
+			acteur.init(1, 1);
+		}catch(Error e ){
+			Assert.assertFalse(e.toString() + "False", false);
+		}
+		try{
+			acteur.setForceVitale(6);
+		}catch(PreconditionError e){
+			Assert.assertTrue("Precondition : " + e + " catchée"+ "False", false);
+		}catch(PostconditionError e){
+			System.out.println();
+			Assert.assertTrue("Postcondition :" + e + "catchée"+ "False", false);
+		}catch(InvariantError e){
+			Assert.assertTrue("Invariant : " + e + "catchée"+ "False"+ "False", false);
+		}
+	}
+
+	@org.junit.Test
+	public void setNbBombePre1Test(){
+		try {
+			acteur.init(1, 0);
+		}catch(Error e ){
+			Assert.assertFalse(e.toString()+ "False", false);
+		}
+		try{
+			acteur.setNbBombe(3);
+		}catch(PreconditionError e){
+			Assert.assertTrue(e.toString()+ "False", false);
+		}catch(PostconditionError e){
+			Assert.assertTrue(e.toString()+ "False", false);
+		}catch(InvariantError e){
+			Assert.assertTrue(e.toString()+ "False", false);
+		}
+	}
+
+	@org.junit.Test
+	public void setNbBombePre2Test(){
+		try{
+			acteur.init(1, 0);
+		}catch(Error e ){
+			Assert.assertFalse(e.toString()+ "False", false);
+		}
+		try{
+			acteur.setNbBombe(0);
+			Assert.assertTrue("Précondition non catchée : setNbBombe(x) => x >=1", false);
+		}catch(PreconditionError e){
+			System.out.println("Precondition : " + e + " bien catchée");
+			Assert.assertTrue(true);
+		}catch(PostconditionError e){
+			Assert.assertTrue(e.toString()+ "False", false);
+		}catch(InvariantError e){
+			Assert.assertTrue(e.toString()+ "False", false);
+		}
+	}
+
+	/** Les postCondition */
+
+	@org.junit.Test
+	public void InitPostTest(){
+		//Dans ce Test nous allons tester que les parmètre soit négative
+		try{
+			acteur.init(1, 1);
+		}catch(Error e ){
+			Assert.assertFalse(e.toString()+ "False", false);
+		}
+		Assert.assertTrue("Post init : la position de l'acteur doit être [1,1]",acteur.getX() == 1 && acteur.getY() == 1);
+		Assert.assertTrue("post init : la force vitale doit être 3",acteur.getForceVitale() == 3);
+		Assert.assertTrue("Post init : l'acteur doit être vivant",acteur.getSante() == SANTE.VIVANT);
+		Assert.assertTrue("Post init : l'acteur ne doit poser qu'une bombe à la fois",acteur.getNbBombe() ==1);
+		Assert.assertTrue("Post init : l'acteur ne peu pas traverser les murs",!acteur.getWallPass());
+		Assert.assertTrue("Post init : l'acteur ne peut pas traverser les bombes",!acteur.getBombePass());
+		Assert.assertTrue("Post init : Le nommbre de FireSuit n'est pas initialiser à 0",acteur.getFireSuit() == 0);
+	}
+
+	@org.junit.Test
+	public void setPosPostTest(){
+		//Dans ce Test nous allons tester que les parmètre soit négative
+		try{
+			acteur.init(1, 1);
+			acteur.setPos(3, 4);
+		}catch(Error e ){
+			Assert.assertFalse(e.toString()+ "False", false);
+		}
+		Assert.assertTrue(acteur.getX() == 3);
+		Assert.assertTrue(acteur.getY() == 4);
+		Assert.assertTrue(acteur.getForceVitale() == 3);
+		Assert.assertTrue(acteur.getSante() == SANTE.VIVANT);
+		Assert.assertTrue("Post init : l'acteur ne doit poser qu'une bombe à la fois",acteur.getNbBombe() ==1);
+		Assert.assertTrue("Post init : l'acteur ne peu pas traverser les murs",!acteur.getWallPass());
+		Assert.assertTrue("Post init : l'acteur ne peut pas traverser les bombes",!acteur.getBombePass());
+		Assert.assertTrue("Post init : Le nommbre de FireSuit n'est pas initialiser à 0",acteur.getFireSuit() == 0);
+	}
+
+	@org.junit.Test
+	public void setSantePostTest(){
+		//Dans ce Test nous allons tester que les parmètre soit négative
+		try{
+			acteur.init(1, 1);
+			acteur.setSante(SANTE.MORT);
+		}catch(Error e ){
+			Assert.assertFalse(e.toString()+ "False", false);
+		}
+		Assert.assertTrue(acteur.getX() == 1);
+		Assert.assertTrue(acteur.getY() == 1);
+		Assert.assertTrue(acteur.getForceVitale() == 3);
+		Assert.assertTrue(acteur.getSante() == SANTE.MORT);
+		Assert.assertTrue("Post init : l'acteur ne doit poser qu'une bombe à la fois",acteur.getNbBombe() ==1);
+		Assert.assertTrue("Post init : l'acteur ne peu pas traverser les murs",!acteur.getWallPass());
+		Assert.assertTrue("Post init : l'acteur ne peut pas traverser les bombes",!acteur.getBombePass());
+		Assert.assertTrue("Post init : Le nommbre de FireSuit n'est pas initialiser à 0",acteur.getFireSuit() == 0);
+	}
+
+	@org.junit.Test
+	public void setForcePostTest(){
+		//Dans ce Test nous allons tester que les parmètre soit négative
+		try{
+			acteur.init(1, 1);
+			acteur.setForceVitale(5);
+		}catch(Error e ){
+			Assert.assertFalse(e.toString()+ "False", false);
+		}
+		Assert.assertTrue(acteur.getX() == 1);
+		Assert.assertTrue(acteur.getY() == 1);
+		Assert.assertTrue(acteur.getForceVitale() == 5);
+		Assert.assertTrue(acteur.getSante() == SANTE.VIVANT);
+		Assert.assertTrue("Post init : l'acteur ne doit poser qu'une bombe à la fois",acteur.getNbBombe() ==1);
+		Assert.assertTrue("Post init : l'acteur ne peu pas traverser les murs",!acteur.getWallPass());
+		Assert.assertTrue("Post init : l'acteur ne peut pas traverser les bombes",!acteur.getBombePass());
+		Assert.assertTrue("Post init : Le nommbre de FireSuit n'est pas initialiser à 0",acteur.getFireSuit() == 0);
+	}
+
+	@org.junit.Test
+	public void setFireSuitPostTest(){
+		//Dans ce Test nous allons tester que les parmètre soit négative
+		try{
+			acteur.init(1, 1);
+			acteur.setFireSuit(2);
+		}catch(Error e ){
+			Assert.assertFalse(e.toString()+ "False", false);
+		}
+		Assert.assertTrue(acteur.getX() == 1);
+		Assert.assertTrue(acteur.getY() == 1);
+		Assert.assertTrue(acteur.getForceVitale() == 3);
+		Assert.assertTrue(acteur.getSante() == SANTE.VIVANT);
+		Assert.assertTrue("Post init : l'acteur ne doit poser qu'une bombe à la fois",acteur.getNbBombe() ==1);
+		Assert.assertTrue("Post init : l'acteur ne peu pas traverser les murs",!acteur.getWallPass());
+		Assert.assertTrue("Post init : l'acteur ne peut pas traverser les bombes",!acteur.getBombePass());
+		Assert.assertTrue("Post init : Le nommbre de FireSuit n'est pas initialiser à 0",acteur.getFireSuit() == 2);
+
+		// autre test avec une valeur négative de setFireSuit
+		try{
+			acteur.init(1, 1);
+			acteur.setFireSuit(-1);
+		}catch(Error e ){
+			Assert.assertFalse(e.toString()+ "False", false);
+		}
+		Assert.assertTrue("Post init : Le nommbre de FireSuit n'est pas initialiser à 0",acteur.getFireSuit() == 0);
+
+	}
+
+	@org.junit.Test
+	public void setBombePassPostTest(){
+		//Dans ce Test nous allons tester que les parmètre soit négative
+		try{
+			acteur.init(1, 1);
+			acteur.setBombePass();
+		}catch(Error e ){
+			Assert.assertFalse(e.toString()+ "False", false);
+		}
+		Assert.assertTrue(acteur.getX() == 1);
+		Assert.assertTrue(acteur.getY() == 1);
+		Assert.assertTrue(acteur.getForceVitale() == 3);
+		Assert.assertTrue(acteur.getSante() == SANTE.VIVANT);
+		Assert.assertTrue("Post init : l'acteur ne doit poser qu'une bombe à la fois",acteur.getNbBombe() ==1);
+		Assert.assertTrue("Post init : l'acteur ne peu pas traverser les murs",!acteur.getWallPass());
+		Assert.assertTrue("Post init : l'acteur ne peut pas traverser les bombes",acteur.getBombePass());
+		Assert.assertTrue("Post init : Le nommbre de FireSuit n'est pas initialiser à 0",acteur.getFireSuit() == 0);
+	}
+
+	@org.junit.Test
+	public void setWallPassPostTest(){
+		//Dans ce Test nous allons tester que les parmètre soit négative
+		try{
+			acteur.init(1, 1);
+			acteur.setWallPass();
+		}catch(Error e ){
+			Assert.assertFalse(e.toString()+ "False", false);
+		}
+		Assert.assertTrue(acteur.getX() == 1);
+		Assert.assertTrue(acteur.getY() == 1);
+		Assert.assertTrue(acteur.getForceVitale() == 3);
+		Assert.assertTrue(acteur.getSante() == SANTE.VIVANT);
+		Assert.assertTrue("Post init : l'acteur ne doit poser qu'une bombe à la fois",acteur.getNbBombe() ==1);
+		Assert.assertTrue("Post init : l'acteur ne peu pas traverser les murs",acteur.getWallPass());
+		Assert.assertTrue("Post init : l'acteur ne peut pas traverser les bombes",!acteur.getBombePass());
+		Assert.assertTrue("Post init : Le nommbre de FireSuit n'est pas initialiser à 0",acteur.getFireSuit() == 0);
+	}
+
+	@org.junit.Test
+	public void setNbBombePostTest(){
+		//Dans ce Test nous allons tester que les parmètre soit négative
+		try{
+			acteur.init(1, 1);
+			acteur.setNbBombe(3);
+		}catch(Error e ){
+			Assert.assertFalse(e.toString()+ "False", false);
+		}
+		Assert.assertTrue(acteur.getX() == 1);
+		Assert.assertTrue(acteur.getY() == 1);
+		Assert.assertTrue(acteur.getForceVitale() == 3);
+		Assert.assertTrue(acteur.getSante() == SANTE.VIVANT);
+		Assert.assertTrue("Post init : l'acteur ne doit poser qu'une bombe à la fois",acteur.getNbBombe() ==3);
+		Assert.assertTrue("Post init : l'acteur ne peu pas traverser les murs",!acteur.getWallPass());
+		Assert.assertTrue("Post init : l'acteur ne peut pas traverser les bombes",!acteur.getBombePass());
+		Assert.assertTrue("Post init : Le nommbre de FireSuit n'est pas initialiser à 0",acteur.getFireSuit() == 0);
+	}
+}

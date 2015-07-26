@@ -1,0 +1,12 @@
+package Bombe.Test;
+
+import org.junit.Before;
+
+import Bombe.BombeImpl;
+
+public class BombeNotTest  extends BombeTest{
+	@Before
+	public void before(){
+		bombe= new BombeImpl();
+	}
+}

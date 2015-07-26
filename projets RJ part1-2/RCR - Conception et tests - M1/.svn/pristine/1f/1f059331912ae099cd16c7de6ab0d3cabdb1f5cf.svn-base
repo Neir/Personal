@@ -1,0 +1,182 @@
+/**
+ * 
+ */
+package rivercityrandom.contracts;
+
+import rivercityrandom.decorators.GangsterDecorator;
+import rivercityrandom.enumerations.TYPE_GANGSTER;
+import rivercityrandom.errors.PostconditionError;
+import rivercityrandom.errors.PreconditionError;
+import rivercityrandom.services.Gangster;
+import rivercityrandom.services.Objet;
+
+/**
+ * @author Thibaut FLEURY & Jerome RAHAULT
+ *
+ */
+public class GangsterContract extends GangsterDecorator {
+
+	/**
+	 * @param delegate
+	 */
+	public GangsterContract(Gangster delegate) {
+		super(delegate);
+	}
+
+	public void checkInvariant() {
+		// pas d'invariant
+	}
+	
+	@Override
+	public void init(String nom, TYPE_GANGSTER type, Objet drop, int pos_z) {
+		
+		// Préconditions
+		
+		// pre: nom != ""
+		if (!(nom.trim() != "")) {
+			throw new PreconditionError("Le gangster n'a pas de nom.");
+		}
+		
+		// pre: type != null
+		if (!(type != null)) { 
+			throw new PreconditionError(
+					"Le type de gangster n'est pas renseigné.");
+		}
+		
+		// Invariants
+		checkInvariant();
+		
+		// run
+		super.init(nom, type, drop, pos_z);
+		
+		// Invariants
+		checkInvariant();
+		
+		// Postconditions
+		
+		// post: getNom() == nom
+		if (!(getNom() == nom)) {
+			throw new PostconditionError(
+					"Le nom n'a pas été correctement initialisé.");
+		}
+		
+		// post: getPos_z() == pos_z
+		if (!(getPos_z() == pos_z)) {
+			throw new PostconditionError(
+					"La coordonnée Z n'a pas été correctement initilisée.");
+		}
+		
+		// post: getType() == type
+		if (!(getType() == type)) {
+			throw new PostconditionError(
+					"Le type n'a pas été correctement initialisé.");
+		}
+		
+		// post: getDrop() == drop
+		if (!(getDrop() == drop)) {
+			throw new PostconditionError(
+					"Le drop n'a pas été correctement initialisé.");
+		}
+		
+		// post: if type == TYPE_GANGSTER.GENERIC_DUDES
+		// 		 then
+		// 			getLargeur() == 30
+		// 			getHauteur() == 50
+		// 			getProfondeur() == 10
+		// 			getForce() == 5
+		// 			getPvMax() == 20
+		// 		 else if type == TYPE_GANGSTER.HOME_BOYS
+		// 		 then
+		// 			getLargeur() == 30
+		// 			getHauteur() == 50
+		// 			getProfondeur() == 10
+		// 			getForce() == 10
+		// 			getPvMax() == 30
+		// 		 else if type == TYPE_GANGSTER.SQUIDS
+		// 		 then
+		// 			getLargeur() == 30
+		// 			getHauteur() == 50
+		// 			getProfondeur() == 10
+		// 			getForce() == 15
+		// 			getPvMax() == 50
+		if (type == TYPE_GANGSTER.GENERIC_DUDES) {
+			if (!(getLargeur() == 30)) {
+				throw new PostconditionError(
+						"La largeur n'a pas été correctement initiliasée.");
+			}
+			
+			if (!(getHauteur() == 50)) {
+				throw new PostconditionError(
+						"La hauteur n'a pas été correctement initiliasée.");
+			}
+			
+			if (!(getProfondeur() == 10)) {
+				throw new PostconditionError(
+						"La profondeur n'a pas été correctement initiliasée.");
+			}
+			
+			if (!(getForce() == 5)) {
+				throw new PostconditionError(
+						"La force n'a pas été correctement initiliasée.");
+			}
+			
+			if (!(getPvMax() == 20)) {
+				throw new PostconditionError(
+						"Les pv n'ont pas été correctement initiliasés.");
+			}
+			
+		} else if (type == TYPE_GANGSTER.HOME_BOYS) {
+			if (!(getLargeur() == 30)) {
+				throw new PostconditionError(
+						"La largeur n'a pas été correctement initiliasée.");
+			}
+			
+			if (!(getHauteur() == 50)) {
+				throw new PostconditionError(
+						"La hauteur n'a pas été correctement initiliasée.");
+			}
+			
+			if (!(getProfondeur() == 10)) {
+				throw new PostconditionError(
+						"La profondeur n'a pas été correctement initiliasée.");
+			}
+			
+			if (!(getForce() == 10)) {
+				throw new PostconditionError(
+						"La force n'a pas été correctement initiliasée.");
+			}
+			
+			if (!(getPvMax() == 30)) {
+				throw new PostconditionError(
+						"Les pv n'ont pas été correctement initiliasés.");
+			}
+			
+		} else if (type == TYPE_GANGSTER.SQUIDS) {
+			if (!(getLargeur() == 30)) {
+				throw new PostconditionError(
+						"La largeur n'a pas été correctement initiliasée.");
+			}
+			
+			if (!(getHauteur() == 50)) {
+				throw new PostconditionError(
+						"La hauteur n'a pas été correctement initiliasée.");
+			}
+			
+			if (!(getProfondeur() == 10)) {
+				throw new PostconditionError(
+						"La profondeur n'a pas été correctement initiliasée.");
+			}
+			
+			if (!(getForce() == 15)) {
+				throw new PostconditionError(
+						"La force n'a pas été correctement initiliasée.");
+			}
+			
+			if (!(getPvMax() == 50)) {
+				throw new PostconditionError(
+						"Les pv n'ont pas été correctement initiliasés.");
+			}
+			
+		}
+	}
+}

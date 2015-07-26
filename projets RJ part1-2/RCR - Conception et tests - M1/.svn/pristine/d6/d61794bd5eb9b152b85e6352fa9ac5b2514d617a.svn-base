@@ -1,0 +1,6 @@
+package MoteurJeu;
+
+public enum SANTE {
+
+	VIVANT,MORT;
+}

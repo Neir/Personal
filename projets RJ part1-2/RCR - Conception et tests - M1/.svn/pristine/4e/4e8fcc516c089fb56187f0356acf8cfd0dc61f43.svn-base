@@ -1,0 +1,12 @@
+package bloc.Test;
+
+import org.junit.Before;
+
+import bloc.BlocImpl;
+
+public class TestImplNotContract extends Test{
+	@Before
+	public void initilisation(){
+		bloc = new BlocImpl();
+	}
+}

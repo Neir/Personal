@@ -1,0 +1,63 @@
+package vilain;
+
+public class Vilain implements VilainService {
+	
+	private TypeVilain type;
+	private int power;
+	private int indexX;
+	private int indexY;
+	
+	public Vilain(){};
+
+	@Override
+	public void init(TypeVilain t, int power) {
+		type=t;
+		this.indexX=0;
+		this.indexY=0;
+		if(t.equals(TypeVilain.FANTOM_BLEU))
+			this.power=0;
+		else
+			this.power=power;
+	}
+
+	@Override
+	public TypeVilain getType() {
+		return this.type;
+	}
+
+	@Override
+	public int getPower() {
+		return this.power;
+	}
+	
+	public void setPower(){
+		this.power--;
+	}
+
+	@Override
+	public void deplacer() {
+		if (getType()==TypeVilain.BALLON_ORANGE) 
+			setPower();
+	}
+
+	@Override
+	public int getIndexX() {
+		return this.indexX;
+	}
+
+	@Override
+	public int getIndexY() {
+		return this.indexY;
+	}
+
+	@Override
+	public void setIndexX(int x) {
+		this.indexX=x;
+	}
+
+	@Override
+	public void setIndexY(int y) {
+		this.indexY=y;
+	}
+
+}

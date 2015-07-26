@@ -1,0 +1,42 @@
+package terrain;
+
+import bloc.BlocService;
+
+public class TerrainDecorator implements TerrainService {
+
+	private TerrainService delegate;
+
+	public TerrainDecorator(TerrainService terrain){
+		this.delegate = terrain;
+	}
+
+	@Override
+	public int getNombreColonnes() {
+		return this.delegate.getNombreColonnes();
+	}
+
+	@Override
+	public int getNombreLignes() {
+		return this.delegate.getNombreLignes();
+	}
+
+	@Override
+	public BlocService getBloc(int x, int y) {
+		return this.delegate.getBloc(x, y);
+	}
+
+	@Override
+	public void init(int SizeCol, int SizeLig) {
+		this.delegate.init(SizeCol, SizeLig);
+	}
+
+	@Override
+	public void setBloc(BlocService bloc, int x, int y) {
+		this.delegate.setBloc(bloc, x, y);
+	}
+
+	@Override
+	public String toString(){
+		return delegate.toString();
+	}
+}

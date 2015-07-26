@@ -1,0 +1,145 @@
+package MoteurJeu;
+
+import java.util.ArrayList;
+
+import terrain.TerrainService;
+import vilain.VilainService;
+
+import Acteur.ActeurService;
+import Bombe.BombeService;
+
+public interface MoteurJeu {
+
+	//observateur
+	public int getMaxPasJeu();
+	public int getPasJeuCourrant();
+	/** Ajout Terrain ***/
+	public TerrainService getTerrain();
+	/** Ajout de Bombe **/
+	public ArrayList<Integer> getBombeNumeros();
+	public int getNbBombes();
+	public boolean bombeExist(int numero);
+	//\pre: getBombe(M,numero) require bombeExist(M,numero)
+	public BombeService getBombe(int numero);
+	/**** Acteur  ******/
+	public ActeurService getHeros();
+	public ActeurService getKidnappeur();
+	/**** Partie  ******/
+	//\pre : resultatFinal(M) require estFini(M)
+	public RESULTAT resultatFinal();
+	public boolean estFini();
+
+	//\pre: misEnjoue(M,x,y,num) require bombeExiste(M,num) 
+	public boolean misEnJoue(int x,int y,int num);
+
+	//\pre:vilainExist(M,x,y) require 0=<x<getNombreLignes(getTerrain(M)) and 0=<y<getNombreColonnes(getTrerrain(M))
+	public boolean vilainExist(int x,int y);/**existance d'un vilain a la position (x,y)*/
+	public ArrayList<VilainService> getVilains();
+
+
+	/** Init Pour le Terrain
+	 */
+	//\pre: init(pas,x,y) require pas>=0 and x >=0 and y>=0
+	//\post:getCourantPas(init(p,x,y)) = 0
+	//\post:getMaxPasJeu(init(p,x,y)) = p
+	/**************initialement pas de bombes*************************/
+	//\post:Set:: size (getBombeNumeros(init(p,x,y)))  = 0
+	//\post:getNbBombes(init(p,x,y)) = 0
+	/************* terraint inititialiser ****************************/
+	//\post:getTerrain(init(p,x,y)) != null
+	/**************  Acteur *******************************************/
+	//\post:Acteur ::getX(getHeros(init(p,x,y))) = 1 
+	//\post:Acteur ::getY(getHeros(init(p,x,y))) = 1
+	//\post:Acteur::getX(getKidnappeur(init(p,x,y))) = x-2
+	//\post:Acteur::getY(getKidnappeur(init(p,x,y))) = y-2
+	//\post: #getVilains(init(p,x,y))=2
+	public void init(int maxPas, int NBColonne, int NBLigne);	
+
+	//\pre : poserBombe(M,n,x,y,a) require 0<=x < Terrain ::getNombreLignes(getTerrain(M)) and
+	//							        0<=y < Terrain ::getNombreColonnes(getTerrain(M	
+	//\Pre : poserBombe(M,n,x,y,a) require 
+	//				Bloc ::getType(Terrain ::getBloc(getTerrain(M),x,y)) = Type::VIDE
+	//\post: getCourantPas(poserBombe(M,n,x,y,a)) = getCourantPas(poserBombe(M,n,x,y,a))@pre
+	//\post: bombeExist(poserBombe(M,n,x,y,a),n) = true
+	//\post: getBombe(poserBombe(M,n,x,y,a),n) != null 
+	//\post: Bombe ::getNumero(getBombe(poserBombe(M,n,x,y,a),n)) =n
+	//\post: getHeros(poserBombe(M,n,x,y,a))=getHeros(M)
+	//\post: getKidnappeur(poserBombe(M,n,x,y,a))=getKidnappeur(M)
+	//\post: getVilains(poserBombe(M,n,x,y,a))=getVilains(M)
+	public void poserBombe(int num, int x, int y, int a);
+
+	
+	
+	//\pre: pasJeu(M,C) require estFini(M)=False
+	//\pre: pasJeur(M,C) require C in {RIEN,GAUCHE,DROITE,HEUT,BAS}
+	//\post: getPasJeuCourrant(pasJeu(M,c,isHeros))=getPasJeuCourrant(M) +1 
+	//\post: Terrain::getNombreColonnes(getTerrain(pasJeu(M,c,b)))=Terrain::getNombreColonnes(getTerrain(M))
+	//\post: Terrain::getNombreLignes(getTerrain(pasJeu(M,c,b)))=Terrain::getNombreLignes(getTerrain(M))
+	
+	//\post: if isHeros=True => getHerosX(pasJeu(M,COMMANDE.HAUT,isHero)) = max(1, getHerosX(M)−1) 
+	//							and getKidnappeurX(pasJeu(M,c,isHeros))=getKidnappeurX(M);
+	//				else	getKidnappeurX(pasJeu(M,COMMANDE.HAUT,isHero))=  max(1, getKidnappeurX(M)−1)
+	//							and getHerosrX(pasJeu(M,c,isHeros))=getHerosX(M);
+	
+	//\post: if isHeros=True => getHerosY(pasJeu(M,COMMANDE.DROITE,isHeros)) = min(Terrain::getNombreColonnes(getTerrain(M)), getHerosX(M)+1)
+	//							and getKidnappeurY(pasJeu(M,c,isHeros))=getKidnappeurY(M);
+	//				else 		getKidnappeurY(pasJeu(M,COMMANDE.DROITE,isHeros)) = min(Terrain::getNombreColonnes(getTerrain(M)), getKidnappeurY(M)+1)
+	//							and getHerosY(pasJeu(M,c,isHeros))=getHerosY(M);
+	
+	//\post:  (C = COMMANDE.GAUCHE or C = COMMANDE.DROITE) => getHerosX(pasJeu(M,C,isHeros)) = getHerosX(M)
+	//															and getKidnappeurX(pasJeu(M,c,isHeros))=getKidnappeurX(M);
+	
+	//\post: if isHeros=True => getHerosY(pasJeu(M,COMMANDE.GAUCHE,isHeros)) = max(1, getHerosY(M)−1)
+	//							and getKidnappeurY(pasJeu(M,c,isHeros))=getKidnappeurY(M);
+	//				else	getKidnappeurY(pasJeu(M,COMMANDE.KIDNAPPEUR,isHeros)) = max(1, getKidnappeurY(M)−1)
+	//							and getHerosrY(pasJeu(M,c,isHeros))=getHerosY(M);
+	
+	//\post: if isHeors=True => getHerosX(pasJeu(M,COMMANDE.BAS,isHeros)) = min(Terrain::getNombreLignes(getTerrain(M)), getHerosX(M)+1)
+	//							and getKidnappeurX(pasJeu(M,c,isHeros))=getKidnappeurX(M);
+	//				else	getKidnappeurX(pasJeu(M,COMMANDE.BAS,isHeros)) = min(Terrain::getNombreLignes(getTerrain(M)), getKidnappeurX(M)+1)
+	//						end getHerosrX(pasJeu(M,c,isHeros))=getHerosX(M);
+	
+	//\post: (C = COMMANDE.HAUT or C = COMMANDE.BAS) => getHerosY(pasJeu(M,C,isHeros)) = getHerosY(M)
+	//												and getKidnappeurY(pasJeu(M,c,isHeros))=getKidnappeurY(M);
+	
+	//\post: Il existe un unique num : not in getBombesNumeros(M) and
+	//			getBombe(pasJeu(M,COMMANDE.BOMBE,isHeros),num) = Bombe::init(num,getHerosX(M),getHerosY(M),getHerosForceVitale(M))
+	
+	//\post: tranquilles \def {num in getBombesNumeros(M) and not Bombe::vaExploser(getBombe(M,num))} alors
+	//			tranquilles \inclu= getBombeNumeros(pasJeu(M,C,isHeros))		and
+	//			getNbBombes(pasJeu(M,COMMAND.BOMBE)) = #tranquilles +1 	and
+	//			cPrime != COMMAND.BOMBE => getNbBombes(pasJeu(M,cPrime)) = #tranquilles	and
+	//			num in tranquilles => 
+	//				Bombe::getCompteARebours(getBombe(pasJeu(M,c),num)) = Bombe::getCompteARebours(getBombe(M,num))−1
+	//			num in (getBombeNumeros(M) \ tranquilles) and misEnJoue(M,getHerosX(M),getHerosY(M),num) 
+	//				<=> 
+	//				getHerosSante(pasJeu(M,c))=SANTE.MORT
+	
+	//\post for all bombe in {Bombe::getNumero(bombe)in getBombeNumeros(M) and Bombe::vaExploser(bombe)}	=>
+	//				Bombe::getNumero(bombe) not in getBombeNumero(pasJeu(M,c,isHero))
+	//\post: #getVilains(pasJeu(M,C,b)) <= #getVilains(M)
+	public void pasJeu(COMMANDE commande, boolean isHeros);
+
+	
+	
+	/**
+	 * Invariant 
+	 * */
+
+	//\Inv: 0<getX(getHeros(M))<getNbLignes(getTerrain(M)) && 0<getY(getHeros(M))<getNbColonnes(getTerrain(M))
+	//\Inv: 0<getX(getKidnappeur(M))<getNbLignes(getTerrain(M)) && 0<getY(getKidnappeur(M))<getNbColonnes(getTerrain(M))
+	//\Inv: for all v in getVilains(M) :
+	//				0<getIndexX(v)<getNbLignes(getTerrain(M)) && 0<getIndexY(v)<getNbColonnes(getTerrain(M))
+	//\Inv: 0<=getPasJeuCourrant(m)<=getMaxPasJeu();
+	//\Inv: bombeExist(M,numero) \def numero in getBombeNumeros(M)
+	//\Inv: getNbBombes(M) def #getBombeNumeros(M)
+	//\Inv: estFini(M) \def (getHerosSante(M)=SANTE::MORT ou getPasJeuCourrant(M)=getMaxPasJeu(M))
+	//\Inv: (resultatFinal(M)=RESULTAT::KIDNAPPEURGAGNE) min= (getHerosSante(M)=SANTE::MORT)
+	//\Inv: (resultatFinal(M)=RESULTAT::PARTIELNULL) min= (getHerosSante(M)=SANTE::VIVANT and getKidnapeurSante(M)=SANTE::VIVANT)
+	//\Inv: (resultatFinal(M)=RESULTAT::HEROSGANE) min= (getKidnapeurSante(M)=SANTE::MORT)
+	//\Inv:  misEnjoue(M,x,y,num) \def (xB=Bombe::getX(getBombe(M,num))) ^ (yB=Bombe::getY(getBombe(M,num)))
+	//									^ (aB=Bombe::getAmplitude(getBombe(M,num)))
+	//							^((x=xB ^ |y-yB|<=aB) ou (|x-xB|<=aB ^ y=yB)) 
+	//\Inv: vilainExist(M,x,y) \def il existe v in getVilains(M) : getIndexX(v)=x and getIndexY(v)=y
+
+}

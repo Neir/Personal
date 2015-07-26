@@ -1,0 +1,88 @@
+package Bombe;
+
+
+import error.InvariantError;
+import error.PostconditionError;
+import error.PreconditionError;
+
+public class BombeContrat extends BombeDecorateur {
+
+	public BombeContrat(BombeService d) {
+		super(d);
+	}
+
+	public void checkInvariant(){
+		//\inv: 0<=getCompteARebours(B)<=10;
+		if(getCompteARebours()<0 || getCompteARebours()>10)
+			throw new InvariantError("compteARebours must be >=0 and <=10");
+
+		//\inv: vaExploser(B)=\def (getCompteARebours(B)==0)
+		if(vaExploser() != (getCompteARebours()==0))
+			throw new InvariantError("vaExploser and getCompteARebours are different");
+
+	}
+
+	//\pre: init(num,x,y,amp) require  3<= amp <=11
+	public void init(int num, int x, int y, int amp){
+		//pre
+		if(amp<3 || amp>11)
+			throw new PreconditionError("amplitude must be between 3 and 11");
+
+		checkInvariant();
+
+		super.init(num, x, y, amp);
+
+		checkInvariant();
+
+		//\post:getNumero(init(num,x,y,amplitude)) = num 
+		if(getNumero()!=num)
+			throw new PostconditionError("incoherence de numero");
+		//\post: getX(init(num,x,y,amplitude)) = x 
+		if(getX()!=x)
+			throw new PostconditionError("incoherence de X");
+		//\post: getY(init(num,x,y,amplitude)) = y 
+		if(getY()!=y)
+			throw new PostconditionError("incoherence de y");
+		//\post:getAmplitude(init(num,x,y,amplitude)) = amplitude
+		if(getAmptitude()!=amp)
+			throw new PostconditionError("incoherence de amplitude");
+		//\post:getCompteARebours(init(num,x,y,amplitude)) = 10
+		if(getCompteARebours()!=10)
+			throw new PostconditionError("compteARebours must be 10");
+	}
+
+	//\pre vaExploser(B) = false
+	public void diminueChrono(){
+		if(vaExploser())
+			throw new PreconditionError("On ne peut pas diminuer le chrono car la bombe va exploser ! ");
+		//recupère toute les paramètres
+		int x, y, a, n, cpt; 
+		x = getX();
+		y = getY();
+		a = getAmptitude();
+		n = getNumero();
+		cpt = getCompteARebours();
+		
+		checkInvariant();
+		
+		super.diminueChrono();
+		
+		checkInvariant();
+		//\post: getCompteARebours(diminueChrono()) == getCompteARebours(diminueChrono())@pre -1;
+		if(getCompteARebours() != cpt-1)
+			throw new PostconditionError("Le Chrono n'a pas été diminuer de -1 ");
+		//\post: getNumero(diminueChrono (B))@pre  = getNumero(diminueChrono (B))
+		if(getNumero() != n)
+
+			throw new PostconditionError("Le numéro de la Bombe a été modifier");
+		//\post: getX(diminueChrono (B))@pre = getX(diminueChrono (B))
+		//\post: getY(diminueChrono (B))@pre = getY(diminueChrono (B))
+		if(getX() != x ||  getY() != y)
+			throw new PostconditionError("La position de la Bombe à été modifier");
+		//\post: getAmplitude(diminueChrono (B ))@pre = getAmplitude(diminueChrono (B))
+		if(getAmptitude() != a)
+			throw new PostconditionError("L'amplitute à été modifier");
+	}
+
+
+}

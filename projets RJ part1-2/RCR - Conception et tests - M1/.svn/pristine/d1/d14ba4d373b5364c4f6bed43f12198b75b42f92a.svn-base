@@ -1,0 +1,28 @@
+package ihm;
+
+import MoteurJeu.MoteurJeu;
+import MoteurJeu.SANTE;
+
+public class Executable extends Thread {
+
+	private MoteurJeu jeu;
+	private JeuPanel panel;
+	
+	public Executable(MoteurJeu j, JeuPanel p){
+		jeu=j;
+		panel=p;
+		setDaemon(true);
+	}
+	
+	@Override
+	public void run(){
+		do{
+			try{
+				Thread.sleep(400);
+			}catch(InterruptedException e){
+				e.printStackTrace();
+			}
+		}while(jeu.getHeros().getSante()==SANTE.VIVANT);
+		panel.updateGui();
+	}
+}

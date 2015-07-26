@@ -1,0 +1,48 @@
+// ----------------------------------------------------------------------------
+// OBJECTIF DE TEST : Initialisation du terrain
+// ----------------------------------------------------------------------------
+
+Cas de test :
+	Terrain::initOK
+Condition initiale : 
+	largeur = 100, hauteur = 10, profondeur = 50
+Operation : 
+	T = init(largeur, hauteur, profondeur)
+Oracle : 
+	getLargeur(T) = largeur
+	getHauteur(T) = hauteur
+	getProfondeur(T) = profondeur
+	
+	
+Cas de test :
+	Terrain::initKO1
+Condition initiale : 
+	largeur = 0, hauteur = 10, profondeur = 50
+Operation : 
+	T = init(largeur, hauteur, profondeur)
+Oracle : 
+	largeur <= 0
+	# exception levée
+	
+	
+Cas de test :
+	Terrain::initKO2
+Condition initiale : 
+	largeur = 100, hauteur = 0, profondeur = 50
+Operation : 
+	T = init(largeur, hauteur, profondeur)
+Oracle : 
+	hauteur <= 0
+	# exception levée
+	
+	
+Cas de test :
+	Terrain::initKO3
+Condition initiale : 
+	largeur = 100, hauteur = 10, profondeur = 0
+Operation : 
+	T = init(largeur, hauteur, profondeur)
+Oracle : 
+	profondeur <= 0
+	# exception levée
+	

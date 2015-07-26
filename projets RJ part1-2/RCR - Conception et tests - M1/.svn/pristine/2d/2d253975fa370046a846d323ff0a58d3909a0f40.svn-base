@@ -1,0 +1,112 @@
+Service : GestionCombat
+Use : Personnage, Terrain
+Types : boolean, int, enum COMMANDE{RIEN, HAUT, BAS, GAUCHE, DROITE, SAUT, FRAPPE, PREND, JET}
+Observators :
+liste_personnages : [GestionCombat] → List<Personnage>
+slick : [GestionCombat] → Personnage
+ryan : [GestionCombat] → Joueur
+alex : [GestionCombat] → Joueur
+collision : [GestionCombat]  Personnage × Personnage → boolean
+pre collision(G,p1,p2) require p1 ≠ p2
+niveau1 : [GestionCombat] × int × int × int → Terrain
+
+collisionGauche : [GestionCombat] × int → boolean
+collisionDroite : [GestionCombat] × int → boolean
+collisionHaut : [GestionCombat] × int → boolean
+collisionBas : [GestionCombat] × int → boolean
+
+Constructors :
+init : int × int × int → [GestionCombat]
+Operators :
+gerer : [GestionCombat] × COMMANDE × COMMANDE → [GestionCombat]
+gerer1Joueur : [GestionCombat] × Joueur × COMMANDE → [GestionCombat]
+pre gerer1Joueur(G,j,com) require Joueur::estVaincu(j)=false & 
+           Joueur::estGele(j)=0
+frappe : [GestionCombat] × Personnage → [GestionCombat]
+tomber : [GestionCombat] × Personnage → [GestionCombat]
+Observations :
+[invariants]
+collisionGauche(G,x) (min)= x ≥ 0
+collisionDroite(G,x) (min)= x < Terrain::largeur(niveau1)
+collisionHaut(G,y) (min)= y < Terrain::hauteur(niveau1)
+collisionBas(G,y) (min)= y ≥ 0
+tomber(G,p) (min)= Personnage::sauter(p.x,p.y,p.z-1)
+∀ perso in personnageList
+    0 ≤ perso.pos_x ≤ Terrain::largeur(niveau1)
+    0 ≤ perso.pos_y ≤ Terrain::hauteur(niveau1)
+    0 ≤ perso.pos_z ≤ Terrain::profondeur(niveau1)
+
+[init]
+niveau1(init(l,h,p))=Terrain.init(l,h,p)
+liste_personnages(init(l,h,p)) = {
+slick(init(l,h,p)) = Personnage::init("Slick",90,150,30,50,10000, 
+Terrain::largeur(niveau1)-1,Terrain::hauteur(niveau1)/2, 0),
+ryan(init(l,h,p)) = Joueur::init("Ryan"),
+alex(init(l,h,p)) = Joueur::init("Alex"),
+Ganster::init("Asshole”,rand,rand,0)
+Ganster::init("Smurff”,rand,rand,0)
+Ganster::init("Jerk”,rand,rand,0)
+Ganster::init("MotherFucker”,rand,rand,0)
+}
+[gerer]
+∀ perso in personnageList
+    tomber(perso)
+    Personnage::retrait_de_pv(perso, 999999) si Bloc::type(Terrain::bloc(niveau1,perso.x,perso.y,perso.z))=FOSSE
+
+Bloc::changerTresor(Terrain::bloc(niveau1, perso.x,perso.y,perso.z),Gangster::drop(perso)) si Personnage::estVaincu(perso)
+    ryan(gerer(cR, cA))=ryan(gerer1Joueur(ryan,cR)) si Personnage::estGelé(ryan)>0 & Personnage::estPorte(ryan)=false
+    alex(gerer(cR, cA))=alex(gerer1Joueur(alex,cA)) si Personnage::estGelé(alex)>0 & Personnage::estPorte(alex)=false
+[gerer1Joueur]
+gerer1Joueur(j,com)=
+    switch(com)
+        cas GAUCHE :
+            Joueur::se_deplacer(j, j.pos_x-1, j.pos_y)
+            si ￢collisionGauche(G,j.pos_x-1)
+        cas DROITE :
+            Joueur::se_deplacer(j, j.pos_x+1, j.pos_y)
+            si ￢collisionDroite(G,j.pos_x+1)
+        cas HAUT :
+            Joueur::se_deplacer(j, j.pos_x, j.pos_y+1)
+            si ￢collisionHaut(G,j.pos_y+1)
+        cas BAS :
+            Joueur::se_deplacer(j, j.pos_x, j.pos_y-1)
+            si ￢collisionBas(G,j.pos_y-1)
+        cas FRAPPE :
+            frappe(C, j)
+        cas SAUT_SUR_PLACE :
+            Joueur::sauter(j,j.pos_x,j.pos_y,j.pos_z+1)
+        cas SAUT_GAUCHE :
+            Joueur::sauter(j,j.pos_x-1,j.posy,j.pos_z+1)
+            si ￢collisionGauche(G,j.pos_x-1)
+            Joueur::sauter(j,j.pos_x,j.pos_y,j.pos_z+1) sinon
+cas SAUT_DROIT :
+            Joueur::sauter(j,j.pos_x+1,j.posy,j.pos_z+1)
+            si ￢collisionDroite(G,j.pos_x-1)
+            Joueur::sauter(j,j.pos_x,j.pos_y,j.pos_z+1) sinon
+        cas PREND :
+            prend(C,j) si ￢Joueur::a_equipement(j)
+        cas JET :
+            jet(C,j) si Joueur::a_equipement(j)
+
+
+[tomber]
+    Personnage::pos_z(tomber(G,p) =p.pos_z-1 
+si Bloc::type(Terrain::bloc(niveau1, p.x,p.y,p.z) )=null
+[frappe]
+    frappe(C,a) =
+    ∀ perso in personnageList
+        if perso ≠ a alors
+            if collision(C,a,perso) alors
+                Personnage::frapper(a,perso) & Personnage::estFrappe(perso)
+                if Personnage::a_equipement(perso)
+                    Bloc::changerTresor(Terrain::bloc(niveau1, perso.x,perso.y,perso.z),Personnage::l_objet_equipe(perso)) si Personnage::l_objet_equipe(perso) ≠ null
+                    Personnage::sauter(perso.pos_x,perso.pos_y,perso.pos_z) & Personnage::se_fait_jeter(perso.le_personnage_equipe) sinon
+                    Personnage::jeter(perso)
+[prend]
+    
+[jet]
+    jet(C,perso) =
+if Personnage::a_equipement(perso)
+        Bloc::changerTresor(Terrain::bloc(niveau1, perso.x,perso.y,perso.z),Personnage::l_objet_equipe(perso)) si Personnage::l_objet_equipe(perso) ≠ null
+                    Personnage::sauter(perso.pos_x,perso.pos_y,perso.pos_z) & Personnage::se_fait_jeter(perso.le_personnage_equipe) sinon
+                Personnage::jeter(perso)

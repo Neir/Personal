@@ -1,0 +1,22 @@
+/**
+ * 
+ */
+package rivercityrandom.decorators;
+
+import rivercityrandom.services.Personnage;
+
+/**
+ * @author Thibaut FLEURY & Jerome RAHAULT
+ *
+ */
+public class PersonnageDecorator extends EquipableDecorator
+									implements Personnage {
+
+	/**
+	 * @param delegate
+	 */
+	public PersonnageDecorator(Personnage delegate) {
+		super(delegate);
+	}
+	
+}

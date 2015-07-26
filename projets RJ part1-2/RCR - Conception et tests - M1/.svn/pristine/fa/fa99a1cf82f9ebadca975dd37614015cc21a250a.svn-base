@@ -1,0 +1,37 @@
+/**
+ * 
+ */
+package rivercityrandom.services;
+
+/**
+ * @author Thibaut FLEURY & Jerome RAHAULT
+ *
+ */
+public interface Joueur extends Personnage {
+
+	// ------------------------------------------------------------------------
+	// Observators
+	// ------------------------------------------------------------------------
+	
+	public String 		getNom(); // const
+	public int 			getLargeur(); // const
+	
+	// inv:
+	// inv:
+	// inv:
+	
+	
+	// ------------------------------------------------------------------------
+	// Constructors
+	// ------------------------------------------------------------------------
+	
+	public void 		init(String nom, int largeur, int hauteur, 
+					int profondeur, int force, int pvMax, int argent,
+					int pos_x, int pos_y, int pos_z);
+		
+	
+	
+	// ------------------------------------------------------------------------
+	// Operators
+	// ------------------------------------------------------------------------
+}

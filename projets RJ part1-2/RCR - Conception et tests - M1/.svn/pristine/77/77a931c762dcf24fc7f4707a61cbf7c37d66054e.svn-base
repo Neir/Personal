@@ -1,0 +1,328 @@
+package Acteur;
+
+import MoteurJeu.SANTE;
+import error.InvariantError;
+import error.PostconditionError;
+import error.PreconditionError;
+
+public class ActeurContrat extends ActeurDecorateur{
+
+	public ActeurContrat(ActeurService as) {
+		super(as);
+	}
+
+	public void checkInvariant(){
+		//\Inv: getX(A) >= 0 && getY(A) >=0
+		if(getX()<0 || getY() <0)
+			throw new InvariantError("Les coordonnées de l'acteur ne peuvent pas être négative");
+		//\Inv: 3 <= getHerosForceVitale(M) <= 11
+		if(!(getForceVitale()>=3 && getForceVitale()<=11))
+			throw new InvariantError("La force vitale de l'acteur est erronée " + getForceVitale());
+		//\Inv: getNbBombe(A) >= 1
+		if(super.getNbBombe() <= 0)
+			throw new InvariantError("L'ateur doit pouvoir posée au moin une bombe");
+	}
+
+
+	public void init(int x, int y){
+		//\pre init(x,y) require x>0 && y>0
+		if(x<0 || y<0)
+			throw new PreconditionError("Le Heros ne peut avois des position négative");
+		super.init(x, y);
+		checkInvariant();
+		//\post: getX(init(x,y)) = x et getY(init(x,y))=y
+		if(getX() != x || getY() != y)
+			throw new PostconditionError("Erreur initialisation possition acteur");
+		//\post: getSante(init(x,y)) = SANTE::VIVANT
+		if(getSante() != SANTE.VIVANT)
+			throw new PostconditionError("L'Acteur nest pas vivant");
+		//\post: getForceVivante(init(x,y)) = 3
+		if(getForceVitale() != 3)
+			throw new PostconditionError("Erreur initialisation force vitale");
+		//\post: getNbBombe(A) = 1
+		if(getNbBombe() != 1)
+			throw new PostconditionError("Le nombre de Bombe doit être 1");
+		//\post: getWallPass(A) = false
+		if(getWallPass())
+			throw new PostconditionError("Ne peut pas traverser les Mur");
+		//\post: getBombePass(A) = false
+		if(getBombePass())
+			throw new PostconditionError("Ne peut pas traverser les Bombes");
+		//\post: getFireSuit(A) = 0
+		if(getFireSuit() != 0)
+			throw new PostconditionError("Le nombre de firesuite = 0");
+	}
+
+
+	public void setPos(int x, int y){
+		//\pre setPos(x,y) require x>=0 && y>=0
+		if(x<0 || y<0)
+			throw new PreconditionError("L'acteur ne peut avois des position négative");
+
+		checkInvariant();
+
+		//capture
+		SANTE s = getSante();
+		int f = getForceVitale();
+		int nbB = getNbBombe();
+		int nbF = getFireSuit();
+		boolean WP = getWallPass();
+		boolean BP = getBombePass();
+
+		super.setPos(x, y);
+		checkInvariant();
+
+		//\post: getX(setPos(x,y)) = x et getY(setPos(x,y))=y
+		if(getX()!= x && getY()!=y)
+			throw new PostconditionError("Erreur modification position joueur");
+		//\post: getSante(setPos(x,y))@pre = getSante(setPos(x,y))
+		if(getSante() != s)
+			throw new PostconditionError("Erreur modification de la sante non justifier");
+		//\post: getForceVivante(setPos(x,y))@pre = getForceVivante(setPos(x,y))
+		if(getForceVitale() != f)
+			throw new PostconditionError("Erreur modification de la force vitale non non justifier");
+		//\post: getWallPass(A) = getWallPass(A)@pre 
+		if(getWallPass() != WP)
+			throw new PostconditionError("Modification erreur de wall pass");
+		//\post: getBombePass(A) = getBombePass(A)@pre
+		if(getBombePass() != BP)
+			throw new PostconditionError("Modification erreur de bombe pass");
+		//\post: getNBBombe(A)@pre = getNBBombe(A)
+		if(getNbBombe() != nbB)
+			throw new PostconditionError("Modification erreur du nombre de bombe");
+		//\post: getFireSuit(A) = getFireSuit(A)@pre 
+		if(getFireSuit() != nbF)
+			throw new PostconditionError("Modification erreur du nombre de Fire Suit");
+	}
+
+	public void setSante(SANTE s){
+		//\pre: setSante(s) require s!= null
+		if(s == null)
+			throw new PreconditionError("la SAnte ne doit pas être null");
+
+		checkInvariant();
+
+		//capture
+		int x = getX();
+		int y = getY();
+		int f = getForceVitale();
+		int nbB = getNbBombe();
+		int nbF = getFireSuit();
+		boolean WP = getWallPass();
+		boolean BP = getBombePass();
+
+		super.setSante(s);
+
+		checkInvariant();
+
+		//\post: getX(setSante(s))@pre = getX(setSante(s))
+		//\post: getY(setSante(s))@pre = getY(setSante(s))
+		if(getX()!= x && getY()!=y)
+			throw new PostconditionError("Erreur modification position joueur non justifier");
+		//\post: getSante(setSante(s)) = s
+		if(getSante() != s)
+			throw new PostconditionError("Erreur modification de la sante");
+		//\post: getForceVivante(setSante(s))@pre = getForceVivante(setSante(s))
+		if(getForceVitale() != f)
+			throw new PostconditionError("Erreur modification de la force vitale non non justifier");
+		//\post: getWallPass(A) = getWallPass(A)@pre 
+		if(getWallPass() != WP)
+			throw new PostconditionError("Modification erreur de wall pass");
+		//\post: getBombePass(A) = getBombePass(A)@pre
+		if(getBombePass() != BP)
+			throw new PostconditionError("Modification erreur de bombe pass");
+		//\post: getNBBombe(A)@pre = getNBBombe(A)
+		if(getNbBombe() != nbB)
+			throw new PostconditionError("Modification erreur du nombre de bombe");
+		//\post: getFireSuit(A) = getFireSuit(A)@pre 
+		if(getFireSuit() != nbF)
+			throw new PostconditionError("Modification erreur du nombre de Fire Suit");
+	}
+
+
+	public void setForceVitale(int f){
+		//\pre: setForceVitale(f) require 3=<f<=11
+		if(!(f>=3 && f<=11))
+			throw new PreconditionError("La force vitale de l'acteur est incorrecte");
+
+		checkInvariant();
+
+		//capture
+		int x = getX();
+		int y = getY();
+		SANTE s = getSante();
+		int nbB = getNbBombe();
+		int nbF = getFireSuit();
+		boolean WP = getWallPass();
+		boolean BP = getBombePass();
+
+		super.setForceVitale(f);
+
+		checkInvariant();
+
+		//\post: getX(setForceVivante(f))@pre = getX(setForceVivante(f))
+		//\post: getY(setForceVivante(f))@pre = getY(setForceVivante(f)) 
+		if(getX()!= x && getY()!=y)
+			throw new PostconditionError("Erreur modification position joueur non justifier");
+		//\post: getSante(setForceVivante(f))@pre = getSante(setForceVivante(f))
+		if(getSante() != s)
+			throw new PostconditionError("Erreur modification de la sante non justifier");
+		//\post: getForceVivante(setForceVivante(f)) = f
+		if(getForceVitale() != f)
+			throw new PostconditionError("Erreur modification de la force vitale");
+		//\post: getWallPass(A) = getWallPass(A)@pre 
+		if(getWallPass() != WP)
+			throw new PostconditionError("Modification erreur de wall pass");
+		//\post: getBombePass(A) = getBombePass(A)@pre
+		if(getBombePass() != BP)
+			throw new PostconditionError("Modification erreur de bombe pass");
+		//\post: getNBBombe(A)@pre = getNBBombe(A)
+		if(getNbBombe() != nbB)
+			throw new PostconditionError("Modification erreur du nombre de bombe");
+		//\post: getFireSuit(A) = getFireSuit(A)@pre 
+		if(getFireSuit() != nbF)
+			throw new PostconditionError("Modification erreur du nombre de Fire Suit");
+	}
+
+	public void setNbBombe(int nbb){
+		//\pre: setNbBombe(A,x) require x > 0
+		if( nbb<= 0)
+			throw new PreconditionError("l'acteur doit au moin pouvoir posée une bombe");
+		checkInvariant();
+
+		//capture
+		int x = getX();
+		int y = getY();
+		SANTE s = getSante();
+		int f = getForceVitale();
+		int nbF = getFireSuit();
+		boolean WP = getWallPass();
+		boolean BP = getBombePass();
+
+		super.setNbBombe(nbb);
+
+		checkInvariant();
+
+		//\post: getNBBombe(setNBBombe(A,x)) = x
+		if(getNbBombe() != nbb)
+			throw new PostconditionError("erreur modification du nombre de bombe par la valeur " + nbb);
+		if(getX()!= x && getY()!=y)
+			throw new PostconditionError("Erreur modification position joueur non justifier");
+		if(getSante() != s)
+			throw new PostconditionError("Erreur modification de la sante non justifier");
+		if(getForceVitale() != f)
+			throw new PostconditionError("Erreur modification de la force vitale");
+		//\post: getWallPass(A) = getWallPass(A)@pre 
+		if(getWallPass() != WP)
+			throw new PostconditionError("Modification erreur de wall pass");
+		//\post: getBombePass(A) = getBombePass(A)@pre
+		if(getBombePass() != BP)
+			throw new PostconditionError("Modification erreur de bombe pass");
+		//\post: getFireSuit(A) = getFireSuit(A)@pre 
+		if(getFireSuit() != nbF)
+			throw new PostconditionError("Modification erreur du nombre de Fire Suit");
+	}
+
+	public void setWallPass(){
+		checkInvariant();
+
+		//capture
+		int x = getX();
+		int y = getY();
+		SANTE s = getSante();
+		int f = getForceVitale();
+		int nbF = getFireSuit();
+		int nbB = getNbBombe();
+		boolean WP = getWallPass();
+		boolean BP = getBombePass();
+
+		super.setWallPass();
+
+		checkInvariant();
+
+		if(getNbBombe() != nbB)
+			throw new PostconditionError("erreur modification du nombre de bombe par la valeur ");
+		if(getX()!= x && getY()!=y)
+			throw new PostconditionError("Erreur modification position joueur non justifier");
+		if(getSante() != s)
+			throw new PostconditionError("Erreur modification de la sante non justifier");
+		if(getForceVitale() != f)
+			throw new PostconditionError("Erreur modification de la force vitale");
+		if(getWallPass() == WP)
+			throw new PostconditionError("Modification erreur de wall pass");
+		if(getBombePass() != BP)
+			throw new PostconditionError("Modification erreur de bombe pass");
+		if(getFireSuit() != nbF)
+			throw new PostconditionError("Modification erreur du nombre de Fire Suit");
+	}
+
+	public void setBombePass(){
+		checkInvariant();
+
+		//capture
+		int x = getX();
+		int y = getY();
+		SANTE s = getSante();
+		int f = getForceVitale();
+		int nbF = getFireSuit();
+		int nbB = getNbBombe();
+		boolean WP = getWallPass();
+		boolean BP = getBombePass();
+
+		super.setBombePass();
+
+		checkInvariant();
+
+		if(getNbBombe() != nbB)
+			throw new PostconditionError("erreur modification du nombre de bombe par la valeur ");
+		if(getX()!= x && getY()!=y)
+			throw new PostconditionError("Erreur modification position joueur non justifier");
+		if(getSante() != s)
+			throw new PostconditionError("Erreur modification de la sante non justifier");
+		if(getForceVitale() != f)
+			throw new PostconditionError("Erreur modification de la force vitale");
+		if(getWallPass() != WP)
+			throw new PostconditionError("Modification erreur de wall pass");
+		if(getBombePass() == BP)
+			throw new PostconditionError("Modification erreur de bombe pass");
+		if(getFireSuit() != nbF)
+			throw new PostconditionError("Modification erreur du nombre de Fire Suit");
+	}
+	
+
+ 
+		
+	public void setFireSuit(int fs){		
+		checkInvariant();
+
+		//capture
+		int x = getX();
+		int y = getY();
+		SANTE s = getSante();
+		int f = getForceVitale();
+		int nbF = getFireSuit();
+		int nbB = getNbBombe();
+		boolean WP = getWallPass();
+		boolean BP = getBombePass();
+
+		super.setFireSuit(fs);
+
+		checkInvariant();
+
+		if(getNbBombe() != nbB)
+			throw new PostconditionError("erreur modification du nombre de bombe par la valeur ");
+		if(getX()!= x && getY()!=y)
+			throw new PostconditionError("Erreur modification position joueur non justifier");
+		if(getSante() != s)
+			throw new PostconditionError("Erreur modification de la sante non justifier");
+		if(getForceVitale() != f)
+			throw new PostconditionError("Erreur modification de la force vitale");
+		if(getWallPass() != WP)
+			throw new PostconditionError("Modification erreur de wall pass");
+		if(getBombePass() != BP)
+			throw new PostconditionError("Modification erreur de bombe pass");
+		//\post: getFireSuit(setFireSuit(A,x)) = max(getFireSuit(A)@pre + x, getFireSuit(A)@pre)
+		if(getFireSuit() != Math.max((nbF + fs),nbF))
+			throw new PostconditionError("Modification erreur du nombre de Fire Suit");
+	}
+}

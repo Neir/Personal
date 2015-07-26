@@ -1,0 +1,24 @@
+/**
+ * 
+ */
+package rivercityrandom.services;
+
+import rivercityrandom.enumerations.COMMANDE;
+
+/**
+ * @author Thibaut FLEURY & Jerome RAHAULT
+ *
+ */
+public interface GestionCombat {
+	
+	
+	public Joueur		getAlex();
+	public Joueur		getRyan();
+	public Gangster		getSlick();
+	public Gangster[]	getListGangster();
+	
+	public Terrain		getTerrain();
+	
+	public void			gerer(COMMANDE cR, COMMANDE cA);
+	public void			init(int largeur, int hauteur, int profondeur);
+}

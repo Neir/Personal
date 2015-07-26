@@ -1,0 +1,396 @@
+package MoteurJeu;
+
+import java.util.ArrayList;
+import bloc.BlocService;
+import bloc.Type;
+import vilain.VilainService;
+import error.InvariantError;
+import error.PostconditionError;
+import error.PreconditionError;
+import Acteur.ActeurService;
+import Bombe.BombeService;
+
+public class MoteurJeuContrat extends MoteurJeuDecorateur {
+
+	public MoteurJeuContrat(MoteurJeu delegate) {
+		super(delegate);
+	}
+
+	public void checkInvariant(){
+		//\Inv: 0<getX(getHeros(M))<getNbLignes(getTerrain(M)) && 0<getY(getHeros(M))<getNbColonnes(getTerrain(M))
+		if(getHeros().getX()>getTerrain().getNombreLignes() || getHeros().getX()<0 || 
+				getHeros().getY()>getTerrain().getNombreColonnes() || getHeros().getY()<0)
+			throw new InvariantError("Invariant: 0<getX(getHeros(M))<getNbLignes(getTerrain(M))" +
+					" && 0<getY(getHeros(M))<getNbColonnes(getTerrain(M))");
+		//\Inv: 0<getX(getKidnappeur(M))<getNbLignes(getTerrain(M)) && 0<getY(getKidnappeur(M))<getNbColonnes(getTerrain(M))
+		if(getKidnappeur().getX()>getTerrain().getNombreLignes() || getKidnappeur().getX()<0 || 
+				getKidnappeur().getY()>getTerrain().getNombreColonnes() || getKidnappeur().getY()<0)
+			throw new InvariantError("Invariant: 0<getX(getKidnappeur(M))<getNbLignes(getTerrain(M)) &&" +
+					" 0<getY(getKidnappeur(M))<getNbColonnes(getTerrain(M))");
+		//\Inv: for all v in getVilains(M) :
+		//				0<getIndexX(v)<getNbLignes(getTerrain(M)) && 0<getIndexY(v)<getNbColonnes(getTerrain(M))
+		for (VilainService v : getVilains()){
+			if(v.getIndexX()<0 || v.getIndexX()>getTerrain().getNombreLignes() ||
+					v.getIndexY()<0 || v.getIndexY()>getTerrain().getNombreColonnes())
+				throw new InvariantError("Invariant: for all v in getVilains(M) :"+
+						"0<getIndexX(v)<getNbLignes(getTerrain(M)) && 0<getIndexY(v)<getNbColonnes(getTerrain(M))");
+		}
+		//\Inv: 0<=getPasJeuCourrant(m)<=getMaxPasJeu();
+		if(getPasJeuCourrant()<0 || getMaxPasJeu()<getPasJeuCourrant())
+			throw new InvariantError("Error incoherence entre MaxPasJeu et PasJeuCourrant");
+		//\Inv: bombeExist(M,numero) \def numero in getBombeNumeros(M)
+		for(Integer i : super.getBombeNumeros()){
+			if(! super.bombeExist(i))
+				throw new InvariantError("Invariant: bombeExist(M,numero) def numero in getBombeNumeros(M)");
+		}
+		//\Inv: getNbBombes(M) def #getBombeNumeros(M)
+		if(super.getNbBombes()!=super.getBombeNumeros().size())
+			throw new InvariantError("Invariant: getNbBombes(M) def #getBombeNumeros(M)");
+		//\Inv: estFini(M) \def (getHerosSante(M)=SANTE::MORT ou getPasJeuCourrant(M)=getMaxPasJeu(M))
+		if(super.estFini())
+			if(!super.getHeros().getSante().equals(SANTE.MORT) && (super.getPasJeuCourrant()!=super.getMaxPasJeu()))
+				throw new InvariantError("Invariant : estFini(M) def (getHerosSante(M)=SANTE::MORT  ou " +
+						"getPasJeuCourrant(M)=getMaxPasJeu(M))");
+
+
+		//\Inv: (resultatFinal(M)=RESULTAT::KIDNAPPEURGAGNE) min= (getHerosSante(M)=SANTE::MORT)
+		if(super.estFini() && super.resultatFinal() == RESULTAT.KIDNAPPEURGAGNE && !(getHeros().getSante() == SANTE.MORT))
+			throw new InvariantError("Le Kidnappeur ne peut avoir gagner car le heros est vivant !!!");
+		//\Inv: (resultatFinal(M)=RESULTAT::PARTIELNULL) min= (getHerosSante(M)=SANTE::VIVANT and getKidnapeurSante(M)=SANTE::VIVANT)
+		if(super.estFini() && super.resultatFinal() == RESULTAT.PARTIENULLE && !(getHeros().getSante() == SANTE.VIVANT && getKidnappeur().getSante() == SANTE.VIVANT))
+			throw new InvariantError("Pas de partie null car  est vivant !!!");
+		//\Inv: (resultatFinal(M)=RESULTAT::HEROSGANE) min= (getKidnapeurSante(M)=SANTE::MORT)
+		if(super.estFini() && super.resultatFinal() == RESULTAT.HEROSGAGNE && !(getKidnappeur().getSante() == SANTE.MORT))
+			throw new InvariantError("Le héros ne peut gagner la partie !!!");
+
+		//\Inv: estFini(M) \def (getHerosSante(M)=SANTE::MORT ou getPasJeuCourrant(M)=getMaxPasJeu(M))
+		if(super.estFini())
+			if(!super.getHeros().getSante().equals(SANTE.MORT) && super.getPasJeuCourrant()!=super.getMaxPasJeu())
+				throw new InvariantError("Invariant: estFini(M) def (getHerosSante(M)=SANTE::MORT ou " +
+						"getPasJeuCourrant(M)=getMaxPasJeu(M))");
+		//\Inv:  misEnjoue(M,x,y,num) \def (xB=Bombe::getX(getBombe(M,num))) ^ (yB=Bombe::getY(getBombe(M,num)))
+		//									^ (aB=Bombe::getAmplitude(getBombe(M,num)))
+		//							^((x=xB ^ |y-yB|<=aB) ou (|x-xB|<=aB ^ y=yB)) 
+		int x=super.getTerrain().getNombreLignes();
+		int y=super.getTerrain().getNombreColonnes();
+		for(int i=0;i<x;i++)
+			for(int j=0;j<y;j++)
+				for(Integer num : super.getBombeNumeros())
+					if(misEnJoue(i, j, num)){
+						int xB=super.getBombe(num).getX();
+						int yB=super.getBombe(num).getY();
+						int aB=super.getBombe(num).getAmptitude();
+						if(!(i==xB && Math.abs(j-yB)<=aB) && !(Math.abs(i-xB)<=aB && j==yB))
+							throw new InvariantError("Invariant: misEnjoue(M,x,y,num) def " +
+									"(xB=Bombe::getX(getBombe(M,num))) ^ (yB=Bombe::getY(getBombe(M,num)))" +
+									"^ (aB=Bombe::getAmplitude(getBombe(M,num)))"+									
+									"((x=xB ^ |y-yB|<=aB) ou (|x-xB|<=aB ^ y=yB))");
+					}
+
+		//\Inv: vilainExist(M,x,y) \def il existe v in getVilains(M) : getIndexX(v)=x and getIndexY(v)=y
+		int xx=super.getTerrain().getNombreLignes();
+		int yy=super.getTerrain().getNombreColonnes();
+		for(int i=0;i<xx;i++)
+			for(int j=0;j<yy;j++)
+				if(vilainExist(i, j)){
+					boolean tmp=false;
+					for(VilainService v:super.getVilains())
+						if(v.getIndexX()==i && v.getIndexY()==j)
+							tmp=true;
+					if(!tmp)throw new InvariantError("Inv: vilainExist(M,x,y) def il existe v in getVilains(M) :" +
+							" getIndexX(v)=x and getIndexY(v)=y");
+				}
+
+
+	}
+
+	public void init(int max, int X, int Y){
+		//\pre: init(pas,x,y) require pas>=0 and x >=0 and y>=0
+		if(!(max >=0 && X >= 0 && Y >= 0))
+			throw new PreconditionError("bad argument for init : max, X and Y must be >=0 ");
+
+		super.init(max,X,Y);
+
+		checkInvariant();
+
+		//\post:getCourantPas(init(p,x,y)) = 0
+		if(getPasJeuCourrant()!=0)
+			throw new PostconditionError("Le pas Courant doit être a 0");
+		//\post:getMaxPasJeu(init(p,x,y)) = p
+		if(getMaxPasJeu()!=max)
+			throw new PostconditionError("Le nombre max de pas du jeu est erronée");
+		//\post:Set:: size (getBombeNumeros(init(p,x,y)))  = 0
+		if(!super.getBombeNumeros().isEmpty())
+			throw new PostconditionError("Il ne devrait pas y avoir de bombe");
+		//\post:getNbBombes(init(p,x,y)) = 0
+		if(super.getNbBombes() != 0)
+			throw new PostconditionError("Il ne devrait pas y avoir de bombe");
+		//\post:getTerrain(init(p,x,y)) != null
+		if(getTerrain() == null)
+			throw new PostconditionError("Le terrain n'a pas était initialiser");
+		//\post:Acteur ::getX(getHeros(init(p,x,y))) = 1 
+		//\post:Acteur ::getY(getHeros(init(p,x,y))) = 1
+		if(!(super.getHeros().getX() == 1 && super.getHeros().getY() == 1))
+			throw new PostconditionError("Heros n'est pas possitioner à {1,1}");
+		//\post:Acteur::getX(getKidnappeur(init(p,x,y))) = x-2
+		//\post:Acteur::getY(getKidnappeur(init(p,x,y))) = y-2
+		if(!(super.getKidnappeur().getX() == X-2 && super.getKidnappeur().getY() == Y-2))
+			throw new PostconditionError("Le Kidnapeur est mal placée");
+		//\post: #getVilains(init(p,x,y))=2
+		if(super.getVilains().size()!=2)
+			throw new PostconditionError("Postcondition: #getVilains(init(p,x,y))=2");
+	}
+
+	public BombeService getBombe(int numero){
+		//\pre: getBombe(M,numero) require bombeExist(M,numero)
+		if(!super.bombeExist(numero))
+			throw new PreconditionError("precondition: getBombe(M,numero) require bombeExist(M,numero)");
+		return super.getBombe(numero);
+	}
+
+	public void poserBombe(int num, int x, int y, int a) {
+		//\pre: poserBombe(M,bombe,x,y) require 0<=X<=getNombreLignes(getTerrain(M))
+		if(x<0 || x>=super.getTerrain().getNombreLignes())
+			throw new PreconditionError("Precondition: poserBombe(M,bombe,x,y) require " +
+					"0<=X<getNombreLignes(getTerrain(M))");
+		//\pre: poserBombe(M,bombe,x,y) require 0<=Y<getNombreColonne(getTerrain(M))
+		if(y<0 || y>=super.getTerrain().getNombreColonnes())
+			throw new PreconditionError("Precondition: poserBombe(M,bombe,x,y) require " +
+					"0<=Y<getNombreColonne(getTerrain(M))");
+		//\Pre : poserBombe(M,n,x,y,a) require 
+		//				Bloc ::getType(Terrain ::getBloc(getTerrain(M),x,y)) = Type::VIDE
+		if(super.getTerrain().getBloc(x, y).getType() != Type.VIDE)
+			throw new PreconditionError("Impossible de positioner unebombe à cette emplacement");
+
+		checkInvariant();
+		
+		int xH=super.getHeros().getX();	
+		int yH=super.getHeros().getY();
+		int kx=super.getKidnappeur().getX();	
+		int ky=super.getKidnappeur().getY();
+		int sizeVilain=super.getVilains().size();
+		int pasJeu = super.getPasJeuCourrant();
+
+		//traitement 
+		super.poserBombe(num, x,y,a);
+
+		checkInvariant();
+		//\post: getCourantPas(poserBombe(M,n,x,y,a)) = getCourantPas(poserBombe(M,n,x,y,a))@pre
+		if(super.getPasJeuCourrant() != pasJeu)
+			throw new PostconditionError("Modification non prévue du pas courant ");
+		//\post: bombeExist(poserBombe(M,n,x,y,a),n) = true
+		if(!super.bombeExist(num))
+			throw new PostconditionError("La bombe n'existe pas");
+		//\post: getBombe(poserBombe(M,n,x,y,a),n) != null
+		if(super.getBombe(num) == null)
+			throw new PostconditionError("La bombe n'a pas été trouvert dans la liste");
+		//\post: Bombe ::getNumero(getBombe(poserBombe(M,n,x,y,a),n)) =n
+		if(super.getBombe(num).getNumero() != num)
+			throw new PostconditionError("La bombe retourner n'est pas la bonne"); 
+		//\post: getHeros(poserBombe(M,n,x,y,a))=getHeros(M)
+		if(super.getHeros().getX()!=xH || super.getHeros().getY()!=yH)
+			throw new PostconditionError("Postcondition: getHeros(poserBombe(M,n,x,y,a))=getHeros(M)");
+		//\post: getKidnappeur(poserBombe(M,n,x,y,a))=getKidnappeur(M)
+		if((super.getKidnappeur().getX()!=kx) || (super.getKidnappeur().getY()!=ky))
+			throw new PostconditionError("Postcondition: getKidnappeur(poserBombe(M,n,x,y,a))=getKidnappeur(M)");
+		//\post: getVilains(poserBombe(M,n,x,y,a))=getVilains(M)
+		if(super.getVilains().size() != sizeVilain)
+			throw new PostconditionError("Postcondition: getVilains(poserBombe(M,n,x,y,a))=getVilains(M)");
+	}
+
+	public RESULTAT resultatFinal() {
+		//\pre : resultatFinal(M) require estFini(M)
+		if(!super.estFini())
+			throw new PreconditionError("On ne peut pas avoir le résultat car la partie n'est pas finie");
+		return super.resultatFinal();
+	}
+
+	public boolean misEnJoue(int x,int y,int num){
+		//\pre: misEnjoue(M,x,y,num) require bombeExiste(M,num) 
+		if (! super.bombeExist(num))
+			throw new PreconditionError("Precondition:misEnjoue(M,x,y,num) require bombeExiste(M,num)");
+		return super.misEnJoue(x, y, num);
+	}
+
+	public boolean vilainExist(int x,int y){
+		//\pre:vilainExist(M,x,y) require 0=<x<getNombreLignes(getTerrain(M)) and 0=<y<getNombreColonnes(getTrerrain(M))
+		if(x>=super.getTerrain().getNombreLignes() || y>=super.getTerrain().getNombreColonnes())
+			throw new PreconditionError("pre:vilainExist(M,x,y) require 0=<x<getNombreLignes(getTerrain(M)) and" +
+					"0=<y<getNombreColonnes(getTrerrain(M))");
+		if(x<0 || y <0)
+			throw new PreconditionError("pre:vilainExist(M,x,y) require 0=<x<getNombreLignes(getTerrain(M)) and" +
+					"0=<y<getNombreColonnes(getTrerrain(M))");
+		return super.vilainExist(x, y);
+	}
+
+
+
+
+	public void pasJeu(COMMANDE commande,boolean isHeros){
+		//\pre: pasJeu(M,C) require estFini(M)=False
+		if(super.estFini())	{
+			throw new PreconditionError("Precondition de pasJeu non respectée");
+		}
+		//\pre: pasJeur(M,C) require C in {RIEN,GAUCHE,DROITE,HEUT,BAS}
+		if(!commande.equals(COMMANDE.RIEN) && !commande.equals(COMMANDE.GAUCHE) && !commande.equals(COMMANDE.DROITE) 
+				&& !commande.equals(COMMANDE.BAS) && !commande.equals(COMMANDE.HAUT) && !commande.equals(COMMANDE.BOMBE))
+			throw new PreconditionError("Precondition: pasJeur(M,C) require C in {RIEN,GAUCHE,DROITE,HEUT,BAS}");
+			
+		
+		checkInvariant();
+
+		boolean herosExp=false;
+		boolean kidExp=false;
+		ArrayList<Integer> vaExploser = new ArrayList<Integer>();
+		ArrayList<Integer> tranquilles=new ArrayList<Integer>(); 
+		for(Integer in : super.getBombeNumeros()){
+			if(!super.getBombe(in).vaExploser())
+				tranquilles.add(in);
+			else {
+				if(misEnJoue(super.getHeros().getX(), super.getHeros().getX(), in))
+					herosExp=true;
+				if(misEnJoue(super.getKidnappeur().getX(), super.getKidnappeur().getY(), in))
+					kidExp=true;
+				vaExploser.add(in);
+			}
+		}
+		//heros:
+		int oldXHeros=super.getHeros().getX();
+		int oldYHeros=super.getHeros().getY();
+		//kidnappeur
+		int oldXKid=super.getKidnappeur().getX();
+		int oldYKid=super.getKidnappeur().getY();
+		//bombe
+		int oldNbBombe=super.getHeros().getNbBombe()+super.getKidnappeur().getNbBombe();
+		int oldPasJeu=super.getPasJeuCourrant();
+		//vilain
+		int oldVilain=super.getVilains().size();
+
+		super.pasJeu(commande,isHeros);
+
+
+		//postcondition
+		//\post: getPasJeuCourrant(pasJeu(M,c))=getPasJeuCourrant(M) +1 
+		if(super.getPasJeuCourrant()!=(oldPasJeu+1))
+			throw new PostconditionError("Postcondition: getPasJeuCourrant(pasJeu(M,c))=getPasJeuCourrant(M) +1");
+
+		
+		if(isHeros){
+			//\post: getHerosX(pasJeu(M,COMMANDE.HAUT)) = max(1, getHerosX(M)−1 
+			//											\if getBloc(getTerrain(M),max(getHeros(M)-1,1),getHerosY(M)) not in {MURBRIQUE, MURMETAL}
+			if(commande.equals(COMMANDE.HAUT)){
+				BlocService bloc = super.getTerrain().getBloc(Math.max(1, oldXHeros-1), oldYHeros);
+				if((bloc.getType().equals(Type.MURBRIQUE) || bloc.getType().equals(Type.MURMETAL)) && !super.getHeros().getWallPass() && !super.getHeros().getBombePass()){//le heros ne doit pas bouger
+					if(super.getHeros().getX()!=oldXHeros || super.getHeros().getY()!=oldYHeros)
+						throw new PostconditionError("Postcondition: case destinataire est un MURMETAL ou MURBRIQUE");
+				}else if(super.getHeros().getX()!=Math.max(oldXHeros-1, 1))
+					throw new PostconditionError("Postcondition: getHerosX(pasJeu(M,COMMANDE.HAUT)) = max(1, getHerosX(M)−1)");
+			}
+
+			//\post:getHerosX(pasJeu(M,COMMANDE.BAS)) = min(Terrain::getNombreLignes(getTerrain(M))-1, getHerosX(M)+1)
+			//											\if getBloc(getTerrain(M),min(Terrain::getNombeLignes(getTerrain(M))-1,getHeros(M)+1),getHerosY(M)) 
+			//															not in {MURBRIQUE, MURMETAL}
+			if(commande.equals(COMMANDE.BAS)){
+				BlocService bloc = super.getTerrain().getBloc(Math.min(super.getTerrain().getNombreLignes()-1, oldXHeros+1), oldYHeros);
+				if((bloc.getType().equals(Type.MURBRIQUE) || bloc.getType().equals(Type.MURMETAL)) && !super.getHeros().getWallPass() && !super.getHeros().getBombePass()){//le heros ne doit pas bouger
+					if(super.getHeros().getX()!=oldXHeros || super.getHeros().getY()!=oldYHeros)
+						throw new PostconditionError("Postcondition: case destinataire est un MURMETAL ou MURBRIQUE");
+				}else if(super.getHeros().getX()!=Math.min(super.getTerrain().getNombreLignes()-1, oldXHeros+1))
+					throw new PostconditionError("getHerosX(pasJeu(M,COMMANDE.BAS)) = min(Terrain::getNombreLignes(getTerrain(M))-1, getHerosX(M)+1)");
+			}
+
+			//\post: (C = COMMANDE.GAUCHE or C = COMMANDE.DROITE) => getHerosX(pasJeu(M,C)) = getHerosX(M)
+			if(commande.equals(COMMANDE.GAUCHE) || commande.equals(COMMANDE.DROITE))
+				if(super.getHeros().getX() != oldXHeros)
+					throw new PostconditionError("Postcondition: (C != COMMANDE.GAUCHE or C != COMMANDE.DROITE) " +
+							"=> getHerosX(pasJeu(M,C)) = getHerosX(M)");
+
+			//\post: (C = COMMANDE.HAUT or C = COMMANDE.BAS) => getHerosY(pasJeu(M,C)) = getHerosY(M)
+			if(commande.equals(COMMANDE.BAS) || commande.equals(COMMANDE.HAUT))
+				if(super.getHeros().getY()!=oldYHeros)
+					throw new PostconditionError("(C != COMMANDE.HAUT or C != COMMANDE.BAS) " +
+							"=> getHerosY(pasJeu(M,C)) = getHerosY(M)");
+
+			//\post: getHerosY(pasJeu(M,COMMANDE.GAUCHE)) = max(1, getHerosY(M)−1)
+			// 												\if getBloc(getTerrain(M),getHerosX(M),max(1,getHerosY(M)-1))
+			if(commande.equals(COMMANDE.GAUCHE)){
+				BlocService bloc = super.getTerrain().getBloc(oldXHeros, Math.max(1, oldYHeros-1));
+				if((bloc.getType().equals(Type.MURBRIQUE) || bloc.getType().equals(Type.MURMETAL)) && !super.getHeros().getWallPass() && !super.getHeros().getBombePass()){//heros ne doit pas bouger
+					if(super.getHeros().getX()!=oldXHeros || super.getHeros().getY()!=oldYHeros)
+						throw new PostconditionError("Postcondition: case  est un MURMETAL ou MURBRIQUE");
+				}else if(super.getHeros().getY()!=Math.max(1, oldYHeros-1))
+					throw new PostconditionError("getHerosY(pasJeu(M,COMMANDE.GAUCHE)) = max(1, getHerosY(M)−1)");
+			}
+
+			//\post: getHerosY(pasJeu(M,COMMANDE.DROITE)) = min(Terrain::getNombreColonnes(getTerrain(M)-1), getHerosY(M)+1)
+			//												\if getBloc(getTerrain(M),getHerosX(M),min(Terrain::getNombeColonnes(getTerrain(M))-1,getHerosY(M)+1))
+			//															not in {MURMETAL,MURBRIQUE}
+			if(commande.equals(COMMANDE.DROITE)){
+				BlocService bloc = super.getTerrain().getBloc(oldXHeros, Math.min(super.getTerrain().getNombreColonnes()-1,oldYHeros+1));
+				if((bloc.getType().equals(Type.MURBRIQUE) || bloc.getType().equals(Type.MURMETAL)) && !super.getHeros().getWallPass() && !super.getHeros().getBombePass()){//heros ne doit pas bouger
+					if(super.getHeros().getX()!=oldXHeros || super.getHeros().getY()!=oldYHeros)
+						throw new PostconditionError("Postcondition: case disténataire est un MURMETAL ou MURBRIQUE");
+				}else if(super.getHeros().getY()!= Math.min(super.getTerrain().getNombreColonnes()-1, oldYHeros+1))
+					throw new PostconditionError("getHerosY(pasJeu(M,COMMANDE.DROITE)) = " +
+							"min(Terrain::getNombreColonnes(getTerrain(M)-1), getHerosY(M)+1)");
+			}
+		}
+		else {
+			//meme chose pour Kidnappeur
+		}
+
+
+		/**
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * */
+		//\post: Il existe un unique num : not in getBombesNumeros(M) and
+		//			getBombe(pasJeu(M,COMMANDE.BOMBE),num) = Bombe::init(num,getHerosX(M),getHerosY(M),getHerosForceVitale(M))
+		if(commande.equals(COMMANDE.BOMBE)){
+			//Test non atteignable 
+		}
+
+		//\post: tranquilles \def {num in getBombesNumeros(M) and not Bombe::vaExploser(getBombe(M,num))} alors
+		//			tranquilles \inclu= getBombeNumeros(pasJeu(M,C))		and
+		//			getNbBombes(pasJeu(M,COMMAND.BOMBE)) = #tranquilles +1 	and
+		//			cPrime != COMMAND.BOMBE => getNbBombes(pasJeu(M,cPrime)) = #tranquilles	and
+		
+		//			num in (getBombeNumeros(M) \ tranquilles) and misEnJoue(M,getHerosX(M),getHerosY(M),num) 
+		//				<=> 
+		//				getHerosSante(pasJeu(M,c))=SANTE.MORT
+
+		if(tranquilles.size() > (super.getBombeNumeros()).size())
+			throw new PostconditionError("tranquilles inclu= getBombeNumeros(pasJeu(M,C))");
+		if(commande.equals(COMMANDE.BOMBE))
+			if((tranquilles.size() < oldNbBombe) && (super.getNbBombes() != (tranquilles.size()+1))){
+				System.out.println("Trnquil>> "+tranquilles.size());
+				System.out.println(super.getNbBombes());
+				throw new PostconditionError("getNbBombes(pasJeu(M,COMMAND.BOMBE)) = #tranquilles +1");
+
+			}
+		if(!commande.equals(COMMANDE.BOMBE))
+			if(tranquilles.size() != super.getNbBombes())
+				throw new PostconditionError("cPrime != COMMAND.BOMBE => getNbBombes(pasJeu(M,cPrime)) = #tranquilles ");
+		if(herosExp && !super.getHeros().getSante().equals(SANTE.MORT))
+			throw new PostconditionError("Postcondition: misEnJoue(M,getHerosX(M),getHerosY(M),num) <=>  getHerosSante(pasJeu(M,c))=SANTE.MORT");
+		if (kidExp && !super.getKidnappeur().getSante().equals(SANTE.MORT))
+			throw new PostconditionError("Postcondition: misEnJoue(M,getKidnappeur(M),getKidnappeurY(M),num) <=>  getKidnappeurSante(pasJeu(M,c))=SANTE.MORT");
+
+		//\post for all bombe in {Bombe::getNumero(bombe)in getBombeNumeros(M) and Bombe::vaexploser(bombe)}	=>
+		//				Bombe::getNumero(bombe) not in getBombeNumero(pasJeu(M,isHero))
+		for (Integer b : vaExploser){
+			if(super.getBombeNumeros().contains(b))
+				throw new PostconditionError("Postcondition: post for all bombe in {Bombe::getNumero(bombe)in getBombeNumeros(M) " +
+						"and Bombe::vaexploser(bombe)}	=> 	Bombe::getNumero(bombe) not in getBombeNumero(pasJeu(M,isHero))");
+		}
+		
+		//\post: #getVilains(pasJeu(M,C,b)) <= #getVilains(M) //pas plus de 2 vilains toute au long de la partie 
+		if(super.getVilains().size() > oldVilain)
+			throw new PostconditionError("Postcondition: #getVilains(pasJeu(M,C,b)) <= #getVilains(M)");
+		
+	}
+}
+

@@ -1,0 +1,14 @@
+package bloc.Test;
+
+import org.junit.Before;
+
+import bloc.BlocContract;
+import bloc.BlocImplErr;
+
+public class TestErr extends Test {
+
+	@Before
+	public void initilisation(){
+		bloc = new BlocContract(new BlocImplErr());
+	}
+}

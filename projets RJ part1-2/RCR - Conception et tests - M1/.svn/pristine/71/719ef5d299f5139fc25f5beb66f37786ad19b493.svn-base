@@ -1,0 +1,13 @@
+package Acteur.Test;
+
+import org.junit.Before;
+
+import Acteur.ActeurImpl;
+
+public class TestImplNotContract extends Test{
+	
+	@Before
+	public void initilisation(){
+		acteur = new ActeurImpl();
+	}
+}

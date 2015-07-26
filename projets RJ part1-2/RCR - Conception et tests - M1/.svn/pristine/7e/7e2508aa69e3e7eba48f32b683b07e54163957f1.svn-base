@@ -1,0 +1,120 @@
+Service : Personnage
+Use : Personnage, Objet
+Types : String, int, boolean
+
+Observators :
+	const nom : [Personnage] → String
+	const largeur : [Personnage] → int
+	const hauteur : [Personnage] → int
+	const profondeur : [Personnage] → int
+	const pvMax : [Personnage] → int
+	
+	force : [Personnage] → int
+	pointsDeVie : [Personnage] → int
+	pos_x : [Personnage] → int
+	pos_y : [Personnage] → int
+	pos_z : [Personnage] → int
+	orientation_ a_droite : [Personnage] → boolean
+	en_saut : [Personnage] → boolean
+	
+	a_equipement : [Personnage] → boolean
+	l_objet_equipe : [Personnage] → Objet
+    le_personnage_equipe : [Personnage] → Personnage
+
+	// Incrémente le gèle de 1 à chaque pas de jeu.
+    estPorté : [Personnage] → boolean
+	// Renvoie le nombre de pas où le personnage est gelé.
+    estGelé : [Personnage] → int
+	estVaincu : [Personnage] → boolean
+	
+Constructors :
+	init : String × int × int × int × int × int × int × int  →  [Personnage]
+	pre init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_z)
+		require nom ≠ "" & largeur%2=1 & hauteur%2=1 &
+						 profondeur%2=1 & 0 < force < pvMax
+
+Operators :
+	retrait_de_pv : [Personnage] × int → [Personnage]
+		pre retrait_de_pv(P,s) require : ￢estVaincu(P) & s>0
+	depot_de_pv : [Personnage] × int → [Personnage]
+		pre depot_de_pv(P,s) require : pointsDeVie<pvMax & s>0
+	
+	ramasserPersonnage : [Personnage] × Personnage → [Personnage]
+		pre ramasser(P) require : a_equipement = false & estGelé = 0
+	ramasserObjet : [Personnage] × Objet → [Personnage]
+    	pre ramasser(P) require : a_equipement = false & estGelé = 0
+
+	jeter : [Personnage] → [Personnage]
+		pre jeter(P) require : a_equipement = true & estGelé = 0
+
+	// On lui donne les coordonnée du bloc où il soit se retrouver
+	se_deplacer : [Personnage] × int × int → [Personnage]
+		pre se_deplacer(P,x,y) require : estGelé = 0
+	sauter : [Personnage] × int × int× int → [Personnage]
+		pre sauter(P,x,y,z) require : estGelé = 0
+    se_fait_porter : [Personnage] → [Personnage]
+		pre se_fait_porter(P) require : estGelé > 0 & estPorté = false
+	se_fait_jeter : [Personnage] → [Personnage]
+		pre se_fait_jeter (P) require : estPorté = true
+	degeler : [Personnage] → [Personnage]
+
+Observations :
+[invariants]
+	estVaincu(P) (min)= pointsDeVie(P)  ≤ 0
+	a_equipement(P) (min)= l_objet_equipe ≠ null || le_personnage_equipe ≠ null
+
+[init]
+	nom(init(n,l,h,prof,f,pvmax,a))=n
+	largeur(init(n,l,h,prof,f,pvmax,a))=l
+	hauteur(init(n,l,h,prof,f,pvmax,a))=h
+	profondeur(init(n,l,h,prof,f,pvmax,a))=prof
+	force(init(n,l,h,prof,f,pvmax,a))=f
+	pvMax(init(n,l,h,prof,f,pvmax,a))=pvmax
+	pointsDeVie(init(n,l,h,prof,f,pvmax,a))=pvmax
+	pos_x(init(n,l,h,prof,f,pvmax,pv,a))= 10
+	pos_y(init(n,l,h,prof,f,pvmax,pv,a))= 0
+	pos_z(init(n,l,h,prof,f,pvmax,pv,a))= 10
+
+[retrait_de_pv]
+	pointsDeVie(retrait_de_pv(P,s))=pointsDeVie(P) - s
+	
+[depot_de_pv]
+	pointsDeVie(depot_de_pv(P,s))=pointsDeVie(P) + s
+	
+[ramasserPersonnage]
+	a_equipement(ramasserPersonnage(P,PR))= true
+	le_personnage_equipe(ramasserPersonnage(P,PR))= PR
+	 
+[ramasserObjet]
+	a_equipement(ramasserObjet(P,O))= true
+	l_objet_equipe(ramasserObjet(P,O))= O 
+
+[jeter]
+	a_equipement(jeter(P))= false
+	l_objet_equipe(jeter(P))= null
+	le_personnage_equipe(jeter(P))= null
+
+[se_deplacer]
+    pos_x(se_deplacer(P,x,y))=x
+	pos_y(se_deplacer(P,x,y))=y
+	orientation_a_droite(se_deplacer(P,x,y))= true si x > pos_x(P)
+                           						false sinon
+                           						
+[sauter]
+    en_saut(sauter(P,x,y,z))= ￢ en_saut(P)
+	pos_x(sauter(P,x,y,z))=x
+	pos_y(sauter(P,x,y,z))=y
+	pos_z(sauter(P,x,y,z))=z
+	orientation_a_droite(sauter(P,x,y,z))= true si x > pos_x(P)
+                    						false sinon
+
+[se_fait_porter]
+    estGelé(se_fait_porter(P))= 1
+	estPorté(se_fait_porter(P))= true
+
+[se_fait_jeter]
+    estGelé(se_fait_jeter(P))= 3
+    estPorté(se_fait_jeter(P))= false
+
+[degeler]
+    estGelé(degeler(P))=estGelé(P) - 1

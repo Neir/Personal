@@ -1,0 +1,19 @@
+Réalisation :
+Ce projet était à réaliser principalement sur nos horaires de cours chaque semaine tout au long du semestre.
+C'était un projet à réaliser à deux même si je l'ai réalisé seul.
+
+Objectifs :
+Le but était de construire sur un code déjà existant : lecture, compréhenssion, appropriation.
+Et d'apprendre à utiliser les principaux patrons de conceptions.
+
+Contenu :
+Le plateau est un labyrinthe de case.
+L'agent doit trouver toutes les boules du labyrinthe.
+Il possède une liste de règles pour ce déplacer à chaque case.
+Il utilise la première règle de la liste qui correspond à sa situation.
+On fini par lancer un algorithme génétique pour générer les meilleurs règles possibles.
+
+
+Exécutables :
+Liste de règles sauvegardées : SmileyTest
+Test normal, pour jouer avec les paramètres : MainTest (modifier "config/config.txt" pour changer le labyrinthe)

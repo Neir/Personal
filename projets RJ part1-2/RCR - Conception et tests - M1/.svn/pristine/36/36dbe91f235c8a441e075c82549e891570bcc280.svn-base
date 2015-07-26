@@ -1,0 +1,6 @@
+package MoteurJeu;
+
+public enum RESULTAT {
+
+	KIDNAPPEURGAGNE,PARTIENULLE,HEROSGAGNE;
+}

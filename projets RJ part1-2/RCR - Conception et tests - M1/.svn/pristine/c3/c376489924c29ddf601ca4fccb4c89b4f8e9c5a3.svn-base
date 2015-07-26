@@ -1,0 +1,242 @@
+/**
+ * 
+ */
+package rivercityrandom.impl;
+
+import java.util.Random;
+
+import rivercityrandom.enumerations.COMMANDE;
+import rivercityrandom.enumerations.CONTENU_OBJET;
+import rivercityrandom.enumerations.TYPE_BLOC;
+import rivercityrandom.enumerations.TYPE_GANGSTER;
+import rivercityrandom.services.Gangster;
+import rivercityrandom.services.GestionCombat;
+import rivercityrandom.services.Joueur;
+import rivercityrandom.services.Objet;
+import rivercityrandom.services.Personnage;
+import rivercityrandom.services.Terrain;
+
+/**
+ * @author Thibaut FLEURY & Jerome RAHAULT
+ *
+ */
+public class GestionCombatImpl implements GestionCombat {
+	private Joueur alex = new JoueurImpl();
+	private Joueur ryan = new JoueurImpl();
+	private Gangster slick = new GangsterImpl();
+	private Gangster[] listGangster;
+	private Terrain niveau1 = new TerrainImpl();
+	
+	@Override
+	public Joueur getAlex() {
+		return alex;
+	}
+
+	/* (non-Javadoc)
+	 * @see rivercityrandom.services.GestionCombat#getRyan()
+	 */
+	@Override
+	public Joueur getRyan() {
+		return ryan;
+	}
+
+	/* (non-Javadoc)
+	 * @see rivercityrandom.services.GestionCombat#getSlick()
+	 */
+	@Override
+	public Gangster getSlick() {
+		return slick;
+	}
+
+	/* (non-Javadoc)
+	 * @see rivercityrandom.services.GestionCombat#getListGangster()
+	 */
+	@Override
+	public Gangster[] getListGangster() {
+		return listGangster;
+	}
+
+	/* (non-Javadoc)
+	 * @see rivercityrandom.services.GestionCombat#getTerrain()
+	 */
+	@Override
+	public Terrain getTerrain() {
+		return niveau1;
+	}
+
+	/* (non-Javadoc)
+	 * @see rivercityrandom.services.GestionCombat#gerer()
+	 */
+	@Override
+	public void gerer(COMMANDE cR, COMMANDE cA) {
+		// gérer le gel pour chacun des personnages :
+		for(Personnage p : listGangster){ // en fait liste des personnages !
+			tomber(p);
+			if(p.estPorte())
+				p.se_fait_porter();
+			// soit se_fait_porter() met estGele à 1
+			// soit on a besoin d'un "setGele(int)".
+		}
+		if(ryan.estGele()==0 && !ryan.estVaincu())
+			gerer1Joueur(ryan, cR);
+		if(alex.estGele()==0 && !alex.estVaincu())
+			gerer1Joueur(alex, cA);
+	}
+
+	private void gerer1Joueur(Joueur j, COMMANDE c){
+		switch(c){
+		case GAUCHE :
+			if(!collisionGauche(j.getPos_x()-1))
+				j.se_deplacer(j.getPos_x()-1, j.getPos_y());
+			break;
+		case DROITE :
+			if(!collisionDroite(j.getPos_x()+1))
+				j.se_deplacer(j.getPos_x()+1, j.getPos_y());
+			break;
+		case BAS :
+			if(!collisionBas(j.getPos_y()+1))
+				j.se_deplacer(j.getPos_x(), j.getPos_y()+1);
+			break;
+		case HAUT :
+			if(!collisionHaut(j.getPos_y()-1))
+				j.se_deplacer(j.getPos_x(), j.getPos_y()-1);
+			break;
+		case FRAPPE :
+			frappe(j);
+			break;
+		case SAUT :
+			j.sauter(j.getPos_x(), j.getPos_y(), j.getPos_z()+1); // à améliorer
+			break;
+		case PREND :
+			Objet o;
+			if(!j.a_equipement()){ // Ne peux pas s'équipé s'il est déjà équipé d'une chose
+				if((o = (niveau1.getBloc(j.getPos_x(), j.getPos_y(), j.getPos_z()).getTresor())) != null)
+					j.ramasserObjet(o);
+				else {
+					for(Personnage p : listGangster){ // NON ! Liste de personnage !
+						if(p.equals(j)) continue;
+						if(p.getPos_x() == j.getPos_x() &&
+								p.getPos_y() == j.getPos_y() &&
+								p.getPos_z() == j.getPos_z() && 
+								p.estGele()>0){
+							j.ramasserPersonnage(p);
+							p.se_fait_porter();
+							break;
+						}
+					}
+				}
+			}
+			break;
+		case JET :
+			if(j.a_equipement()){
+				if(j.l_objet_equipe() != null){
+					if(j.orientation_a_droite()==true){ // Remplacer boolean(orientation_a_droite) par -1 ou 1 pour supprimer les if-else ?
+						niveau1.getBloc(j.getPos_x()+1, j.getPos_y(), j.getPos_z()).changerTresor(j.l_objet_equipe());;
+						// faire tomber l'objet ensuite...
+					} else {
+						niveau1.getBloc(j.getPos_x()-1, j.getPos_y(), j.getPos_z()).changerTresor(j.l_objet_equipe());;
+					}
+				} else {
+					if(j.orientation_a_droite()==true){ // Remplacer boolean(orientation_a_droite) par -1 ou 1 pour supprimer les if-else ?
+						j.le_personnage_equipe().se_fait_jeter();
+						j.le_personnage_equipe().sauter(j.getPos_x()+1, j.getPos_y(),j.getPos_z()+1);
+						// faire tomber l'objet ensuite...
+					} else {
+						j.le_personnage_equipe().se_fait_jeter();
+						j.le_personnage_equipe().sauter(j.getPos_x()-1, j.getPos_y(), j.getPos_z()+1);
+					}
+				}
+				j.jeter();
+			}
+			break;
+		default: // RIEN ou autre -> le joueur ne fait pas d'action
+			break;
+		}
+	}
+
+	/**
+	 * @param a
+	 */
+	private void frappe(Personnage a) {
+		for(Personnage p : listGangster){ // en fait liste des personnages !
+			if(p.equals(a)) continue;
+			if(a.orientation_a_droite()==true && p.getPos_x()+1 == a.getPos_x() // Le personnage est à droite de l'attaquant 
+					&& p.getPos_y() == a.getPos_y() && p.getPos_z() == a.getPos_z()){
+				p.retrait_de_pv(a.getForce());
+				p.se_deplacer(p.getPos_x()+1, p.getPos_y()); // il est reppoussé vers la droite
+				// geler le personnage frappé et celui qui frappe
+			}
+			else if (a.orientation_a_droite()==false && p.getPos_x()-1 == a.getPos_x() // Le personnage est à gauche de l'attaquant
+					&& p.getPos_y() == a.getPos_y() && p.getPos_z() == a.getPos_z()){
+				p.retrait_de_pv(a.getForce());
+				p.se_deplacer(p.getPos_x()-1, p.getPos_y()); // il est repoussé vers la gauche
+				// geler le personnage frappé et celui qui frappe
+			}
+		}
+	}
+
+	/**
+	 * @param pos_x
+	 * @return
+	 */
+	private boolean collisionGauche(int pos_x) {
+		return pos_x >= 0;
+	}
+	
+	/**
+	 * @param pos_x
+	 * @return
+	 */
+	private boolean collisionDroite(int pos_x) {
+		return pos_x < niveau1.getLargeur();
+	}
+	
+	/**
+	 * @param pos_y
+	 * @return 
+	 */
+	private boolean collisionBas(int pos_y) {
+		return pos_y < niveau1.getHauteur();
+	}
+	
+	/**
+	 * @param pos_y
+	 * @return
+	 */
+	private boolean collisionHaut(int pos_y) {
+		return pos_y >= 0;
+	}
+	
+	private void tomber(Personnage p) { // à appeler sur chaque personnage au début de gérer.
+		// S'il ne touche pas terre.
+		if(niveau1.getBloc(p.getPos_x(), p.getPos_y(), p.getPos_z()).getTypeBloc() == TYPE_BLOC.FOSSE){
+			p.sauter(p.getPos_x(), p.getPos_y(), p.getPos_z() - 1);
+		}
+		if(p.getPos_z() < 0){ // Le tuer s'il est dans une fosse sans fond.
+			p.retrait_de_pv(999999);
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see rivercityrandom.services.GestionCombat#init(int, int, int)
+	 */
+	@Override
+	public void init(int largeur, int hauteur, int profondeur) {
+		Objet[] listObjet = new Objet[5];
+		for(int i=0; i<5; i++){
+			listObjet[i] = new ObjetImpl();
+			listObjet[i].init(CONTENU_OBJET.values()[i], 5, true, 5);
+		}
+		niveau1.init(largeur, hauteur, profondeur);
+		alex.init("Alex");
+		ryan.init("Ryan");
+		slick.init("Slick", TYPE_GANGSTER.SQUIDS, null, 0);
+		listGangster = new Gangster[4];
+		Random r = new Random();
+		for(int i=0; i<4; i++){
+			listGangster[i] = new GangsterImpl();
+			listGangster[i].init("Toufik "+i, TYPE_GANGSTER.values()[r.nextInt(3)], listObjet[r.nextInt()], 0);
+		}
+	}
+
+}

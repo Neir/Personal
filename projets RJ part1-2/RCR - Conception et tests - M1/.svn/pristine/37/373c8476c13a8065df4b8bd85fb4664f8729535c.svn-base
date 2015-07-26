@@ -1,0 +1,382 @@
+package MoteurJeu.Test;
+
+import org.junit.Assert;
+import org.junit.Before;
+
+import error.InvariantError;
+import error.PostconditionError;
+import error.PreconditionError;
+
+import MoteurJeu.COMMANDE;
+import MoteurJeu.MoteurJeu;
+import MoteurJeu.MoteurJeuContrat;
+import MoteurJeu.MoteurJeuImpl;
+
+public class Test {
+	
+	protected MoteurJeu jeu;
+	
+	@Before
+	public void initilisation(){
+		jeu = new MoteurJeuContrat(new MoteurJeuImpl());
+	}
+	
+	
+	@org.junit.Test
+	public void getBombePre1Test(){
+		try {
+			jeu.init(3, 15, 13);
+			jeu.pasJeu(COMMANDE.BOMBE,true);
+			jeu.getBombe(0);
+		}catch(PreconditionError e){
+			System.out.println(e);Assert.assertTrue( false);
+		}catch(PostconditionError e){
+			System.out.println(e);Assert.assertTrue( false);
+		}catch(InvariantError e){
+			System.out.println(e);Assert.assertTrue( false);
+		}
+	}
+
+	@org.junit.Test
+	public void getBombePre2Test(){
+		try {
+			jeu.init(3, 15, 13);
+			jeu.pasJeu(COMMANDE.BOMBE,true);
+			jeu.getBombe(1);
+			Assert.assertTrue("Aurait levée un préCondition car la Bombe n'existe pas", false);
+		}catch(PreconditionError e){
+			System.out.println(e);
+			Assert.assertTrue(true);
+		}catch(PostconditionError e){
+			System.out.println(e);Assert.assertTrue( false);
+		}catch(InvariantError e){
+			System.out.println(e);Assert.assertTrue( false);
+		}
+	}
+
+	@org.junit.Test
+	public void getBombePre3Test(){
+		try {
+			jeu.init(3, 15, 13);
+			jeu.getBombe(0);
+			Assert.assertTrue("Aurait levée un préCondition car la Bombe n'existe pas", false);
+		}catch(PreconditionError e){
+			System.out.println(e);
+			Assert.assertTrue(true);
+		}catch(PostconditionError e){
+			System.out.println(e);Assert.assertTrue( false);
+		}catch(InvariantError e){
+			System.out.println(e);Assert.assertTrue( false);
+		}
+	}
+
+	@org.junit.Test
+	public void resultatFinalPre1Test(){
+		try {
+			jeu.init(1, 15, 13);
+			jeu.pasJeu(COMMANDE.RIEN,true);
+			jeu.resultatFinal();
+		}catch(PreconditionError e){
+			System.out.println(e);Assert.assertTrue(false);
+		}catch(PostconditionError e){
+			System.out.println(e);Assert.assertTrue( false);
+		}catch(InvariantError e){
+			System.out.println(e);Assert.assertTrue( false);
+		}
+	}
+
+	@org.junit.Test
+	public void resultatFinalPre2Test(){
+		try {
+			jeu.init(1, 15, 13);
+			jeu.resultatFinal();
+			Assert.assertTrue("Aurait dut levée une PréConditionErreur car la partie n'est pas finie", false);
+		}catch(PreconditionError e){
+			System.out.println(e);
+			Assert.assertTrue(true);
+		}catch(PostconditionError e){
+			System.out.println(e);Assert.assertTrue( false);
+		}catch(InvariantError e){
+			System.out.println(e);Assert.assertTrue( false);
+		}
+	}
+
+	@org.junit.Test
+	public void MisEnJouePre1Test(){
+		try {
+			jeu.init(3, 15, 13);
+			jeu.pasJeu(COMMANDE.BOMBE,true);
+			jeu.misEnJoue(1, 1, 0);
+		}catch(PreconditionError e){
+			System.out.println(e);Assert.assertTrue( false);
+		}catch(PostconditionError e){
+			System.out.println(e);Assert.assertTrue( false);
+		}catch(InvariantError e){
+			System.out.println(e);Assert.assertTrue( false);
+		}
+	}
+
+	@org.junit.Test
+	public void MisEnJouePre2Test(){
+		try {
+			jeu.init(3, 15, 13);
+			jeu.misEnJoue(1, 1, 0);
+			Assert.assertTrue("Aurait du catcher une Précondition car il n'existe pas de " +
+					"bombe donc il est impossible quelle soit mis en joue", false);
+		}catch(PreconditionError e){
+			System.out.println(e);
+			Assert.assertTrue(true);
+		}catch(PostconditionError e){
+			System.out.println(e);Assert.assertTrue( false);
+		}catch(InvariantError e){
+			System.out.println(e);Assert.assertTrue( false);
+		}
+	}
+
+	@org.junit.Test
+	public void VilainExistePre1Test(){
+		try {
+			jeu.init(3, 15, 13);
+			jeu.vilainExist(3, 12);
+		}catch(PreconditionError e){
+			System.out.println(e);Assert.assertTrue( false);
+		}catch(PostconditionError e){
+			System.out.println(e);Assert.assertTrue( false);
+		}catch(InvariantError e){
+			System.out.println(e);Assert.assertTrue( false);
+		}
+	} 
+
+	@org.junit.Test
+	public void VilainExistePreTest(){
+		try {
+			jeu.init(3, 15, 13);
+			jeu.vilainExist(-3, 12);
+			Assert.assertTrue("Le vilain ne peut être à l'exterreur du terrain", false);
+		}catch(PreconditionError e){
+			System.out.println(e);
+			Assert.assertTrue(true);
+		}catch(PostconditionError e){
+			System.out.println(e);Assert.assertTrue( false);
+		}catch(InvariantError e){
+			System.out.println(e);Assert.assertTrue( false);
+		}
+	} 
+
+	@org.junit.Test
+	public void VilainExistePre3Test(){
+		try {
+			jeu.init(3, 15, 13);
+			jeu.vilainExist(3, 13);
+			Assert.assertTrue("Le vilain ne peut être à l'exterreur du terrain", false);
+		}catch(PreconditionError e){
+			System.out.println(e);
+			Assert.assertTrue(true);
+		}catch(PostconditionError e){
+			System.out.println(e);Assert.assertTrue( false);
+		}catch(InvariantError e){
+			System.out.println(e);Assert.assertTrue( false);
+		}
+	} 
+	
+	
+	@org.junit.Test
+	public void InitPre1Test(){
+		try {
+			jeu.init(3, 15, 13);
+		}catch(PreconditionError e){
+			System.out.println(e);Assert.assertTrue(	false);
+		}catch(PostconditionError e){
+			System.out.println(e);Assert.assertTrue( false);
+		}catch(InvariantError e){
+			System.out.println(e);Assert.assertTrue( false);
+		}catch(Exception e){
+			System.out.println(e.toString());
+		}
+	}
+	
+	
+	@org.junit.Test
+	public void InitPre2Test(){
+		try {
+			jeu.init(-3, 15, 13);
+			Assert.assertTrue("Nombre de Pas du Jeu négative", false);
+		}catch(PreconditionError e){
+			System.out.println(e);
+			Assert.assertTrue(true);
+		}catch(PostconditionError e){
+			System.out.println(e);Assert.assertTrue( false);
+		}catch(InvariantError e){
+			System.out.println(e);Assert.assertTrue( false);
+		}
+	}
+
+	@org.junit.Test
+	public void InitPre3Test(){
+		try {
+			jeu.init(1, -6, 13);
+			Assert.assertTrue("Nombre de Colonne négative", false);
+		}catch(PreconditionError e){
+			System.out.println(e);
+			Assert.assertTrue(true);
+		}catch(PostconditionError e){
+			System.out.println(e);Assert.assertTrue( false);
+		}catch(InvariantError e){
+			System.out.println(e);Assert.assertTrue( false);
+		}
+	}
+
+	@org.junit.Test
+	public void InitPre4Test(){
+		try {
+			jeu.init(3, 15, -3);
+			Assert.assertTrue("Nombre de Ligne négative", false);
+		}catch(PreconditionError e){
+			System.out.println(e);
+			Assert.assertTrue(true);
+		}catch(PostconditionError e){
+			System.out.println(e);Assert.assertTrue( false);
+		}catch(InvariantError e){
+			System.out.println(e);Assert.assertTrue( false);
+		}
+	}
+
+	
+	@org.junit.Test
+	public void poserBombePre1Test(){
+		try{
+			jeu.init(1, 15, 13);
+			jeu.poserBombe(0, 1, 1, 4);
+		}catch(PreconditionError e){
+			System.out.println(e);Assert.assertTrue( false);
+		}catch(PostconditionError e){
+			System.out.println(e);Assert.assertTrue( false);
+		}catch(InvariantError e ){
+			System.out.println(e);Assert.assertTrue( false);
+		}
+	}
+
+	@org.junit.Test
+	public void poserBombePre2Test(){
+		try{
+			jeu.init(1, 15, 13);
+			jeu.poserBombe(0, 15, 13, 4);
+			Assert.assertTrue("Aurait dut levée une exception car la bombe est posée à l'exterieur " + "" +
+					" du terrain",	false);
+		}catch(PreconditionError e){
+			System.out.println(e);
+			Assert.assertTrue(true);
+		}catch(PostconditionError e){
+			System.out.println(e);Assert.assertTrue( false);
+		}catch(InvariantError e ){
+			System.out.println(e);Assert.assertTrue( false);
+		}
+	}
+
+	@org.junit.Test
+	public void poserBombePre3Test(){
+		try{
+			jeu.init(1, 15, 13);
+			jeu.poserBombe(0, 0, 0, 4);
+			Assert.assertTrue("La bombe ne peut pas être positionner à cette emplacement car" +
+					"le bloc n'est pas vide ",	false);
+		}catch(PreconditionError e){
+			System.out.println(e);
+			Assert.assertTrue(true);
+		}catch(PostconditionError e){
+			System.out.println(e);Assert.assertTrue( false);
+		}catch(InvariantError e ){
+			System.out.println(e);Assert.assertTrue( false);
+		}
+	}
+
+	
+	@org.junit.Test 
+	public void initPostTest(){
+		try  {
+			jeu.init(5, 15, 13);
+		}catch(Error e){
+			System.out.println(e);Assert.assertTrue( false);
+		}
+		Assert.assertTrue("Le current n'a pas été initialiser à 0", jeu.getPasJeuCourrant()== 0);
+		Assert.assertTrue("Le nombre de pas de jeu à mal été instancier", jeu.getMaxPasJeu() == 5);
+		Assert.assertTrue("Il ne peut pas y avoir de bombe", jeu.getBombeNumeros().size() == 0);
+		Assert.assertTrue("Il ne peut pas y avoir de bombe", jeu.getNbBombes() == 0);
+		Assert.assertTrue("Le terrain n'a pas été initialiser", jeu.getTerrain() != null);
+		Assert.assertTrue("Le heros n'est pas bien possitionner", jeu.getHeros().getX() == 1);
+		Assert.assertTrue("Le heros n'est pas bien possitionner", jeu.getHeros().getY() == 1);
+		Assert.assertTrue("Le kidnappeur n'est pas bien possitionner", jeu.getKidnappeur().getX() == 13);
+		Assert.assertTrue("Le kidnappeur n'est pas bien possitionner", jeu.getKidnappeur().getY() == 11);
+	}
+	
+	@org.junit.Test
+	public void poserBombePostTest(){
+		try{
+			jeu.init(1, 15, 13);
+			jeu.poserBombe(0, 1, 1, 5);
+		}catch(Error e){
+			System.out.println(e);Assert.assertTrue( false);
+		}
+		Assert.assertTrue("Modification non prévue du pas courant ",jeu.getPasJeuCourrant() == 0);
+		Assert.assertTrue("La bombe n'existe pas", jeu.bombeExist(0));
+		Assert.assertTrue("La bombe n'a pas été trouvert dans la liste", jeu.getBombe(0) != null);
+		Assert.assertTrue("La bombe retourner n'est pas la bonne", jeu.getBombe(0).getNumero() == 0); 
+	}
+	
+	
+	@org.junit.Test
+	public void pasJeuPre1Test(){
+		try{
+			jeu.init(1, 15,13);//un seul pas a faire
+			jeu.pasJeu(COMMANDE.BAS,true);
+			jeu.pasJeu(COMMANDE.GAUCHE,true);
+			Assert.assertTrue("ne doit pas faire ce pas car fin de la partie",false);
+		}catch(PreconditionError e){
+			System.out.println(e.toString());
+		}catch(PostconditionError po){
+			System.out.println(po.toString());
+		}catch(InvariantError inv){
+			inv.toString();
+		}
+	}
+	public void pasJeuPostTest(){
+		try{
+			jeu.init(1, 15,13);//un seul pas a faire
+			jeu.pasJeu(COMMANDE.BAS,true);
+			jeu.pasJeu(COMMANDE.GAUCHE,true);
+		
+		}catch(PreconditionError e){
+			System.out.println(e.toString());
+		}catch(PostconditionError po){
+			System.out.println(po.toString());
+		}catch(InvariantError inv){
+			inv.toString();
+		}
+	}
+	public void pasJeuPostTest2(){
+		try{
+			jeu.init(12, 15,13);//un seul pas a faire
+			jeu.pasJeu(COMMANDE.BOMBE,true);//1
+			jeu.pasJeu(COMMANDE.BOMBE,false);//2
+			jeu.pasJeu(COMMANDE.BAS,true);//3
+			jeu.pasJeu(COMMANDE.HAUT,false);//3
+			jeu.pasJeu(COMMANDE.BAS,true);//4
+			jeu.pasJeu(COMMANDE.HAUT,false);//5
+			jeu.pasJeu(COMMANDE.DROITE,true);//6
+			jeu.pasJeu(COMMANDE.GAUCHE,false);//7
+			jeu.pasJeu(COMMANDE.RIEN,true);//8
+			jeu.pasJeu(COMMANDE.RIEN,false);//9
+			jeu.pasJeu(COMMANDE.BAS,true);//10
+			jeu.pasJeu(COMMANDE.HAUT,false);//11
+			jeu.pasJeu(COMMANDE.BOMBE,true);//12
+			jeu.pasJeu(COMMANDE.BOMBE,false);//13  Fin de la Partie pas non effetué
+		
+		}catch(PreconditionError e){
+			System.out.println(e.toString());
+		}catch(PostconditionError po){
+			System.out.println(po.toString());
+		}catch(InvariantError inv){
+			inv.toString();
+		}
+	}
+}

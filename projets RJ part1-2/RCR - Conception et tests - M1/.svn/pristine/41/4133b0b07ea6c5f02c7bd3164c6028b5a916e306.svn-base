@@ -1,0 +1,199 @@
+/**
+ * 
+ */
+package rivercityrandom.contracts;
+
+import rivercityrandom.decorators.MoteurJeuDecorator;
+import rivercityrandom.enumerations.COMMANDE;
+import rivercityrandom.enumerations.RESULTAT;
+import rivercityrandom.errors.InvariantError;
+import rivercityrandom.errors.PostconditionError;
+import rivercityrandom.errors.PreconditionError;
+import rivercityrandom.services.MoteurJeu;
+
+/**
+ * @author Thibaut FLEURY & Jerome RAHAULT
+ *
+ */
+public class MoteurJeuContract extends MoteurJeuDecorator {
+
+	public MoteurJeuContract(MoteurJeu delegate) {
+		super(delegate);
+	}
+	
+	public void checkInvariant() {
+		
+		// inv: estFini() [min]== (getCombat().getRyan().estVaincu()
+		//      					&& getCombat().getAlex().estVaincu())
+		//      					|| getCombat().getSlick().estVaincu()
+		if (!(estFini() == (getCombat().getRyan().estVaincu() 
+							&& getCombat().getAlex().estVaincu())
+						 || getCombat().getSlick().estVaincu())
+		   )
+		{
+			throw new InvariantError(
+					"Le jeu est marqué comme non fini "
+					+ "alors que slick ou les deux héros sont morts.");
+		}
+		
+		
+		// inv: if getCombat().getSlick().estVaincu() 
+		// 				&& !getCombat().getRyan().estVaincu()
+		// 		then
+		// 			getResultatFinal() == SLICK_M_RYAN_V
+		// 		else if getCombat().getSlick().estVaincu()
+		// 				&& getCombat().getRyan().estVaincu()
+		//				&& !getCombat().getAlex().estVaincu()
+		//		then
+		//			getResultatFinal() == SLICK_M_RYAN_M_ALEX_V
+		// 		else if !getCombat().getSlick().estVaincu()
+		// 				&& getCombat().getRyan().estVaincu()
+		//				&& getCombat().getAlex().estVaincu()
+		//		then
+		//			getResultatFinal() == SLICK_V_RYAN_M_ALEX_M
+		// 		else if getCombat().getSlick().estVaincu()
+		// 				&& getCombat().getRyan().estVaincu()
+		//				&& getCombat().getAlex().estVaincu()
+		//		then
+		//			getResultatFinal() == TOUS_M
+		//		else
+		//			getResultatFinal() == null
+		if (getCombat().getSlick().estVaincu() 
+ 				&& !getCombat().getRyan().estVaincu()) {
+			
+			if (!(getResultatFinal() == RESULTAT.SLICK_M_RYAN_V)) {
+				throw new InvariantError(
+						"Le résultat final n'indique pas que Slick est mort "
+						+ "et Ryan vivant.");
+			}
+		}
+		else if (getCombat().getSlick().estVaincu()
+				&& getCombat().getRyan().estVaincu()
+				&& !getCombat().getAlex().estVaincu()) {
+			if (!(getResultatFinal() == RESULTAT.SLICK_M_RYAN_M_ALEX_V)) {
+				throw new InvariantError(
+						"Le résultat final n'indique pas que Slick et Ryan "
+						+ "sont morts et que Alex est vivant.");
+			}
+		}
+		else if (!getCombat().getSlick().estVaincu()
+				&& getCombat().getRyan().estVaincu()
+				&& getCombat().getAlex().estVaincu()) {
+			if (!(getResultatFinal() == RESULTAT.SLICK_V_RYAN_M_ALEX_M)) {
+				throw new InvariantError(
+						"Le résultat final n'indique pas que "
+						+ "tout le monde est mort.");
+			}
+		}
+		else if (getCombat().getSlick().estVaincu()
+				&& getCombat().getRyan().estVaincu()
+				&& getCombat().getAlex().estVaincu()) {
+			if (!(getResultatFinal() == RESULTAT.TOUS_M)) {
+				throw new InvariantError(
+						"Le résultat final n'indique pas que Slick est mort "
+						+ "et Ryan vivant.");
+			}
+		}
+		else {
+			if (!(getResultatFinal() == RESULTAT.NULLE)) {
+				throw new InvariantError(
+						"Le résultat final n'est pas null "
+						+ "alors que la partie n'est pas finie.");
+			}
+		}
+	}
+	
+	
+	// ------------------------------------------------------------------------
+	// Constructors
+	// ------------------------------------------------------------------------
+
+	/**
+	 * @see rivercityrandom.services.MoteurJeu#init(int, int, int)
+	 */
+	@Override
+	public void init(int largeur, int hauteur, int profondeur) {
+		
+		// Préconditions
+		
+		// pre: largeur >= 256
+		if (!(largeur >= 256)) {
+			throw new PreconditionError("La largeur est inférieure à 256.");
+		}
+		
+		// pre: hauteur >= 240
+		if (!(hauteur >= 240)) {
+			throw new PreconditionError("La hauteur est inférieure à 240.");
+		}
+		
+		// pre: profondeur >= 100
+		if (!(profondeur >= 100)) {
+			throw new PreconditionError("La profondeur est inférieure à 100.");
+		}
+		
+		// Invariants
+		checkInvariant();
+		
+		// run
+		super.init(largeur, hauteur, profondeur);
+		
+		// Invariants
+		checkInvariant();
+		
+		
+		// Postconditions
+		
+		// post: estFini() == false
+		if (!(estFini() == false)) {
+			throw new PostconditionError("La partie est déjà finie "
+					+ "alors qu'elle vient d'être créée.");
+		}
+		
+		// post: getCombat().getTerrain().getLargeur() == largeur
+		if (!(getCombat().getTerrain().getLargeur() == largeur)) {
+			throw new PostconditionError(
+					"La largeur du terrain n'a pas été correctement initialisée.");
+		}
+		
+		// post: getCombat().getTerrain().getHauteur() == hauteur
+		if (!(getCombat().getTerrain().getHauteur() == hauteur)) {
+			throw new PostconditionError(
+					"La hauteur du terrain n'a pas été correctement initialisée.");
+		}
+		
+		// post: getCombat().getTerrain().getProfondeur() == profondeur
+		if (!(getCombat().getTerrain().getProfondeur() == profondeur)) {
+			throw new PostconditionError(
+					"La profondeur du terrain n'a pas été correctement initialisée.");
+		}
+	}
+	
+	
+	// ------------------------------------------------------------------------
+	// Operators
+	// ------------------------------------------------------------------------
+
+	/**
+	 * @see rivercityrandom.services.MoteurJeu#pasJeu(rivercityrandom.enumerations.COMMANDE, rivercityrandom.enumerations.COMMANDE)
+	 */
+	@Override
+	public void pasJeu(COMMANDE cR, COMMANDE cA) {
+		
+		// Préconditions
+		
+		
+		// Invariants
+		checkInvariant();
+		
+		// run
+		super.pasJeu(cR, cA);
+		
+		// Invariants
+		checkInvariant();
+		
+		
+		// Postconditions
+		
+	}
+	
+}

@@ -1,0 +1,58 @@
+package vilain;
+
+public class VilainDecorateur implements VilainService {
+
+	protected VilainService delegate;
+	
+	public VilainDecorateur(VilainService v){
+		this.delegate=v;
+	}
+	
+	@Override
+	public void init(TypeVilain t, int power) {
+		delegate.init(t, power);
+	}
+
+	@Override
+	public TypeVilain getType() {
+		return delegate.getType();
+	}
+
+	@Override
+	public int getPower() {
+		return delegate.getPower();
+	}
+
+	@Override
+	public void setPower() {
+		delegate.setPower();
+	}
+
+	@Override
+	public void deplacer() {
+		delegate.deplacer();
+	}
+
+	@Override
+	public int getIndexX() {
+		return delegate.getIndexX();
+	}
+
+	@Override
+	public int getIndexY() {
+		return delegate.getIndexY();
+	}
+
+	@Override
+	public void setIndexX(int x) {
+		delegate.setIndexX(x);
+	}
+
+	@Override
+	public void setIndexY(int y) {
+		delegate.setIndexY(y);
+	}
+
+	
+
+}

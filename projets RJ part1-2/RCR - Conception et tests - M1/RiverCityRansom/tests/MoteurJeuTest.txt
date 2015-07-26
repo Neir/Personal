@@ -1,0 +1,51 @@
+// ----------------------------------------------------------------------------
+// OBJECTIF DE TEST : Initialisation du moteur de jeu
+// ----------------------------------------------------------------------------
+
+Cas de test :
+	MoteurJeu::initOK
+Condition initiale : 
+	largeur = 256, hauteur = 240, profondeur = 100
+Operation : 
+	M = init(largeur, hauteur, profondeur)
+Oracle : 
+	Terrain::getLargeur(GestionCombat::getTerrain(getCombat(M))) = largeur
+	Terrain::getHauteur(GestionCombat::getTerrain(getCombat(M))) = hauteur
+	Terrain::getProfondeur(GestionCombat::getTerrain(getCombat(M))) = profondeur
+	estFini(M) = false
+	getResultatFinal(M) = NULLE
+
+	
+Cas de test :
+	MoteurJeu::initKO1
+Condition initiale : 
+	largeur = 255, hauteur = 240, profondeur = 100
+Operation : 
+	M = init(largeur, hauteur, profondeur)
+Oracle : 
+	largeur < 256
+	# exception levée
+	
+	
+Cas de test :
+	MoteurJeu::initKO2
+Condition initiale : 
+	largeur = 256, hauteur = 239, profondeur = 100
+Operation : 
+	M = init(largeur, hauteur, profondeur)
+Oracle : 
+	hauteur < 240
+	# exception levée
+	
+	
+Cas de test :
+	MoteurJeu::initKO3
+Condition initiale : 
+	largeur = 256, hauteur = 240, profondeur = 99
+Operation : 
+	M = init(largeur, hauteur, profondeur)
+Oracle : 
+	profondeur < 100
+	# exception levée
+	
+	

@@ -1,0 +1,21 @@
+Service : Bloc
+Use : Objet
+Types : int, enum TYPE_BLOC{VIDE, FOSSE}
+
+Observators : 
+    const type : [Bloc] → TYPE_BLOC
+    tresor : [Bloc] → Objet
+    
+Constructors : 
+    init : TYPE_BLOC × Objet → [Bloc]
+        pre init(p_type, p_tresor) require p_type ≠ null
+        
+Operators :
+    changerTresor : [Bloc] × Objet → [Bloc]
+    
+Observations :
+[init]
+    type(init(p_type, p_tresor)) = p_type
+    tresor(init(p_type, p _tresor)) = p_tresor
+[changerTresor]
+	tresor((changerTresor(B, p_tresor)) = p_tresor

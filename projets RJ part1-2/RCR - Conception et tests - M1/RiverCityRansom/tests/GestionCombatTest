@@ -1,0 +1,89 @@
+// ----------------------------------------------------------------------------
+// OBJECTIF DE TEST : Initialisation d'une gestion de combat
+// ----------------------------------------------------------------------------
+
+Cas de test :
+	GestionCombat::initOK
+Condition initiale : 
+	largeur = 128, hauteur = 16, profondeur = 8
+Operation : 
+	gc = init(largeur,hauteur,profondeur)
+Oracle : 
+	getTerrain() = Terrain::init(largeur,hauteur,profondeur)
+	getRyan() != null
+	getAlex() != null
+	getSlick() != null
+	getRyan() ∈   getListPersonnages()
+	getAlex() ∈   getListPersonnages()
+	getSlick() ∈   getListPersonnages()
+	
+Cas de test :
+	GestionCombat::initKO1
+Condition initiale : 
+	largeur = 128, hauteur = 16, profondeur = 8
+Operation : 
+	gc = init(largeur,hauteur,profondeur)
+Oracle : 
+	getSlick() = null
+	# exception levée
+	
+Cas de test :
+	GestionCombat::initKO2
+Condition initiale : 
+	largeur = 128, hauteur = 16, profondeur = 8
+Operation : 
+	gc = init(largeur,hauteur,profondeur)
+Oracle : 
+	getListPersonnages() = null
+	# exception levée
+
+Cas de test :
+	GestionCombat::initKO3
+Condition initiale : 
+	largeur = 128, hauteur = 16, profondeur = 8
+Operation : 
+	gc = init(largeur,hauteur,profondeur)
+Oracle : 
+	getTerrain().getLargeur() != largeur
+	# exception levée
+
+Cas de test :
+	GestionCombat::initKO4
+Condition initiale : 
+	largeur = 128, hauteur = 16, profondeur = 8
+Operation : 
+	gc = init(largeur,hauteur,profondeur)
+Oracle : 
+	getTerrain().getHauteur() != hauteur
+	# exception levée
+	
+Cas de test :
+	GestionCombat::initKO5
+Condition initiale : 
+	largeur = 128, hauteur = 16, profondeur = 8
+Operation : 
+	gc = init(largeur,hauteur,profondeur)
+Oracle : 
+	getTerrain().getProfondeur() != profondeur
+	# exception levée
+
+// -----------------------------------------------------------------------------------
+// OBJECTIF DE TEST : gerer1joueur s'occupe des actions réalisé par un joueur spécifié
+// -----------------------------------------------------------------------------------
+
+Cas de test :
+	GestionCombat::gerer1joueurGaucheOK
+Condition initiale : 
+	largeur = 128, hauteur = 16, profondeur = 8,
+	joueur = ryan (ou alex), commande = GAUCHE
+Operation : 
+	gcc = init(largeur,hauteur,profondeur)
+	gc = gerer1joueur(gcc, joueur, commande)
+Oracle : 
+	getRyan().getPos_x() = getRyan().getPos_x()@pre - 1
+	si getRyan().getPos_x()@pre - 1 >= 0
+	
+	
+	
+	
+	

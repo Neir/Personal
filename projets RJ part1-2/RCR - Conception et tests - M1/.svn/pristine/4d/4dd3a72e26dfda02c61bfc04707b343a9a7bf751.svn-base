@@ -1,0 +1,50 @@
+/**
+ * 
+ */
+package rivercityrandom.contracts;
+
+import rivercityrandom.decorators.PersonnageDecorator;
+import rivercityrandom.services.Personnage;
+
+/**
+ * @author Thibaut FLEURY & Jerome RAHAULT
+ *
+ */
+public class PersonnageContract extends PersonnageDecorator {
+
+	public PersonnageContract(Personnage delegate) {
+		super(delegate);
+	}
+
+	public void checkInvariant() {
+		
+		// throw des InvariantError
+	}
+	
+	
+	
+	/**
+	 * @see rivercityrandom.services.Personnage#init(java.lang.String, int, int, int, int, int, int, int, int, int)
+	 */
+	@Override
+	public void init(String nom, int largeur, int hauteur, int profondeur,
+			int force, int pvMax, int argent, int pos_x, int pos_y, int pos_z) {
+		
+		
+		// On vérifie les préconditions
+		
+		
+		// On vérifie les invariants
+		checkInvariant();
+		
+		// run
+		super.init(nom, largeur, hauteur, profondeur,
+				force, pvMax, argent, pos_x, pos_y, pos_z);
+		
+		// On vérifie les invariants
+		checkInvariant();
+		
+		// On vérifie les postconditions
+		
+	}
+}

@@ -1,0 +1,138 @@
+/**
+ * 
+ */
+package rivercityrandom.decorators;
+
+import rivercityrandom.services.Personnage;
+
+/**
+ * @author Thibaut FLEURY & Jerome RAHAULT
+ *
+ */
+public class PersonnageDecorator implements Personnage {
+	private final Personnage delegate;
+	
+	public PersonnageDecorator(Personnage delegate) {
+		this.delegate = delegate;
+	}
+	
+	protected Personnage getDelegate() {
+		return delegate;
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#getNom()
+	 */
+	@Override
+	public String getNom() {
+		return delegate.getNom();
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#getLargeur()
+	 */
+	@Override
+	public int getLargeur() {
+		return delegate.getLargeur();
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#getHauteur()
+	 */
+	@Override
+	public int getHauteur() {
+		return delegate.getHauteur();
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#getPronfondeur()
+	 */
+	@Override
+	public int getPronfondeur() {
+		return delegate.getPronfondeur();
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#getPvMax()
+	 */
+	@Override
+	public int getPvMax() {
+		return delegate.getPvMax();
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#getForce()
+	 */
+	@Override
+	public int getForce() {
+		return delegate.getForce();
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#getPv()
+	 */
+	@Override
+	public int getPv() {
+		return delegate.getPv();
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#getPos_x()
+	 */
+	@Override
+	public int getPos_x() {
+		return delegate.getPos_x();
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#getPox_y()
+	 */
+	@Override
+	public int getPos_y() {
+		return delegate.getPos_y();
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#getPos_z()
+	 */
+	@Override
+	public int getPos_z() {
+		return delegate.getPos_z();
+	}
+	
+	/**
+	 * @see rivercityrandom.services.Personnage#estGele()
+	 */
+	@Override
+	public int estGele() {
+		return delegate.estGele();
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#estVaincu()
+	 */
+	@Override
+	public boolean estVaincu() {
+		return delegate.estVaincu();
+	}
+	
+	/**
+	 * @see rivercityrandom.services.Personnage#estArme()
+	 */
+	@Override
+	public boolean estArme() {
+		return delegate.estArme();
+	}
+
+	/**
+	 * @see rivercityrandom.services.Personnage#init(java.lang.String, int, int, int, int, int, int, int, int, int)
+	 */
+	@Override
+	public void init(String nom, int largeur, int hauteur, int profondeur,
+			int force, int pvMax, int argent, int pos_x, int pos_y, int pos_z) {
+		
+		delegate.init(nom, largeur, hauteur, profondeur,
+				force, pvMax, argent, pos_x, pos_y, pos_z);
+	}
+
+}

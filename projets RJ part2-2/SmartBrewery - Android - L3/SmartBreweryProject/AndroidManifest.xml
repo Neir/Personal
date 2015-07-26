@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="ca.umontreal.ift2905.activities"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="17" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="ca.umontreal.ift2905.activities.HomeActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="ca.umontreal.ift2905.activities.ResultActivity"
+            android:label="@string/title_activity_result" >
+        </activity>
+        <activity
+            android:name="ca.umontreal.ift2905.activities.SearchActivity"
+            android:label="@string/title_activity_search" >
+        </activity>
+        <activity
+            android:name="ca.umontreal.ift2905.activities.BeerActivity"
+            android:label="@string/title_activity_beer" >
+        </activity>
+                <activity
+            android:name="ca.umontreal.ift2905.activities.BeeralyzerActivity"
+            android:label="@string/title_activity_beeralyzer" >
+        </activity>
+        <activity android:name="FavoriteBeerActivity"
+                        android:label="@string/title_activity_favorite_beer" ></activity>
+    </application>
+
+</manifest>

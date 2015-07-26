@@ -1,0 +1,722 @@
+/**
+ * 
+ */
+package rivercityrandom.tests;
+
+import static org.junit.Assert.assertTrue;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import rivercityrandom.contracts.PersonnageContract;
+import rivercityrandom.errors.ContractError;
+import rivercityrandom.errors.InvariantError;
+import rivercityrandom.errors.PreconditionError;
+import rivercityrandom.impl.PersonnageImpl;
+
+/**
+ * @author Thibaut FLEURY & Jerome RAHAULT
+ *
+ */
+public class PersonnageTest {
+
+	private PersonnageContract personnage;
+	
+	public PersonnageTest() {
+		personnage = null;
+	}
+
+	@Before
+	public void initialisation() {
+		personnage = new PersonnageContract(new PersonnageImpl());
+	}
+	
+	@After
+	public void afterTests() {
+		personnage = null;
+	}
+	
+	
+	
+	// ------------------------------------------------------------------------
+	// OBJECTIF DE TEST : Initialisation d'un personnage
+	// ------------------------------------------------------------------------
+	
+	@Test
+	public void initOK() {
+		
+		try {
+			
+			String nom = "Toto";
+			int largeur = 11;
+			int hauteur = 11;
+			int profondeur = 11;
+			int force = 11;
+			int pvMax = 100;
+			int pos_x = 5;
+			int pos_y = 5;
+			int pos_z = 5;
+			
+			personnage.init(nom, largeur, hauteur, profondeur, 
+					force, pvMax, pos_x, pos_y, pos_z);
+			
+			assertTrue("Personnage::initOK :\n"
+					+ "le nom est erroné",
+					personnage.getNom() == nom);
+			
+			assertTrue("Personnage::initOK :\n"
+					+ "la largeur est erronée",
+					personnage.getLargeur() == largeur);
+			
+			assertTrue("Personnage::initOK :\n"
+					+ "la hauteur est erronée",
+					personnage.getHauteur() == hauteur);
+			
+			assertTrue("Personnage::initOK :\n"
+					+ "la profondeur est erronée",
+					personnage.getProfondeur() == profondeur);
+			
+			assertTrue("Personnage::initOK :\n"
+					+ "la force est erronée",
+					personnage.getForce() == force);
+			
+			assertTrue("Personnage::initOK :\n"
+					+ "les pv max sont erronés",
+					personnage.getPvMax() == pvMax);
+			
+			assertTrue("Personnage::initOK :\n"
+					+ "les pv sont erronés",
+					personnage.getPv() == pvMax);
+			
+			assertTrue("Personnage::initOK :\n"
+					+ "la pos x est erronée",
+					personnage.getPos_x() == pos_x);
+			
+			assertTrue("Personnage::initOK :\n"
+					+ "la pos y est erronée",
+					personnage.getPos_y() == pos_y);
+			
+			assertTrue("Personnage::initOK :\n"
+					+ "la pos z est erronée",
+					personnage.getPos_z() == pos_z);
+			
+			assertTrue("Personnage::initOK :\n"
+					+ "l'orientation à droite est erronée",
+					personnage.orientation_a_droite() == true);
+			
+			assertTrue("Personnage::initOK :\n"
+					+ "l'état en saut est erroné",
+					personnage.en_saut() == false);
+			
+			assertTrue("Personnage::initOK :\n"
+					+ "l'objet équipé est erroné",
+					personnage.l_objet_equipe() == null);
+			
+			assertTrue("Personnage::initOK :\n"
+					+ "le personnage équipé est erroné",
+					personnage.le_personnage_equipe() == null);
+			
+			assertTrue("Personnage::initOK :\n"
+					+ "l'état est porté est erroné",
+					personnage.estPorte() == false);
+			
+			assertTrue("Personnage::initOK :\n"
+					+ "l'état est gelé est erroné",
+					personnage.estGele() == 0);
+			
+			// Tout est ok
+		}
+		catch (ContractError e) {
+			assertTrue(
+					"Personnage::initOK :\n" + e.getMessage(),
+					false);
+		}
+	}
+	
+	@Test
+	public void initKO1() {
+		
+		try {
+			String nom = "";
+			int largeur = 11;
+			int hauteur = 11;
+			int profondeur = 11;
+			int force = 11;
+			int pvMax = 100;
+			int pos_x = 5;
+			int pos_y = 5;
+			int pos_z = 5;
+			
+			personnage.init(nom, largeur, hauteur, profondeur, 
+					force, pvMax, pos_x, pos_y, pos_z);
+			
+			assertTrue("Personnage::initKO1 :\n" +
+					"aucune exception levée alors que le nom n'est pas défini",
+					false);
+		}
+		catch (PreconditionError e) {
+			// Tout est ok
+		}
+		catch (ContractError e) {
+			assertTrue(
+					"Personnage::initKO1 :\n" + e.getMessage(),
+					false);
+		}
+	}
+	
+	@Test
+	public void initKO2() {
+		
+		try {
+			String nom = "Toto";
+			int largeur = 0;
+			int hauteur = 11;
+			int profondeur = 11;
+			int force = 11;
+			int pvMax = 100;
+			int pos_x = 5;
+			int pos_y = 5;
+			int pos_z = 5;
+			
+			personnage.init(nom, largeur, hauteur, profondeur, 
+					force, pvMax, pos_x, pos_y, pos_z);
+			
+			assertTrue("Personnage::initKO2 :\n" +
+					"aucune exception levée alors que la largeur est de 0",
+					false);
+		}
+		catch (PreconditionError e) {
+			// Tout est ok
+		}
+		catch (ContractError e) {
+			assertTrue(
+					"Personnage::initKO2 :\n" + e.getMessage(),
+					false);
+		}
+	}
+	
+	@Test
+	public void initKO3() {
+		
+		try {
+			String nom = "Toto";
+			int largeur = 11;
+			int hauteur = 0;
+			int profondeur = 11;
+			int force = 11;
+			int pvMax = 100;
+			int pos_x = 5;
+			int pos_y = 5;
+			int pos_z = 5;
+			
+			personnage.init(nom, largeur, hauteur, profondeur, 
+					force, pvMax, pos_x, pos_y, pos_z);
+			
+			assertTrue("Personnage::initKO3 :\n" +
+					"aucune exception levée alors que la hauteur est de 0",
+					false);
+		}
+		catch (PreconditionError e) {
+			// Tout est ok
+		}
+		catch (ContractError e) {
+			assertTrue(
+					"Personnage::initKO3 :\n" + e.getMessage(),
+					false);
+		}
+	}
+	
+	@Test
+	public void initKO4() {
+		
+		try {
+			String nom = "Toto";
+			int largeur = 11;
+			int hauteur = 11;
+			int profondeur = 0;
+			int force = 11;
+			int pvMax = 100;
+			int pos_x = 5;
+			int pos_y = 5;
+			int pos_z = 5;
+			
+			personnage.init(nom, largeur, hauteur, profondeur, 
+					force, pvMax, pos_x, pos_y, pos_z);
+			
+			assertTrue("Personnage::initKO4 :\n" +
+					"aucune exception levée alors que la profondeur est de 0",
+					false);
+		}
+		catch (PreconditionError e) {
+			// Tout est ok
+		}
+		catch (ContractError e) {
+			assertTrue(
+					"Personnage::initKO4 :\n" + e.getMessage(),
+					false);
+		}
+	}
+	
+	@Test
+	public void initKO5() {
+		
+		try {
+			String nom = "Toto";
+			int largeur = 11;
+			int hauteur = 11;
+			int profondeur = 11;
+			int force = -1;
+			int pvMax = 100;
+			int pos_x = 5;
+			int pos_y = 5;
+			int pos_z = 5;
+			
+			personnage.init(nom, largeur, hauteur, profondeur, 
+					force, pvMax, pos_x, pos_y, pos_z);
+			
+			assertTrue("Personnage::initKO5 :\n" +
+					"aucune exception levée alors que la force est négative",
+					false);
+		}
+		catch (InvariantError e) {
+			// Tout est ok
+		}
+		catch (ContractError e) {
+			assertTrue(
+					"Personnage::initKO5 :\n" + e.getMessage(),
+					false);
+		}
+	}
+	
+	@Test
+	public void initKO6() {
+		
+		try {
+			String nom = "Toto";
+			int largeur = 11;
+			int hauteur = 11;
+			int profondeur = 11;
+			int force = 100;
+			int pvMax = 100;
+			int pos_x = 5;
+			int pos_y = 5;
+			int pos_z = 5;
+			
+			personnage.init(nom, largeur, hauteur, profondeur, 
+					force, pvMax, pos_x, pos_y, pos_z);
+			
+			assertTrue("Personnage::initKO6 :\n" +
+					"aucune exception levée alors que la force "
+					+ "n'est pas inférieure aux pv",
+					false);
+		}
+		catch (PreconditionError e) {
+			// Tout est ok
+		}
+		catch (ContractError e) {
+			assertTrue(
+					"Personnage::initKO6 :\n" + e.getMessage(),
+					false);
+		}
+	}
+	
+	@Test
+	public void initKO7() {
+		
+		try {
+			String nom = "Toto";
+			int largeur = 11;
+			int hauteur = 11;
+			int profondeur = 11;
+			int force = 10;
+			int pvMax = 100;
+			int pos_x = -1;
+			int pos_y = 5;
+			int pos_z = 5;
+			
+			personnage.init(nom, largeur, hauteur, profondeur, 
+					force, pvMax, pos_x, pos_y, pos_z);
+			
+			assertTrue("Personnage::initKO7 :\n" +
+					"aucune exception levée alors que la pos x est négative",
+					false);
+		}
+		catch (InvariantError e) {
+			// Tout est ok
+		}
+		catch (ContractError e) {
+			assertTrue(
+					"Personnage::initKO7 :\n" + e.getMessage(),
+					false);
+		}
+	}
+	
+	@Test
+	public void initKO8() {
+		
+		try {
+			String nom = "Toto";
+			int largeur = 11;
+			int hauteur = 11;
+			int profondeur = 11;
+			int force = 10;
+			int pvMax = 100;
+			int pos_x = 5;
+			int pos_y = -1;
+			int pos_z = 5;
+			
+			personnage.init(nom, largeur, hauteur, profondeur, 
+					force, pvMax, pos_x, pos_y, pos_z);
+			
+			assertTrue("Personnage::initKO8 :\n" +
+					"aucune exception levée alors que la pos y est négative",
+					false);
+		}
+		catch (InvariantError e) {
+			// Tout est ok
+		}
+		catch (ContractError e) {
+			assertTrue(
+					"Personnage::initKO8 :\n" + e.getMessage(),
+					false);
+		}
+	}
+	
+	@Test
+	public void initKO9() {
+		
+		try {
+			String nom = "Toto";
+			int largeur = 11;
+			int hauteur = 11;
+			int profondeur = 11;
+			int force = 10;
+			int pvMax = 100;
+			int pos_x = 5;
+			int pos_y = 5;
+			int pos_z = -1;
+			
+			personnage.init(nom, largeur, hauteur, profondeur, 
+					force, pvMax, pos_x, pos_y, pos_z);
+			
+			assertTrue("Personnage::initKO9 :\n" +
+					"aucune exception levée alors que la pos z est négative",
+					false);
+		}
+		catch (InvariantError e) {
+			// Tout est ok
+		}
+		catch (ContractError e) {
+			assertTrue(
+					"Personnage::initKO9 :\n" + e.getMessage(),
+					false);
+		}
+	}
+	
+	
+	// ------------------------------------------------------------------------
+	// OBJECTIF DE TEST: retrait_de_pv retire les degats de la vie du personnage
+	// ------------------------------------------------------------------------
+	
+	@Test
+	public void retrait_de_pvOK() {
+		
+		try {
+			
+			String nom = "Toto";
+			int largeur = 11;
+			int hauteur = 11;
+			int profondeur = 11;
+			int force = 10;
+			int pvMax = 100;
+			int pos_x = 5;
+			int pos_y = 5;
+			int pos_z = 5;
+			
+			personnage.init(nom, largeur, hauteur, profondeur,
+					force, pvMax, pos_x, pos_y, pos_z);
+			
+			int pv = 5;
+			personnage.retrait_de_pv(pv);
+			
+			assertTrue("Personnage::retrait_de_pvOK : \n" +
+					"Les pv du personnages n'ont pas été correctement diminués",
+					personnage.getPv() == pvMax - pv);
+			
+			// Tout est ok
+		}
+		catch (ContractError e) {
+			assertTrue(
+					"Personnage::retrait_de_pvOK :\n" + e.getMessage(),
+					false);
+		}
+	}
+	
+	@Test
+	public void retrait_de_pvKO1() {
+		
+		try {
+			
+			String nom = "Toto";
+			int largeur = 11;
+			int hauteur = 11;
+			int profondeur = 11;
+			int force = 10;
+			int pvMax = 100;
+			int pos_x = 5;
+			int pos_y = 5;
+			int pos_z = 5;
+			
+			personnage.init(nom, largeur, hauteur, profondeur,
+					force, pvMax, pos_x, pos_y, pos_z);
+			
+			int pv = 5;
+			personnage.retrait_de_pv(pvMax);
+			personnage.retrait_de_pv(pv);
+			
+			assertTrue("Personnage::retrait_de_pvKO1 : \n" +
+					"aucune exception levée alors que le personnage " +
+					"ne peut avoir un retrait de pv en étant mort",
+					false);
+			
+		}
+		catch (PreconditionError e) {
+			// Tout est ok
+		}
+		catch (ContractError e) {
+			assertTrue(
+					"Personnage::retrait_de_pvKO1 :\n" + e.getMessage(),
+					false);
+		}
+	}
+	
+	@Test
+	public void retrait_de_pvKO2() {
+		
+		try {
+			
+			String nom = "Toto";
+			int largeur = 11;
+			int hauteur = 11;
+			int profondeur = 11;
+			int force = 10;
+			int pvMax = 100;
+			int pos_x = 5;
+			int pos_y = 5;
+			int pos_z = 5;
+			
+			personnage.init(nom, largeur, hauteur, profondeur,
+					force, pvMax, pos_x, pos_y, pos_z);
+			
+			int pv = -1;
+			personnage.retrait_de_pv(pvMax);
+			personnage.retrait_de_pv(pv);
+			
+			assertTrue("Personnage::retrait_de_pvKO1 : \n" +
+					"aucune exception levée alors que les pv à retirer " +
+					"sont négatifs",
+					personnage.getPv() == pvMax - pv);
+			
+		}
+		catch (PreconditionError e) {
+			// Tout est ok
+		}
+		catch (ContractError e) {
+			assertTrue(
+					"Personnage::retrait_de_pvKO2 :\n" + e.getMessage(),
+					false);
+		}
+	}
+	
+	
+	
+	// ------------------------------------------------------------------------
+	// OBJECTIF DE TEST : depot_de_pv ajoute le bonus à la vie du personnage
+	// ------------------------------------------------------------------------
+	
+	@Test
+	public void depot_de_pvOK1() {
+		
+		try {
+			
+			String nom = "Toto";
+			int largeur = 11;
+			int hauteur = 11;
+			int profondeur = 11;
+			int force = 10;
+			int pvMax = 100;
+			int pos_x = 5;
+			int pos_y = 5;
+			int pos_z = 5;
+			
+			personnage.init(nom, largeur, hauteur, profondeur,
+					force, pvMax, pos_x, pos_y, pos_z);
+			
+			int pv = 10;
+			personnage.retrait_de_pv(pv - 1);
+			personnage.depot_de_pv(pv);
+			
+			assertTrue("Personnage::depot_de_pvOK1 : \n" +
+					"le personnage n'a pas ses pv au max",
+					personnage.getPv() == pvMax);
+			
+			// Tout est ok
+		}
+		catch (ContractError e) {
+			assertTrue(
+					"Personnage::depot_de_pvOK1 :\n" + e.getMessage(),
+					false);
+		}
+	}
+	
+	@Test
+	public void depot_de_pvOK2() {
+		
+		try {
+			
+			String nom = "Toto";
+			int largeur = 11;
+			int hauteur = 11;
+			int profondeur = 11;
+			int force = 10;
+			int pvMax = 100;
+			int pos_x = 5;
+			int pos_y = 5;
+			int pos_z = 5;
+			
+			personnage.init(nom, largeur, hauteur, profondeur,
+					force, pvMax, pos_x, pos_y, pos_z);
+			
+			int pv = 10;
+			personnage.retrait_de_pv(pv + 1);
+			personnage.depot_de_pv(pv);
+			
+			assertTrue("Personnage::depot_de_pvOK2 : \n" +
+					"le personnage n'a pas ses pv à pvMax-1",
+					personnage.getPv() == pvMax-1);
+			
+			// Tout est ok
+		}
+		catch (ContractError e) {
+			assertTrue(
+					"Personnage::depot_de_pvOK2 :\n" + e.getMessage(),
+					false);
+		}
+	}
+	
+	@Test
+	public void depot_de_pvKO1() {
+		
+		try {
+			
+			String nom = "Toto";
+			int largeur = 11;
+			int hauteur = 11;
+			int profondeur = 11;
+			int force = 10;
+			int pvMax = 100;
+			int pos_x = 5;
+			int pos_y = 5;
+			int pos_z = 5;
+			
+			personnage.init(nom, largeur, hauteur, profondeur,
+					force, pvMax, pos_x, pos_y, pos_z);
+			
+			int pv = 10;
+			personnage.depot_de_pv(pv);
+			
+			assertTrue("Personnage::depot_de_pvKO1 : \n" +
+					"aucune exception levée alors que le personnage" +
+					" est déjà full life",
+					false);
+		}
+		catch (PreconditionError e) {
+			// Tout est ok
+		}
+		catch (ContractError e) {
+			assertTrue(
+					"Personnage::depot_de_pvKO1 :\n" + e.getMessage(),
+					false);
+		}
+	}
+	
+	@Test
+	public void depot_de_pvKO2() {
+		
+		try {
+			
+			String nom = "Toto";
+			int largeur = 11;
+			int hauteur = 11;
+			int profondeur = 11;
+			int force = 10;
+			int pvMax = 100;
+			int pos_x = 5;
+			int pos_y = 5;
+			int pos_z = 5;
+			
+			personnage.init(nom, largeur, hauteur, profondeur,
+					force, pvMax, pos_x, pos_y, pos_z);
+			
+			int pv = -1;
+			personnage.retrait_de_pv(10);
+			personnage.depot_de_pv(pv);
+			
+			assertTrue("Personnage::depot_de_pvKO2 : \n" +
+					"aucune exception levée alors que les pv à déposer " +
+					"sont négatifs",
+					false);
+		}
+		catch (PreconditionError e) {
+			// Tout est ok
+		}
+		catch (ContractError e) {
+			assertTrue(
+					"Personnage::depot_de_pvKO2 :\n" + e.getMessage(),
+					false);
+		}
+	}
+	
+	@Test
+	public void depot_de_pvKO3() {
+		
+		try {
+			
+			String nom = "Toto";
+			int largeur = 11;
+			int hauteur = 11;
+			int profondeur = 11;
+			int force = 10;
+			int pvMax = 100;
+			int pos_x = 5;
+			int pos_y = 5;
+			int pos_z = 5;
+			
+			personnage.init(nom, largeur, hauteur, profondeur,
+					force, pvMax, pos_x, pos_y, pos_z);
+			
+			int pv = 10;
+			personnage.retrait_de_pv(pvMax);
+			personnage.depot_de_pv(pv);
+			
+			assertTrue("Personnage::depot_de_pvKO3 : \n" +
+					"aucune exception levée alors que le personnage est vaincu",
+					false);
+		}
+		catch (PreconditionError e) {
+			// Tout est ok
+		}
+		catch (ContractError e) {
+			assertTrue(
+					"Personnage::depot_de_pvKO3 :\n" + e.getMessage(),
+					false);
+		}
+	}
+	
+	
+	
+	// ------------------------------------------------------------------------
+	// OBJECTIF DE TEST : 
+	// ------------------------------------------------------------------------
+}

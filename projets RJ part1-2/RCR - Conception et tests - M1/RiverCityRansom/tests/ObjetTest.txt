@@ -1,0 +1,53 @@
+// ----------------------------------------------------------------------------
+// OBJECTIF DE TEST : Initialisation d'une poubelle
+// ----------------------------------------------------------------------------
+
+Cas de test :
+	Objet::initOK
+Condition initiale : 
+	p_contenu = POUBELLEMETALLIQUE, p_valeur = 10,
+	p_marchand = false, p_cout = 0
+Operation : 
+	O = init(p_contenu, p_valeur, p_marchand, p_cout)
+Oracle : 
+	getContenu(O) = p_contenu
+	getValeur(O) = p_valeur
+	marchandable(O) = p_marchand
+	cout(O) = p_cout
+	
+	
+Cas de test :
+	Objet::initKO1
+Condition initiale : 
+	p_contenu = null, p_valeur = 10,
+	p_marchand = false, p_cout = 0
+Operation : 
+	O = init(p_contenu, p_valeur, p_marchand, p_cout)
+Oracle : 
+	p_contenu = null
+	# exception levée
+	
+	
+Cas de test :
+	Objet::initKO2
+Condition initiale : 
+	p_contenu = POUBELLEMETALLIQUE, p_valeur = -1,
+	p_marchand = false, p_cout = 0
+Operation : 
+	O = init(p_contenu, p_valeur, p_marchand, p_cout)
+Oracle : 
+	p_valeur < 0
+	# exception levée
+	
+		
+Cas de test :
+	Objet::initKO3
+Condition initiale : 
+	p_contenu = POUBELLEMETALLIQUE, p_valeur = 10,
+	p_marchand = false, p_cout = -1
+Operation : 
+	O = init(p_contenu, p_valeur, p_marchand, p_cout)
+Oracle : 
+	p_cout < 0
+	# exception levée
+	

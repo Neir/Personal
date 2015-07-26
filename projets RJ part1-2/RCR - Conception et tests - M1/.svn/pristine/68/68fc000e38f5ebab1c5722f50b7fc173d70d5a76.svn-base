@@ -1,0 +1,45 @@
+package main;
+
+import ihm.Executable;
+import ihm.JeuPanel;
+import ihm.Sound;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.WindowConstants;
+
+import MoteurJeu.MoteurJeu;
+import MoteurJeu.MoteurJeuContrat;
+import MoteurJeu.MoteurJeuImpl;
+
+public class Main extends JFrame{
+
+	private static final long serialVersionUID = 1L;
+	public Main(){
+		MoteurJeu jeu = new MoteurJeuContrat(new MoteurJeuImpl());
+		JLabel label = new JLabel("Score");
+		setLayout(new BorderLayout());
+		add(label,BorderLayout.NORTH);
+		jeu.init(40,15,13);
+	/*	Sound sound = new Sound("");
+		InputStream stream = new ByteArrayInputStream(sound.getSamples());
+		sound.play(stream);
+		
+	*/	JeuPanel p = new JeuPanel(jeu, label);
+		
+		new Executable(jeu,p).start();
+		this.add(p,BorderLayout.CENTER);
+		
+		setPreferredSize(new Dimension(jeu.getTerrain().getNombreColonnes()*50,jeu.getTerrain().getNombreLignes()*50));
+		setVisible(true);
+		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		setResizable(false);
+		
+		pack();
+	}
+	public static void main(String[] args) {
+		new Main();
+	}
+
+}

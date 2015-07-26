@@ -1,0 +1,479 @@
+package MoteurJeu;
+
+import java.util.ArrayList;
+
+import terrain.TerrainContract;
+import terrain.TerrainImpl;
+import terrain.TerrainService;
+import vilain.TypeVilain;
+import vilain.Vilain;
+import vilain.VilainContract;
+import vilain.VilainService;
+import Acteur.ActeurContrat;
+import Acteur.ActeurImpl;
+import Acteur.ActeurService;
+import Bombe.BombeContrat;
+import Bombe.BombeImpl;
+import Bombe.BombeService;
+import bloc.BlocService;
+import bloc.Tresor;
+import bloc.Type;
+
+public class MoteurJeuErr implements MoteurJeu{
+
+	private int maxPas;
+	private int currentPas;
+	private ArrayList<BombeService> bombes;
+	private TerrainService terrain;
+	//**** Donner Pour les Acteurs ****//
+	private ActeurService heros;
+	private ActeurService kidnappeur;
+	//***** Les Vilains ********//
+	private ArrayList<VilainService> vilains;
+	private int cptBombe = 0;
+
+	public MoteurJeuErr(){}
+
+	@Override
+	public void init(int maxPas, int NBLigne, int NBColonne) {
+		this.maxPas=maxPas;
+		this.currentPas=1;
+		terrain = new TerrainContract(new TerrainImpl());
+		terrain.init(NBColonne+1, NBLigne+1);
+		heros = new ActeurContrat(new ActeurImpl());
+		heros.init(2, 2);
+		kidnappeur = new ActeurContrat(new ActeurImpl());
+		kidnappeur.init((NBLigne-3),(NBColonne-3));
+		bombes = new ArrayList<BombeService>();
+		
+		int xv = Math.round(terrain.getNombreLignes()/2);
+		int yv = Math.round(terrain.getNombreColonnes()/2);
+		vilains = new ArrayList<VilainService>();
+		VilainService vb = new VilainContract(new Vilain());
+		vb.init(TypeVilain.BALLON_ORANGE,2);
+		vb.setIndexX(xv);vb.setIndexY(yv);
+		vilains.add(vb);
+		VilainService vf = new VilainContract(new Vilain());
+		vf.init(TypeVilain.FANTOM_BLEU, 3);
+		vf.setIndexX(xv+1);vf.setIndexY(yv+1);
+		vilains.add(vf);
+	}
+
+	@Override
+	public int getMaxPasJeu() {
+		return this.maxPas-1;
+	}
+
+	@Override
+	public int getPasJeuCourrant() {
+		return this.currentPas+1;
+	}
+
+
+	@Override
+	public ArrayList<Integer> getBombeNumeros() {
+		ArrayList<Integer> res = new ArrayList<Integer>();
+		for (BombeService b : this.bombes)
+			res.add(new Integer(b.getNumero()));
+		return res;
+	}
+
+	@Override
+	public int getNbBombes() {
+		return this.bombes.size();
+	}
+
+	@Override
+	public boolean bombeExist(int numero) {
+		return false;
+	}
+
+	@Override
+	public BombeService getBombe(int numero) {
+		for(BombeService b : this.bombes){
+			if (b.getNumero()==numero)
+				return b;
+		}
+		return null;
+	}
+
+	@Override
+	public TerrainService getTerrain() {
+		return terrain;
+	}
+
+	@Override
+	public void poserBombe(int num, int x, int y, int a) {
+		BombeService bombe = new BombeContrat(new BombeImpl());
+		bombe.init(num, 1, 1, a);
+		this.bombes.add(bombe);
+
+	}
+
+	@Override
+	public RESULTAT resultatFinal() {
+		
+		return RESULTAT.KIDNAPPEURGAGNE;
+	}
+
+	@Override
+	public boolean estFini() {
+		
+		return false;
+	}
+
+	@Override
+	public boolean misEnJoue(int x, int y, int num) {
+		
+		return false;
+	}
+
+	@Override
+	public ActeurService getHeros() {
+		return heros;
+	}
+
+	@Override
+	public ActeurService getKidnappeur() {
+		return kidnappeur;
+	}
+
+	@Override
+	public boolean vilainExist(int x, int y) {
+		
+		return false;
+	}
+
+	@Override
+	public ArrayList<VilainService> getVilains() {
+		return vilains;
+	}
+
+	@Override
+	public void pasJeu(COMMANDE commande ,boolean isHeros) {
+
+		//recuperation des tresor:
+		//heros
+		Tresor tresor = terrain.getBloc(heros.getX(), heros.getY()).getTresor();
+		if(tresor.equals(Tresor.BOMBUP)){
+			heros.setNbBombe(1);
+		}else if(tresor.equals(Tresor.FIREUP)){
+			heros.setForceVitale(Math.min(heros.getForceVitale()+2,11));
+		}else if(tresor.equals(Tresor.WALLPASS)){
+			heros.setWallPass();
+		}else if(tresor.equals(Tresor.BOMBPASS)){
+			heros.setBombePass();
+		}else if(tresor.equals(Tresor.FIRESUIT)){
+			heros.setFireSuit(100);
+		}
+		terrain.getBloc(heros.getX(), heros.getY()).setTresor(Tresor.RIEN);
+		//kidnappeur
+		tresor = terrain.getBloc(kidnappeur.getX(), kidnappeur.getY()).getTresor();
+		if(tresor.equals(Tresor.BOMBUP)){
+			kidnappeur.setNbBombe(1);
+		}else if(tresor.equals(Tresor.FIREUP)){
+			kidnappeur.setForceVitale(Math.min(kidnappeur.getForceVitale()+2,11));
+		}else if(tresor.equals(Tresor.WALLPASS)){
+			kidnappeur.setWallPass();
+		}else if(tresor.equals(Tresor.BOMBPASS)){
+			kidnappeur.setBombePass();
+		}else if(tresor.equals(Tresor.FIRESUIT)){
+			kidnappeur.setFireSuit(100);
+		}
+		terrain.getBloc(kidnappeur.getX(), kidnappeur.getY()).setTresor(Tresor.RIEN);
+
+		
+		if(! estFini()){
+			//mise a jours des bombes 
+			ArrayList<BombeService> bombesRemove= new ArrayList<BombeService>();
+			for(BombeService bombe : bombes){
+				if(bombe==null) continue;
+
+				if(bombe.vaExploser()){
+					bombesRemove.add(bombe);
+					//mise a jour de chaque bombe diminuer son compteArebours
+					//exploser le herros
+					if( misEnJoue(heros.getX(),heros.getY(), bombe.getNumero()) && (heros.getFireSuit()<=0)){
+						heros.setSante(SANTE.MORT);
+						break;//fin du jeu
+					}
+					if(misEnJoue(kidnappeur.getX(), kidnappeur.getY(), bombe.getNumero())&&(kidnappeur.getFireSuit()<=0)){
+						kidnappeur.setSante(SANTE.MORT);
+						break;//fin de partie
+					}
+					//detruire les vilain touchés
+					for(VilainService v : vilains)
+						if(misEnJoue(v.getIndexX(), v.getIndexY(), bombe.getNumero()))
+							vilains.remove(v);
+					//parcours de la Colonne de la bombe;
+					int col=bombe.getY();
+					for (int i=Math.max(1,bombe.getX()-bombe.getAmptitude());
+							i<=Math.min(bombe.getX()+bombe.getAmptitude(),terrain.getNombreLignes()-1);i++){
+						if(terrain.getBloc(i, col).getType().equals(Type.MURMETAL))
+							break;//l'effet de la bombe s'arrete.
+						if(terrain.getBloc(i, col).getType().equals(Type.MURBRIQUE)){
+							terrain.getBloc(i, col).setTYPE(Type.VIDE);
+							break;
+						}
+						if(terrain.getBloc(i, col).getType().equals(Type.VIDE)){
+							terrain.getBloc(i, col).setTresor(Tresor.RIEN);//faire exploser un tresor si il existe
+						}
+						for(VilainService v : getVilains()){
+							if(v.getIndexX()==i && v.getIndexY()==col)
+								vilains.remove(v);
+						}
+
+					}
+					//parcours de la ligne de la bombe
+					int lign = bombe.getX();
+					for(int j=Math.max(1,bombe.getY()-bombe.getAmptitude());
+							j<=(Math.min(bombe.getY()+bombe.getAmptitude(),terrain.getNombreColonnes()-1));j++){
+						if(terrain.getBloc(lign, j).getType().equals(Type.MURMETAL))
+							break;//fin d'effet de la bombe
+						if(terrain.getBloc(lign, j).getType().equals(Type.MURBRIQUE)){
+							terrain.getBloc(lign, j).setTYPE(Type.VIDE);
+							break;
+						}
+						if(terrain.getBloc(lign, j).getType().equals(Type.VIDE))
+							terrain.getBloc(lign, j).setTresor(Tresor.RIEN);//exploser le tresor
+						for(VilainService v : getVilains())
+							if(v.getIndexX()==lign && v.getIndexY()==j)
+								vilains.remove(v);
+					}
+					
+					continue;
+				}
+
+				bombe.diminueChrono();
+			}
+			for(BombeService b : bombesRemove){
+				bombes.remove(b);
+			}
+			bombesRemove=null;
+
+
+
+			//bouger herros
+			if(isHeros){
+				BlocService bloc;
+				boolean existBombe=false;
+				if(commande.equals(COMMANDE.GAUCHE)){
+					bloc = terrain.getBloc(heros.getX(), (Math.max(1,heros.getY()-1)));
+					for(BombeService b : bombes){
+						if((b.getX()==heros.getX()) && (b.getY()==Math.max(1,heros.getY()-1)))//position destination est une bombe
+							existBombe=true;
+					}
+					if(!bloc.getType().equals(Type.MURBRIQUE) && !bloc.getType().equals(Type.MURMETAL) && !existBombe){
+						heros.setPos(heros.getX(),(Math.max(1,heros.getY()-1)));
+					}else if(bloc.getType().equals(Type.MURBRIQUE) && heros.getWallPass()){
+						heros.setPos(heros.getX(),(Math.max(1,heros.getY()-1)));
+					}else if(existBombe && heros.getBombePass()){
+						heros.setPos(heros.getX(),(Math.max(1,heros.getY()-1)));
+					}
+
+					currentPas++;
+					heros.setFireSuit(-1);
+				}
+				else if(commande.equals(COMMANDE.DROITE)){
+					bloc = terrain.getBloc(heros.getX(), Math.min(terrain.getNombreColonnes()-1,heros.getY()+1));
+					for(BombeService b : bombes){
+						if((b.getX()==heros.getX()) && (b.getY()==Math.min(terrain.getNombreColonnes()-1,heros.getY()+1)))//position destination est une bombe
+							existBombe=true;
+					}
+					if(!bloc.getType().equals(Type.MURBRIQUE) && !bloc.getType().equals(Type.MURMETAL) && !existBombe){
+						heros.setPos(heros.getX(),Math.min(terrain.getNombreColonnes()-1,heros.getY()+1));
+					}else if(bloc.getType().equals(Type.MURBRIQUE) && heros.getWallPass()){
+						heros.setPos(heros.getX(),Math.min(terrain.getNombreColonnes()-1,heros.getY()+1));
+					}else if(existBombe && heros.getBombePass()){
+						heros.setPos(heros.getX(),Math.min(terrain.getNombreColonnes()-1,heros.getY()+1));
+					}
+					currentPas++;
+					heros.setFireSuit(-1);
+				}
+				else if(commande.equals(COMMANDE.HAUT)){
+					bloc=terrain.getBloc(Math.max(1, heros.getX()-1), heros.getY());
+					for(BombeService b : bombes){
+						if((b.getX()==Math.max(1, heros.getX()-1)) && (b.getY()==heros.getY()))//position destination est une bombe
+							existBombe=true;
+					}
+					if(!bloc.getType().equals(Type.MURBRIQUE) && !bloc.getType().equals(Type.MURMETAL) && !existBombe){
+						heros.setPos(Math.max(1, heros.getX()-1),heros.getY());
+					}else if(bloc.getType().equals(Type.MURBRIQUE) && heros.getWallPass()){
+						heros.setPos(Math.max(1, heros.getX()-1),heros.getY());
+					}else if(existBombe && heros.getBombePass()){
+						heros.setPos(Math.max(1, heros.getX()-1),heros.getY());
+					}
+					currentPas++;
+					heros.setFireSuit(-1);
+				}
+				else if(commande.equals(COMMANDE.BAS)){
+					bloc=terrain.getBloc(Math.min(terrain.getNombreLignes()-1, heros.getX()+1), heros.getY());
+					for(BombeService b : bombes){
+						if((b.getX()==Math.min(terrain.getNombreLignes()-1, heros.getX()+1)) && (b.getY()==heros.getY()))//position destination est une bombe
+							existBombe=true;
+					}
+					if(!bloc.getType().equals(Type.MURBRIQUE) && !bloc.getType().equals(Type.MURMETAL) && !existBombe){
+						heros.setPos(Math.min(terrain.getNombreLignes()-1, heros.getX()+1),heros.getY());
+					}else if(bloc.getType().equals(Type.MURBRIQUE) && heros.getWallPass()){
+						heros.setPos(Math.min(terrain.getNombreLignes()-1, heros.getX()+1),heros.getY());
+					}else if(existBombe && heros.getBombePass()){
+						heros.setPos(Math.min(terrain.getNombreLignes()-1, heros.getX()+1),heros.getY());
+					}
+					currentPas++;
+					heros.setFireSuit(-1);
+				}else if(commande.equals(COMMANDE.BOMBE)){
+					if(getNbBombes()<(heros.getNbBombe()+kidnappeur.getNbBombe())){
+						int amp=heros.getForceVitale();
+						poserBombe(cptBombe ++, heros.getX(), heros.getY(), amp);
+					}
+					currentPas++;
+					heros.setFireSuit(-1);
+				}else if(commande.equals(COMMANDE.RIEN)){
+					currentPas++;
+					heros.setFireSuit(-1);
+				}
+																					/*
+																					 * Kidnappeur
+																					 * */	
+				for(VilainService v : vilains){
+					deplacerVilainAlea(v);
+					if((v.getIndexX()==heros.getX()) && (v.getIndexY()==heros.getY()))
+						heros.setSante(SANTE.MORT);
+					if((v.getIndexX()==kidnappeur.getX()) && (v.getIndexY()==kidnappeur.getY()))
+						kidnappeur.setSante(SANTE.MORT);
+				}
+			}
+			if(!isHeros){//bouger kidnappeur
+				BlocService bloc;
+				boolean existBombe=false;
+				if(commande.equals(COMMANDE.GAUCHE)){
+					bloc = terrain.getBloc(kidnappeur.getX(), (Math.max(1,kidnappeur.getY()-1)));
+					for(BombeService b : bombes){
+						if((b.getX()==kidnappeur.getX()) && (b.getY()==Math.max(1,kidnappeur.getY()-1)))//position destination est une bombe
+							existBombe=true;
+					}
+					if(!bloc.getType().equals(Type.MURBRIQUE) && !bloc.getType().equals(Type.MURMETAL) && !existBombe){
+						kidnappeur.setPos(kidnappeur.getX(),(Math.max(1,kidnappeur.getY()-1)));
+					}else if(bloc.getType().equals(Type.MURBRIQUE) && kidnappeur.getWallPass()){
+						kidnappeur.setPos(kidnappeur.getX(),(Math.max(1,kidnappeur.getY()-1)));
+					}else if(existBombe && kidnappeur.getBombePass()){
+						kidnappeur.setPos(kidnappeur.getX(),(Math.max(1,kidnappeur.getY()-1)));
+					}
+
+					currentPas++;
+					kidnappeur.setFireSuit(-1);
+				}
+				else if(commande.equals(COMMANDE.DROITE)){
+					bloc = terrain.getBloc(kidnappeur.getX(), Math.min(terrain.getNombreColonnes()-1,kidnappeur.getY()+1));
+					for(BombeService b : bombes){
+						if((b.getX()==kidnappeur.getX()) && (b.getY()==Math.min(terrain.getNombreColonnes()-1,kidnappeur.getY()+1)))//position destination est une bombe
+							existBombe=true;
+					}
+					if(!bloc.getType().equals(Type.MURBRIQUE) && !bloc.getType().equals(Type.MURMETAL) && !existBombe){
+						kidnappeur.setPos(kidnappeur.getX(),Math.min(terrain.getNombreColonnes()-1,kidnappeur.getY()+1));
+					}else if(bloc.getType().equals(Type.MURBRIQUE) && kidnappeur.getWallPass()){
+						kidnappeur.setPos(kidnappeur.getX(),Math.min(terrain.getNombreColonnes()-1,kidnappeur.getY()+1));
+					}else if(existBombe && kidnappeur.getBombePass()){
+						kidnappeur.setPos(kidnappeur.getX(),Math.min(terrain.getNombreColonnes()-1,kidnappeur.getY()+1));
+					}
+					currentPas++;
+					kidnappeur.setFireSuit(-1);
+				}
+				else if(commande.equals(COMMANDE.HAUT)){
+					bloc=terrain.getBloc(Math.max(1, kidnappeur.getX()-1), kidnappeur.getY());
+					for(BombeService b : bombes){
+						if((b.getX()==Math.max(1, kidnappeur.getX()-1)) && (b.getY()==kidnappeur.getY()))//position destination est une bombe
+							existBombe=true;
+					}
+					if(!bloc.getType().equals(Type.MURBRIQUE) && !bloc.getType().equals(Type.MURMETAL) && !existBombe){
+						kidnappeur.setPos(Math.max(1, kidnappeur.getX()-1),kidnappeur.getY());
+					}else if(bloc.getType().equals(Type.MURBRIQUE) && kidnappeur.getWallPass()){
+						kidnappeur.setPos(Math.max(1, kidnappeur.getX()-1),kidnappeur.getY());
+					}else if(existBombe && kidnappeur.getBombePass()){
+						kidnappeur.setPos(Math.max(1, kidnappeur.getX()-1),kidnappeur.getY());
+					}
+					currentPas++;
+					kidnappeur.setFireSuit(-1);
+				}
+				else if(commande.equals(COMMANDE.BAS)){
+					bloc=terrain.getBloc(Math.min(terrain.getNombreLignes()-1, kidnappeur.getX()+1), kidnappeur.getY());
+					for(BombeService b : bombes){
+						if((b.getX()==Math.min(terrain.getNombreLignes()-1, kidnappeur.getX()+1)) && (b.getY()==kidnappeur.getY()))//position destination est une bombe
+							existBombe=true;
+					}
+					if(!bloc.getType().equals(Type.MURBRIQUE) && !bloc.getType().equals(Type.MURMETAL) && !existBombe){
+						kidnappeur.setPos(Math.min(terrain.getNombreLignes()-1, kidnappeur.getX()+1),kidnappeur.getY());
+					}else if(bloc.getType().equals(Type.MURBRIQUE) && kidnappeur.getWallPass()){
+						kidnappeur.setPos(Math.min(terrain.getNombreLignes()-1, kidnappeur.getX()+1),kidnappeur.getY());
+					}else if(existBombe && kidnappeur.getBombePass()){
+						kidnappeur.setPos(Math.min(terrain.getNombreLignes()-1, kidnappeur.getX()+1),kidnappeur.getY());
+					}
+					currentPas++;
+					kidnappeur.setFireSuit(-1);
+				}else if(commande.equals(COMMANDE.BOMBE)){//////////////////////////////////////////////////comment il pose des bombes le kidnappeur
+					if(getNbBombes()<(kidnappeur.getNbBombe()+heros.getNbBombe())){
+						int amp=kidnappeur.getForceVitale();
+						poserBombe(cptBombe ++, kidnappeur.getX(), kidnappeur.getY(), amp);
+					}
+					currentPas++;
+					kidnappeur.setFireSuit(-1);
+				}else if(commande.equals(COMMANDE.RIEN)){
+					currentPas++;
+					kidnappeur.setFireSuit(-1);
+				}
+				
+				for(VilainService v : vilains){
+					deplacerVilainAlea(v);
+					if((v.getIndexX()==heros.getX()) && (v.getIndexY()==heros.getY()))
+						heros.setSante(SANTE.MORT);
+					if((v.getIndexX()==kidnappeur.getX()) && (v.getIndexY()==kidnappeur.getY()))
+						kidnappeur.setSante(SANTE.MORT);
+				}
+
+			}
+				
+
+		}
+
+	}
+
+	
+	private void deplacerVilainAlea(VilainService v) {
+		int distK = (int) Math.sqrt(Math.pow(v.getIndexX() - kidnappeur.getX(), 2) +
+				Math.pow(v.getIndexY() - kidnappeur.getY(), 2));
+		int distH = (int) Math.sqrt(Math.pow(v.getIndexX() - heros.getX(), 2) +
+				Math.pow(v.getIndexY() - heros.getY(), 2));
+		ActeurService  a = null;
+		if(distK > distH)
+			a = heros;
+		else
+			a = kidnappeur;
+		if(v.getType() == TypeVilain.FANTOM_BLEU){
+			// peut traverser les mur et les bombes
+			if(v.getIndexX() < a.getX() && !terrain.getBloc(v.getIndexX()+1, v.getIndexY()).getType().equals(Type.MURMETAL)){
+				v.setIndexX(v.getIndexX() + 1);
+			}else if(v.getIndexX() > a.getX() && !terrain.getBloc(v.getIndexX()-1, v.getIndexY()).getType().equals(Type.MURMETAL)){
+				v.setIndexX(v.getIndexX() - 1);
+			}else if(v.getIndexY() < a.getY() && !terrain.getBloc(v.getIndexX(), v.getIndexY()+1).getType().equals(Type.MURMETAL)){
+				v.setIndexY(v.getIndexY() + 1);
+			}else if(v.getIndexY() > a.getY() && !terrain.getBloc(v.getIndexX(), v.getIndexY()-1).getType().equals(Type.MURMETAL)){
+				v.setIndexY(v.getIndexY() - 1);
+			}
+		}else {
+			if(v.getIndexX() < a.getX() && 
+					terrain.getBloc(v.getIndexX() +1 , v.getIndexY()).getType().equals(Type.VIDE)){
+				v.setIndexX(v.getIndexX() + 1);
+			}else if(v.getIndexX() > a.getX() && 
+					terrain.getBloc(v.getIndexX() -1 , v.getIndexY()).getType().equals(Type.VIDE)){
+				v.setIndexX(v.getIndexX() - 1);
+			}else if(v.getIndexY() < a.getY() && 
+					terrain.getBloc(v.getIndexX(), v.getIndexY() +1).getType().equals(Type.VIDE)){
+				v.setIndexY(v.getIndexY() + 1);
+			}else if(v.getIndexY() > a.getY() && 
+					terrain.getBloc(v.getIndexX() , v.getIndexY() -1).getType().equals(Type.VIDE)){
+				v.setIndexY(v.getIndexY() - 1);
+			}
+		}
+	}
+
+}

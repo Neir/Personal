@@ -1,0 +1,13 @@
+Soit faire un setGele(int g)
+Soit rajouter du gel dans toutes les méthodes genre sauter mais nan...
+Comment le geler quand il est porté ?
+
+en_saut est inutil
+
+Le jet est seulement un laché, il ne blesse pas.
+
+Normalement on doit gérer le cas ou un perso tombe à terre...
+
+Quand on personnage est porté :
+- soit il disparait -> on met des coordonnées invible ou on le dit est vaincu...
+- soit ses coordonnées sont les même que le porteur avec z+1

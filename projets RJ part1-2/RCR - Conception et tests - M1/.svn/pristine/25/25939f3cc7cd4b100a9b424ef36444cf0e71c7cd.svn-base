@@ -1,0 +1,43 @@
+package Bombe;
+
+public interface BombeService {
+	
+	/**
+	 * Observateurs:
+	 */
+	public int getNumero(); //\const
+	public int getX(); //\const
+	public int getY(); //\const
+	public int getAmptitude(); //\const
+	public int getCompteARebours(); 
+	public boolean vaExploser();
+
+	/**
+	 * Constructeur
+	 * */
+	//\pre: init(num,x,y,amp) require  3<= amp <=11
+	public void init(int num,int x,int y,int amp);
+	//\post:getNumero(init(num,x,y,amplitude)) = num 
+	//\post: getX(init(num,x,y,amplitude)) = x 
+	//\post: getY(init(num,x,y,amplitude)) = y 
+	//\post:getAmplitude(init(num,x,y,amplitude)) = amplitude 
+	//\post:getCompteARebours(init(num,x,y,amplitude)) = 10
+	
+	
+	/**
+	 * Operation:
+	 * */
+	//\pre vaExploser(B) = false
+	public void diminueChrono();
+	//\post: getCompteARebours(diminueChrono()) == getCompteARebours(diminueChrono())@pre -1;
+	//\post: getNumero(diminueChrono (B))@pre  = getNumero(diminueChrono (B))
+	//\post: getX(diminueChrono (B))@pre = getX(diminueChrono (B))
+	//\post: getY(diminueChrono (B))@pre = getY(diminueChrono (B))
+	//\post: getAmplitude(diminueChrono (B ))@pre = getAmplitude(diminueChrono (B ))
+
+
+	/** Invariant */
+	//\Inv: 0<= getCompteARebours(B) <= 10
+	//\Inv: vaExploser(B) min= (getCompteARebours(B) = 0)
+	
+}

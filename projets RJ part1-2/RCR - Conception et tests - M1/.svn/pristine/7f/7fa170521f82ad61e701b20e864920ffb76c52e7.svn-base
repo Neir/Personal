@@ -1,0 +1,23 @@
+Service : Terrain
+Use : Bloc
+Types : int
+Observators : 
+    const largeur : [Terrain] → int
+    const hauteur : [Terrain] → int
+    const profondeur : [Terrain] → int
+    bloc : [Terrain] × int × int × int → Bloc
+        pre bloc(T, x, y, z) require 0 ≤ x < largeur(T) &
+						0 ≤ y < hauteur(T) & 
+						0 ≤ z < profondeur(T)
+Constructors : 
+    init : int × int × int → [Terrain]
+        pre init(p_largeur, p_hauteur, p_profondeur) require p_largeur > 0 &
+															p_hauteur > 0 &
+															p_profondeur > 0
+Operators :
+
+Observations :
+[init]
+    largeur(init(p_largeur, p_hauteur, p_profondeur)) = p_largeur
+    hauteur(init(p_largeur, p_hauteur, p_profondeur)) = p_hauteur
+	profondeur(init(p_largeur, p_hauteur, p_profondeur)) = p_profondeur

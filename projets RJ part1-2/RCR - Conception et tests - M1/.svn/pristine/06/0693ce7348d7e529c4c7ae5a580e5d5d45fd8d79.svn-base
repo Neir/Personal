@@ -1,0 +1,17 @@
+package ihm;
+
+public enum TypeG {
+
+	VIDE,			// aucun mur
+	MURBRIQUE,		// ce mur peut être détruit
+	MURMETAL,		// ce mur ne put pas être détruit
+	Heros,
+	Kidnappeur,
+	BALLON_ORANGE,FANTOM_BLEU,
+	BOMBE,
+	BOMBUP,
+	FIREUP,
+	WALLPASS,
+	BOMBPASS,
+	FIRESUIT;
+}

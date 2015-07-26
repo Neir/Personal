@@ -1,0 +1,73 @@
+package Bombe;
+
+/**
+ * 1- spécification sur feuille
+ * 2-TP3 implementation de service/contrat
+ * 3-Test Test=>papier
+ * 4-Implementation du test TP5
+ * 5- codage1 et codage2 avec des copie coller du reponses du systeme avec les bug et tt 
+ * */
+public class BombeImpl implements BombeService {
+
+	private int numero;
+	private int indexX;
+	private int indexY;
+	private int amplitude;
+	private int compteArebours;
+		
+	//constructeur
+	@Override
+	public void init(int num, int x, int y, int amp) {
+		this.numero=num;
+		this.indexX=x;
+		this.indexY=y;
+		this.amplitude=amp;
+		compteArebours=10;
+	}
+	@Override
+	public int getNumero() {
+		return this.numero;
+	}
+
+	@Override
+	public int getX() {
+		return this.indexX;
+	}
+
+	@Override
+	public int getY() {
+		return this.indexY;
+	}
+
+	@Override
+	public int getAmptitude() {
+		return this.amplitude;
+	}
+
+	@Override
+	public int getCompteARebours() {
+		return this.compteArebours;
+	}
+	
+	@Override
+	public boolean vaExploser() {
+		return (this.compteArebours==0);
+	}
+
+
+	@Override
+	public void diminueChrono() {
+		this.compteArebours --;
+	}
+	
+	/**fonction util à l'utilisation du service Bombe
+	 * 
+	 * */
+	public boolean equal(BombeService b){
+		return (this.numero==b.getNumero() &&
+				this.indexX==b.getX() &&
+				this.indexY==b.getY() &&
+				this.amplitude==b.getAmptitude() &&
+				this.compteArebours==b.getCompteARebours());
+	}
+}

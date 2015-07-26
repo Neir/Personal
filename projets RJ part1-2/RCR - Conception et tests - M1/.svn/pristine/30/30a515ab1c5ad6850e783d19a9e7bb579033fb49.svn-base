@@ -1,0 +1,32 @@
+Terrain
+
+Le terrain est un service qui possède trois constantes : sa hauteur, sa largeur et sa profondeur.
+
+La largeur correspond à l'axe de la rue dans laquelle se déroule le niveau,
+la profondeur correspond à l'espace entre l'écran et le mur du fond de la rue,
+et enfin la hauteur qui correpond à l'axe utilisé pour les sauts et les obstacles.
+
+Le terrain est un ensemble de blocs possèdants chacun des coordonnées.
+Nous avons donc utilisé un simple tableau à trois dimensions pour modéliser ces coordonnées.
+Chaque dimension de ce tableau correspond à l'une des grandeurs (largeur, hauteur, profondeur) données en paramètres.
+
+Certains mécanismes de construction du terrain (de l'organisation des blocs) ont dû être spécifiés.
+Pour chaque croisement des axes de la largeur et de la hauteur, on utilise systématiquement le bloc le plus haut comme hauteur de référence.
+Ainsi, pour chaque profondeur et chaque largeur, tout ce qui est au-dessus du bloc non-null le plus haut est considéré comme un espace accessible,
+alors que tout ce qui se trouve en-dessous (blocs null et blocs non-null) est considéré comme un obstacle et est donc inaccessible.
+
+
+
+Bloc
+
+Le bloc est un service très simple qui n'a que deux observateurs. Tout d'abord un observateur indiquant son type : Vide ou Fosse.
+Ceci permettant de savoir si le personnage peut marcher sur ce bloc ou non (si un personnage devait marcher sur un fossé, celui-ci serait mort instantanément).
+Et également un observateur indiquant le trésor éventuel qu'il peut y avoir sur ce bloc. Cet observateur est donc soit null soit de type Objet.
+Le bloc n'ayant qu'un seul champs Objet pour le trésor, chaque nouveau trésor qui tomberait sur le bloc écraserait le précédent trésor.
+
+
+Objet
+
+L'Objet est un service très générique qui peut contenir n'importe quel type d'objet.
+En effet il peut exister des objets de type arme qui peuvent être équipés et ne peuvent pas être vendus.
+A contrario, certains objets sont de type marchandable et peuvent être soit consommés (non implément

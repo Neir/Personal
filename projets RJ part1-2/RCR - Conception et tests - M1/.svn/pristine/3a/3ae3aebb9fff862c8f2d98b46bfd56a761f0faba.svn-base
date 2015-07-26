@@ -1,0 +1,167 @@
+// ----------------------------------------------------------------------------
+// OBJECTIF DE TEST : Initialisation d'un personnage
+// ----------------------------------------------------------------------------
+
+Cas de test :
+	Personnage::initOK
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5
+Operation : 
+	P = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+Oracle : 
+	getNom(P) = nom
+	getLargeur(P) = largeur
+	getHauteur(P) = hauteur
+	getProfondeur(P) = profondeur
+	getForce(P) = force
+	getPvMax(P) = pvMax
+	getPv(P) = pvMax
+	getPos_x(P) = pos_x
+	getPos_y(P) = pos_y
+	getPos_z(P) = pos_z
+	orientation_a_droite(P) = true
+	en_saut(P) = false
+	l_objet_equipe(P) = null
+	le_personnage_equipe(P) = null
+	estPorte(P) = false
+	estGele(P) = 0
+
+
+Cas de test :
+	Personnage::initKO1
+Condition initiale : 
+	nom = "",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5
+Operation : 
+	P = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+Oracle : 
+	nom != ""
+	# exception levée
+	
+	
+Cas de test :
+	Personnage::initKO2
+Condition initiale : 
+	nom = "Toto",
+	largeur = 0, hauteur = 11, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5
+Operation : 
+	P = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+Oracle : 
+	largeur <= 0
+	# exception levée
+	
+	
+Cas de test :
+	Personnage::initKO3
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 0, profondeur = 11,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5
+Operation : 
+	P = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+Oracle : 
+	hauteur <= 0
+	# exception levée
+	
+	
+Cas de test :
+	Personnage::initKO4
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 0,
+	force = 10, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5
+Operation : 
+	P = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+Oracle : 
+	profondeur <= 0
+	# exception levée
+
+
+Cas de test :
+	Personnage::initKO5
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = -1, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5
+Operation : 
+	P = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+Oracle : 
+	force < 0
+	# exception levée (InvariantError)
+	
+	
+Cas de test :
+	Personnage::initKO6
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 100, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = 5
+Operation : 
+	P = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+Oracle : 
+	force >= pvMax
+	# exception levée
+	
+	
+Cas de test :
+	Personnage::initKO7
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 100, pvMax = 100, pos_x = -1, pos_y = 5, pos_z = 5
+Operation : 
+	P = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+Oracle : 
+	pos_x < 0
+	# exception levée (InvariantError)
+	
+	
+Cas de test :
+	Personnage::initKO8
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 100, pvMax = 100, pos_x = 5, pos_y = -1, pos_z = 5
+Operation : 
+	P = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+Oracle : 
+	pos_y < 0
+	# exception levée (InvariantError)
+	
+	
+Cas de test :
+	Personnage::initKO9
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 100, pvMax = 100, pos_x = 5, pos_y = 5, pos_z = -1
+Operation : 
+	P = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+Oracle : 
+	pos_z < 0
+	# exception levée (InvariantError)
+	
+
+
+// ----------------------------------------------------------------------------
+// OBJECTIF DE TEST : retrait_de_pv retire les degats de la vie du personnage
+// ----------------------------------------------------------------------------
+
+Cas de test :
+	Personnage::retrait_de_pvOK
+Condition initiale : 
+	nom = "Toto",
+	largeur = 11, hauteur = 11, profondeur = 11,
+	force = 100, pvMax = 100, pos_x = 5, pos_y = -1, pos_z = 5,
+	pv = 5
+Operation : 
+	PP = init(nom,largeur,hauteur,profondeur,force,pvMax,pos_x,pos_y,pos_z)
+	P = retrait_de_pv(PP, pv)
+Oracle : 
+	
+
+

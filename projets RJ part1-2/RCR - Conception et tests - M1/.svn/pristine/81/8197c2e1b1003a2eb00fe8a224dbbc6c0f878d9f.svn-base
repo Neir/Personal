@@ -1,0 +1,77 @@
+package ihm;
+
+import java.awt.Dimension;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+
+import bloc.Type;
+
+public class Case extends JButton{
+	
+	private static final long serialVersionUID = 1L;
+	private TypeG bloc;
+	
+	public Case(TypeG typeCase){
+		bloc=typeCase;
+		setPreferredSize(new Dimension(50, 50));
+		setRolloverEnabled(false);
+		setEnabled(true);
+		updateGrapgics();
+	}
+	
+	public void setBloc(TypeG newTypeCase){
+		bloc=newTypeCase;
+		updateGrapgics();
+	}
+	public TypeG getBloc(){
+		return bloc;
+	}
+
+	private void updateGrapgics() {
+		switch (bloc){
+		case VIDE:
+			setIcon(new ImageIcon(""));
+			break;
+		case MURBRIQUE:
+			setIcon(new ImageIcon("Bloc_Brique.jpg"));
+			break;
+		case MURMETAL:
+			setIcon(new ImageIcon("mur-facade-metal-a.jpg"));
+			break;
+		case Heros:
+			setIcon(new ImageIcon("200px-Bomberman.gif"));
+			break;
+		case Kidnappeur:
+			setIcon(new ImageIcon("Kidnappeur.jpg"));
+			break;
+		case BALLON_ORANGE:
+			setIcon(new ImageIcon("ballonOrange.png"));
+			break;
+		case FANTOM_BLEU:
+			setIcon(new ImageIcon("vilain.jpg"));
+			break;
+		case BOMBE:
+			setIcon(new ImageIcon("bombe.gif"));
+			break;
+		case BOMBUP:
+			setIcon(new ImageIcon("Bloc_Or.jpg"));
+			break;
+		case BOMBPASS:
+			setIcon(new ImageIcon("Bloc_Or.jpg"));
+			break;
+		case FIREUP:
+			setIcon(new ImageIcon("Bloc_Or.jpg"));
+			break;
+		case FIRESUIT:
+			setIcon(new ImageIcon("Bloc_Or.jpg"));
+			break;
+		case WALLPASS:
+			setIcon(new ImageIcon("Bloc_Or.jpg"));
+			break;
+		default :
+			break;
+		}
+		repaint();
+	}
+}

@@ -1,0 +1,105 @@
+package Acteur;
+
+import MoteurJeu.SANTE;
+
+public class ActeurImplErr implements ActeurService {
+
+	private int x;
+	private int y;
+	private SANTE sante;
+	private int force;
+	private int nbBombe;
+	private boolean wallPass;//passer les murs en briques
+	private boolean bombePass;//passer des bombes
+	private int fireSuit;//compteur de l'abri des explosions
+	
+	
+
+	@Override
+	public int getX() {
+		return x;
+	}
+
+	@Override
+	public int getY() {
+		return y;
+	}
+
+	@Override
+	public SANTE getSante() {
+		return sante;
+	}
+
+	@Override
+	public int getForceVitale() {
+		return force;
+	}
+
+	@Override
+	public void init(int x, int y) {
+		this.x = x;
+		this.y = y;
+		force = 4;
+		sante = SANTE.VIVANT;
+		nbBombe = 2;
+		wallPass = false;
+		bombePass = false;
+		fireSuit=0;		
+	}
+
+	@Override
+	public void setPos(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+
+	@Override
+	public void setSante(SANTE s) {
+		this.sante = s;
+	}
+
+	@Override
+	public void setForceVitale(int f) {
+		this.force = f;
+	}
+
+	@Override
+	public int getNbBombe() {
+		return this.nbBombe;
+	}
+
+	@Override
+	public void setNbBombe(int x) {
+		this.nbBombe+=x;
+	}
+
+	@Override
+	public boolean getWallPass() {
+		return this.wallPass;
+	}
+
+	@Override
+	public void setWallPass() {
+		this.wallPass= true;
+	}
+
+	@Override
+	public boolean getBombePass() {
+		return this.bombePass;
+	}
+
+	@Override
+	public void setBombePass() {
+		this.bombePass = true;
+	}
+
+	@Override
+	public int getFireSuit() {
+		return fireSuit;
+	}
+
+	@Override
+	public void setFireSuit(int x) {
+		this.fireSuit+=x;
+	}
+}
