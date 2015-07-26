@@ -1,1 +1,0 @@
-Le jar "soundle" est dans le répertoire SoundleProject.
