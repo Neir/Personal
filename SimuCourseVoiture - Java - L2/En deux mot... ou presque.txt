@@ -1,0 +1,14 @@
+Réalisation :
+Cette simulation a été réalisée dans le cadre d'une matière "projet" entièrement orienté vers celui-ci.
+C'était la première fois que nous travaillons sur un projet aussi complet. 
+Nous devions nous appuyer sur des bouts de codes plus ou moins important donnés par notre professeur chaque semaine.
+Nous étions deux à travailler dessus.
+
+Contenu :
+La voiture possède une inertie liée à sa vitesse même si elle est symbolité par un simple point.
+Le but était de parcourir chaque circuit en un minimum de "coup" avec une stratégie optimale.
+Nous avons utilisé entres autres un plus ou moins grand nombre de radar detectant le rapprochement vers la fin du circuit,
+l'agorithme de Dijkstra, et un algorithme génétique.
+
+
+Un jar exécutable est présent.
