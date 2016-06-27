@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="4"
+   name=""
+   committed-date="2008-04-16T00:02:31.679240Z"
+   url="https://kollider2d.googlecode.com/svn/trunk/Kollider2D/src/collision"
+   last-author="orelero"
+   kind="dir"
+   repos="https://kollider2d.googlecode.com/svn"
+   revision="4"/>
+<entry
+   committed-rev="8"
+   name="MultiPolygon.java"
+   text-time="2008-04-28T17:13:45.239901Z"
+   committed-date="2008-04-28T19:55:03.113093Z"
+   checksum="79456c39dd9b610e389f593e9e207588"
+   last-author="orelero"
+   kind="file"
+   revision="8"/>
+<entry
+   committed-rev="8"
+   name="Kollider.java"
+   text-time="2008-04-28T17:39:16.071901Z"
+   committed-date="2008-04-28T19:55:03.113093Z"
+   checksum="51a92d3c0186af4c0ccc7070c979e855"
+   last-author="orelero"
+   kind="file"
+   revision="8"/>
+<entry
+   committed-rev="8"
+   name="CollisionInfo.java"
+   text-time="2008-04-28T17:26:28.744901Z"
+   committed-date="2008-04-28T19:55:03.113093Z"
+   checksum="79d7133925d667c507c5cb0fce947e37"
+   last-author="orelero"
+   kind="file"
+   revision="8"/>
+<entry
+   committed-rev="8"
+   name="TriggeringPolygon.java"
+   text-time="2008-04-28T16:48:18.116901Z"
+   committed-date="2008-04-28T19:55:03.113093Z"
+   checksum="a437a8d4cc9413ed46aea4d015c60a0e"
+   last-author="orelero"
+   kind="file"
+   revision="8"/>
+<entry
+   committed-rev="8"
+   name="Algorithms.java"
+   text-time="2008-04-28T16:58:06.761901Z"
+   committed-date="2008-04-28T19:55:03.113093Z"
+   checksum="9f306fb9eecf96cbaa7a6971c4078ecd"
+   last-author="orelero"
+   kind="file"
+   revision="8"/>
+<entry
+   committed-rev="8"
+   name="CollisionEventHandler.java"
+   text-time="2008-04-28T17:03:48.937901Z"
+   committed-date="2008-04-28T19:55:03.113093Z"
+   checksum="8338f661d788bd8b8f5368d5754754d2"
+   last-author="orelero"
+   kind="file"
+   revision="8"/>
+</wc-entries>

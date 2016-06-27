@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="4"
+   name=""
+   committed-date="2008-04-16T00:02:31.679240Z"
+   url="https://kollider2d.googlecode.com/svn/trunk/Kollider2D/src/geometry"
+   last-author="orelero"
+   kind="dir"
+   repos="https://kollider2d.googlecode.com/svn"
+   revision="4"/>
+<entry
+   committed-rev="8"
+   name="Segment.java"
+   text-time="2008-04-28T17:00:09.376901Z"
+   committed-date="2008-04-28T19:55:03.113093Z"
+   checksum="b95358b60d6ce9fb4ead306d691aa42b"
+   last-author="orelero"
+   kind="file"
+   revision="8"/>
+<entry
+   committed-rev="8"
+   name="Vector.java"
+   text-time="2008-04-28T12:20:39.891901Z"
+   committed-date="2008-04-28T19:55:03.113093Z"
+   checksum="b2134caffabf4fada14befc2c434c236"
+   last-author="orelero"
+   kind="file"
+   revision="8"/>
+<entry
+   committed-rev="8"
+   name="Polygon.java"
+   text-time="2008-04-28T16:59:44.243901Z"
+   committed-date="2008-04-28T19:55:03.113093Z"
+   checksum="68913bd335702cc63c2f5966d1696420"
+   last-author="orelero"
+   kind="file"
+   revision="8"/>
+<entry
+   name="Vector2D.java"
+   kind="file"
+   deleted="true"
+   revision="8"/>
+<entry
+   committed-rev="8"
+   name="Point.java"
+   text-time="2008-04-28T17:14:20.255901Z"
+   committed-date="2008-04-28T19:55:03.113093Z"
+   checksum="11142cf72608eda19e3f3a68d02fe699"
+   last-author="orelero"
+   kind="file"
+   revision="8"/>
+</wc-entries>
