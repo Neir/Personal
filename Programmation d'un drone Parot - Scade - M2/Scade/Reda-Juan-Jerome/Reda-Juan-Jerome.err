@@ -1,0 +1,15 @@
+*** Post-namespace Warning (WAR_505): Synchro always fired
+  at file C:\Users\STLPOS~1.000\AppData\Local\Temp\ScadeChecker\3704\checker_file.scade, line 404, character 0
+  at path Deplacement/SM1:left:
+ The synchro transition in state left will always be fired, this state has no
+ sub automaton
+*** Post-namespace Warning (WAR_502): Unreachable state
+  at file C:\Users\STLPOS~1.000\AppData\Local\Temp\ScadeChecker\3704\checker_file.scade, line 518, character 0
+  at path Deplacement/SM1:Landing:
+ The state Landing can never be reached: it is not initial and there are no
+ transitions from a reachable state leading to it
+*** Post-namespace Warning (WAR_502): Unreachable state
+  at file C:\Users\STLPOS~1.000\AppData\Local\Temp\ScadeChecker\3704\checker_file.scade, line 448, character 0
+  at path Deplacement/SM1:right:
+ The state right can never be reached: it is not initial and there are no
+ transitions from a reachable state leading to it

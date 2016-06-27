@@ -1,0 +1,140 @@
+3.1.1) 
+L'expression "rand(l,h)" renvoie une valeur comprise aléatoire comprise entre l et h.
+
+Si l = h, on renvoie une la constante l
+Si l < h, on renvoie l'ensemble des valeurs (TOP)
+Si h > l, on renvoie l'ensemble vide (BOT).
+
+L'exécution du programme s'arrête lorsque toutes les instructions se terminent ou qu'une instruction "halt" est exécutée
+
+L'interprêteur peut terminer même en cas de boucle infinie, il suffit qu'il trouve un point fixe pour fournir une interprétation.
+
+exemple :
+
+	tas@TAS-Project-2015-2016:~/projet-tas/src$ ./analyzer.byte -constant tests/0402_loop_infinite.c 
+	tests/0402_loop_infinite.c:5.4-6.4: [ x in {0} ]
+	tests/0402_loop_infinite.c:5.4-6.4: [ x in {-1} ]
+	tests/0402_loop_infinite.c:5.4-6.4: [ x in {-2} ]
+	tests/0402_loop_infinite.c:5.4-6.4: [ x in {-3} ]
+	tests/0402_loop_infinite.c:5.4-6.4: [ x in top ]
+
+
+3.1.2)
+Interprétation de l'instruction "assert(b)" :
+
+	tas@TAS-Project-2015-2016:~/projet-tas/src$ ./analyzer.byte -constant myTests/3.1.1.assert.c 
+	Assertion FAILED with environment: [ a in {1} ]
+	myTests/3.1.1.assert.c:6.2-7.0: bottom
+
+3.1.3)
+Interprétation de l'opérateur modulo (%) :	x = 124564 % 100;
+
+	tas@TAS-Project-2015-2016:~/projet-tas/src$ ./analyzer.byte -constant myTests/3.1.3.modulo.c 
+	myTests/3.1.3.modulo.c:4.2-5.0: [ x in {64} ]
+
+						x = 4;
+						if(x % 2 == 0) x = 0;
+
+	tas@TAS-Project-2015-2016:~/projet-tas/src$ ./analyzer.byte -constant myTests/3.1.3.mod2.c 
+	myTests/3.1.3.mod2.c:5.2-6.0: [ x in {0} ]
+
+
+
+3.2)
+
+— 0024_mul_rand.c
+
+	tas@TAS-Project-2015-2016:~/projet-tas/src$ ./analyzer.byte -constant tests/0024_mul_rand.c 
+	tests/0024_mul_rand.c:5.2-6.0: [ x in {0} ]
+
+— 0100_if_true.c
+
+	tas@TAS-Project-2015-2016:~/projet-tas/src$ ./analyzer.byte -constant tests/0100_if_true.c 
+	tests/0100_if_true.c:5.2-6.0: [ x in {1} ]
+
+— 0101_if_false.c
+
+	tas@TAS-Project-2015-2016:~/projet-tas/src$ ./analyzer.byte -constant tests/0101_if_false.c 
+	tests/0101_if_false.c:5.2-6.0: [ x in {0} ]
+
+— 0209_cmp_eq_ne.c
+
+	tas@TAS-Project-2015-2016:~/projet-tas/src$ ./analyzer.byte -constant tests/0109_if_rel.c 
+	tests/0109_if_rel.c:7.2-8.0: [ x in top, y in top ]
+
+— x = 0 / rand(-100,100);
+
+	tas@TAS-Project-2015-2016:~/projet-tas/src$ ./analyzer.byte -constant myTests/3.2.div0parX.c
+	myTests/3.2.div0parX.c:4.2-5.0: [ x in {0} ]
+
+
+— x = rand(-1,1) / 0;
+
+	tas@TAS-Project-2015-2016:~/projet-tas/src$ ./analyzer.byte -constant myTests/3.2.divXpar0.c
+	myTests/3.2.divXpar0.c:4.2-5.0: bottom
+
+— x = 99 / 1;
+
+	tas@TAS-Project-2015-2016:~/projet-tas/src$ ./analyzer.byte -constant myTests/3.2.divXpar1.c
+	myTests/3.2.divXpar1.c:4.2-5.0: [ x in {99} ]
+
+
+
+3.3)
+Notre domaine des intervals renvoit des résultats aussi précis que ceux des fichiers fournis pour les exemples sans boucle.
+
+Exemples personnels :
+
+— x = rand(10,100) / rand(-2,1);
+
+	tas@TAS-Project-2015-2016:~/projet-tas/src$ ./analyzer.byte -interval myTests/3.3division.c 
+	myTests/3.3division.c:4.2-5.0: [ x in {[-50,100]} ]
+
+— if(rand(0,2) < rand(-2,2)) x = 1;
+  else x = 2;
+
+	tas@TAS-Project-2015-2016:~/projet-tas/src$ ./analyzer.byte -interval myTests/3.3compare.c 
+	myTests/3.3compare.c:6.2-7.0: [ x in {[1,2]} ]
+
+
+3.4)
+— x = 0;
+  while (x < rand(2,7)) {
+    if(x==0) x = 5;
+    print(x);
+  }
+
+	tas@TAS-Project-2015-2016:~/projet-tas/src$ ./analyzer.byte -interval -delay 0 -unroll 0 myTests/3.4.loop.c 
+	myTests/3.4.loop.c:6.4-7.2: [ x in {[5,5]} ]
+	myTests/3.4.loop.c:6.4-7.2: [ x in {[1,6]} ]
+
+	tas@TAS-Project-2015-2016:~/projet-tas/src$ ./analyzer.byte -interval -delay 1 -unroll 0 myTests/3.4.loop.c 
+	myTests/3.4.loop.c:6.4-7.2: [ x in {[5,5]} ]
+	myTests/3.4.loop.c:6.4-7.2: [ x in {[1,5]} ]
+
+	tas@TAS-Project-2015-2016:~/projet-tas/src$ ./analyzer.byte -interval -delay 0 -unroll 1 myTests/3.4.loop.c 
+	myTests/3.4.loop.c:6.4-7.2: [ x in {[5,5]} ]
+	myTests/3.4.loop.c:6.4-7.2: [ x in {[5,5]} ]
+
+
+
+3.5)
+Le domaine des parités est codé ainsi que la réduction et le produit réduit entre ce dernier et le domaine des intervals.
+Néanmoins, nous n'avons pas pu testé le produit réduit parce que le type des domaines n'est pas reconnu.
+Les 4 fichiers concernés sont commentés dans le makefile.
+
+Exemple pour illustrer l'intérêt de la réduction :
+
+— La solution est pair mais l'interval de solution a au moins une borne impaire.
+
+	Input : PAIR, Itv(-1,11)
+	Output : PAIR, Itv(0,10) 
+	L'interval de solution gagne en précision.
+
+— L'interval de solution est une constante et la parité est non déterminée.
+
+	Input : TOP, Itv(1,1)
+	Output : IMPAIR, Itv(1,1) 
+	On a trouvé une parité.
+
+4) Nous n'avons pas réalisé d'extention par manque de temps.

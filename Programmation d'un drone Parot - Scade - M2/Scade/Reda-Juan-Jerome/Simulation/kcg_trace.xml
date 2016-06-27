@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--$********** SCADE Suite KCG 64-bit 6.5 (build i12) ***********
+** Command: kcg65.exe -config E:/Scade/Reda-Juan-Jerome/Simulation/config.txt
+** Generation date: 2016-04-14T16:12:49
+*************************************************************$-->
+<Model date="2016-04-14T16:12:49" commandLine="kcg65.exe -config E:/Scade/Reda-Juan-Jerome/Simulation/config.txt">
+  <Option name="xml_basename" value="kcg_xml_filter_out.scade"/>
+  <Option name="state_vector" value="#off#"/>
+  <Option name="static" value="#off#"/>
+  <Option name="separate_io_all" value="#off#"/>
+  <Option name="no_separate_io" value="#off#"/>
+  <Option name="separate_io" value="#off#"/>
+  <Option name="warn_error" value="#off#"/>
+  <Option name="short_circuit" value="#off#"/>
+  <Option name="wrap_c_ops" value="#off#"/>
+  <Option name="input_file" value="E:/Scade/Reda-Juan-Jerome/Simulation/scade_model_without_unused.scade"/>
+  <Option name="probes" value="#on#"/>
+  <Option name="no_observe" value="#off#"/>
+  <Option name="observe" value="#off#"/>
+  <Option name="debug" value="#on#"/>
+  <Option name="user_config" value="./user_macros.h"/>
+  <Option name="input_threshold" value="#off#"/>
+  <Option name="header" value="#off#"/>
+  <Option name="significance_length" value="31"/>
+  <Option name="name_length" value="200"/>
+  <Option name="globals_prefix" value="#off#"/>
+  <Option name="keep_asserts" value="#off#"/>
+  <Option name="global_root_context" value="#off#"/>
+  <Option name="expall" value="#off#"/>
+  <Option name="noexp" value="#off#"/>
+  <Option name="exp" value="#off#"/>
+  <Option name="target_dir" value="E:/Scade/Reda-Juan-Jerome/Simulation"/>
+  <Option name="target" value="C"/>
+  <Option name="root" value="Deplacement"/>
+  <Option name="auth" value="#off#"/>
+  <EnumType scadeName="DIRECTION" targetName="DIRECTION">
+    <EnumVal scadeName="LEFT" targetName="LEFT"/>
+    <EnumVal scadeName="RIGHT" targetName="RIGHT"/>
+    <EnumVal scadeName="TAKEOFF" targetName="TAKEOFF"/>
+    <EnumVal scadeName="LANDING" targetName="LANDING"/>
+    <EnumVal scadeName="FORWARD" targetName="FORWARD"/>
+    <EnumVal scadeName="BACKWARD" targetName="BACKWARD"/>
+    <EnumVal scadeName="NONE" targetName="NONE"/>
+  </EnumType>
+  <RootNode scadeName="Deplacement" headerFile="Deplacement.h" targetCycleFct="Deplacement"
+      targetInitFct="Deplacement_reset" targetInitializationFct="Deplacement_init">
+    <Input scadeName="inGOTO" scadeType="DIRECTION" targetName="inGOTO" targetType="DIRECTION" inCtx="true"/>
+    <Input scadeName="Triplet" scadeType="int32^(3)" targetName="Triplet" targetType="array_int32_3" inCtx="true"/>
+    <Output scadeName="OUTPUT" scadeType="int32^(3)" targetName="OUTPUT" targetType="array_int32_3" inCtx="true"/>
+    <Automaton scadeName="SM1" targetStatesType="SSM_ST_SM1" targetTransitionsType="SSM_TR_SM1">
+      <State scadeName="left" targetName="SSM_st_left_SM1">
+        <Local scadeName="_L12" scadeType="int32^(3)" targetName="_L12_SM1_left" targetType="array_int32_3"
+            clockVar="SM1_state_act" clockVal="SSM_st_left_SM1" inCtx="true"/>
+        <Local scadeName="_L11" scadeType="int32^(3)" targetName="_L11_SM1_left" targetType="array_int32_3"
+            clockVar="SM1_state_act" clockVal="SSM_st_left_SM1" inCtx="true"/>
+        <Local scadeName="_L10" scadeType="int32^(3)" targetName="_L10_SM1_left" targetType="array_int32_3"
+            clockVar="SM1_state_act" clockVal="SSM_st_left_SM1" inCtx="true"/>
+        <Iterator instName="27" iteratorKind="map" scadeSize="3" targetSize="3">
+          <NodeInstance scadeName="$+$" instName="15"/>
+        </Iterator>
+        <Fork priority="1">
+          <Transition targetName="SSM_TR_left_1_SM1" kind="synchro" scadeDest="hovering"/>
+        </Fork>
+      </State>
+      <State scadeName="right" targetName="SSM_st_right_SM1">
+        <Local scadeName="_L12" scadeType="int32^(3)" targetName="_L12_SM1_right" targetType="array_int32_3"
+            clockVar="SM1_state_act" clockVal="SSM_st_right_SM1" inCtx="true"/>
+        <Local scadeName="_L11" scadeType="int32^(3)" targetName="_L11_SM1_right" targetType="array_int32_3"
+            clockVar="SM1_state_act" clockVal="SSM_st_right_SM1" inCtx="true"/>
+        <Local scadeName="_L10" scadeType="int32^(3)" targetName="_L10_SM1_right" targetType="array_int32_3"
+            clockVar="SM1_state_act" clockVal="SSM_st_right_SM1" inCtx="true"/>
+        <Iterator instName="29" iteratorKind="map" scadeSize="3" targetSize="3">
+          <NodeInstance scadeName="$+$" instName="16"/>
+        </Iterator>
+      </State>
+      <State scadeName="takingOff" targetName="SSM_st_takingOff_SM1">
+        <Local scadeName="_L5" scadeType="int32^(3)" targetName="_L5_SM1_takingOff" targetType="array_int32_3"
+            clockVar="SM1_state_act" clockVal="SSM_st_takingOff_SM1" inCtx="true"/>
+        <Local scadeName="_L4" scadeType="int32^(3)" targetName="_L4_SM1_takingOff" targetType="array_int32_3"
+            clockVar="SM1_state_act" clockVal="SSM_st_takingOff_SM1" inCtx="true"/>
+        <Local scadeName="_L3" scadeType="int32^(3)" targetName="_L3_SM1_takingOff" targetType="array_int32_3"
+            clockVar="SM1_state_act" clockVal="SSM_st_takingOff_SM1" inCtx="true"/>
+        <Iterator instName="11" iteratorKind="map" scadeSize="3" targetSize="3">
+          <NodeInstance scadeName="$+$" instName="7"/>
+        </Iterator>
+      </State>
+      <State scadeName="Landing" targetName="SSM_st_Landing_SM1">
+        <Local scadeName="_L3" scadeType="int32^(3)" targetName="_L3_SM1_Landing" targetType="array_int32_3"
+            clockVar="SM1_state_act" clockVal="SSM_st_Landing_SM1" inCtx="true"/>
+        <Local scadeName="_L2" scadeType="int32^(3)" targetName="_L2_SM1_Landing" targetType="array_int32_3"
+            clockVar="SM1_state_act" clockVal="SSM_st_Landing_SM1" inCtx="true"/>
+        <Local scadeName="_L1" scadeType="int32^(3)" targetName="_L1_SM1_Landing" targetType="array_int32_3"
+            clockVar="SM1_state_act" clockVal="SSM_st_Landing_SM1" inCtx="true"/>
+        <Iterator instName="15" iteratorKind="map" scadeSize="3" targetSize="3">
+          <NodeInstance scadeName="$+$" instName="9"/>
+        </Iterator>
+      </State>
+      <State scadeName="hovering" targetName="SSM_st_hovering_SM1">
+        <Local scadeName="_L2" scadeType="int32^(3)" targetName="_L2_SM1_hovering" targetType="array_int32_3"
+            clockVar="SM1_state_act" clockVal="SSM_st_hovering_SM1" inCtx="true"/>
+        <Fork priority="1">
+          <Condition>
+            <NodeInstance scadeName="=" instName="8"/>
+          </Condition>
+          <Transition targetName="SSM_TR_hovering_1_SM1" kind="weak" scadeDest="left"/>
+        </Fork>
+        <Fork priority="2">
+          <Condition>
+            <NodeInstance scadeName="=" instName="10"/>
+          </Condition>
+          <Transition targetName="SSM_TR_hovering_2_SM1" kind="weak" scadeDest="takingOff"/>
+        </Fork>
+      </State>
+      <ActiveState targetName="SM1_state_act" inCtx="true"/>
+      <NextState targetName="SM1_state_nxt" mem="true" inCtx="true"/>
+      <SelectedState targetName="SM1_state_sel" inCtx="true"/>
+      <ResetActiveState targetName="SM1_reset_act" mem="true" inCtx="true"/>
+      <ResetNextState targetName="SM1_reset_nxt" mem="true" inCtx="true"/>
+      <ResetSelectedState targetName="SM1_reset_sel"/>
+      <StrongTransition targetName="SM1_fired_strong" inCtx="true"/>
+      <WeakTransition targetName="SM1_fired" inCtx="true"/>
+    </Automaton>
+    <OutCtxType targetName="outC_Deplacement"/>
+    <InCtxType targetName="inC_Deplacement"/>
+  </RootNode>
+  <PredefType scadeName="int8" targetName="kcg_int8"/>
+  <PredefType scadeName="int16" targetName="kcg_int16"/>
+  <PredefType scadeName="int32" targetName="kcg_int32"/>
+  <PredefType scadeName="int64" targetName="kcg_int64"/>
+  <PredefType scadeName="uint8" targetName="kcg_uint8"/>
+  <PredefType scadeName="uint16" targetName="kcg_uint16"/>
+  <PredefType scadeName="uint32" targetName="kcg_uint32"/>
+  <PredefType scadeName="uint64" targetName="kcg_uint64"/>
+  <PredefType scadeName="size" targetName="kcg_size"/>
+  <PredefType scadeName="float32" targetName="kcg_float32"/>
+  <PredefType scadeName="float64" targetName="kcg_float64"/>
+  <PredefType scadeName="bool" targetName="kcg_bool"/>
+  <PredefType scadeName="char" targetName="kcg_char"/>
+  <ArrayType targetName="array_int32_3" cellType="kcg_int32" size="3" targetCopyFct="kcg_copy_array_int32_3"
+      targetCompFct="kcg_comp_array_int32_3"/>
+</Model>
+<!--$********** SCADE Suite KCG 64-bit 6.5 (build i12) ***********
+** kcg_trace.xml
+** Generation date: 2016-04-14T16:12:49
+*************************************************************$-->

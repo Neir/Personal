@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<File xmlns="http://www.esterel-technologies.com/ns/scade/5" xmlns:ed="http://www.esterel-technologies.com/ns/scade/pragmas/editor/5" xmlns:kcg="http://www.esterel-technologies.com/ns/scade/pragmas/codegen/3">
+	<declarations>
+		<Type name="DIRECTION">
+			<definition>
+				<Enum>
+					<values>
+						<Value name="LEFT">
+							<pragmas>
+								<ed:Value oid="!ed/4577/7FCB/E78/570f9ac361b5"/>
+							</pragmas>
+						</Value>
+						<Value name="RIGHT">
+							<pragmas>
+								<ed:Value oid="!ed/4578/7FCB/E78/570f9ad6564b"/>
+							</pragmas>
+						</Value>
+						<Value name="TAKEOFF">
+							<pragmas>
+								<ed:Value oid="!ed/4579/7FCB/E78/570f9ae5322a"/>
+							</pragmas>
+						</Value>
+						<Value name="LANDING">
+							<pragmas>
+								<ed:Value oid="!ed/457a/7FCB/E78/570f9b003adc"/>
+							</pragmas>
+						</Value>
+						<Value name="FORWARD">
+							<pragmas>
+								<ed:Value oid="!ed/457b/7FCB/E78/570f9b33304a"/>
+							</pragmas>
+						</Value>
+						<Value name="BACKWARD">
+							<pragmas>
+								<ed:Value oid="!ed/457c/7FCB/E78/570f9b3c3422"/>
+							</pragmas>
+						</Value>
+						<Value name="NONE">
+							<pragmas>
+								<ed:Value oid="!ed/457d/7FCB/E78/570f9b58426"/>
+							</pragmas>
+						</Value>
+					</values>
+				</Enum>
+			</definition>
+			<pragmas>
+				<ed:Type oid="!ed/4574/7FCB/E78/570f9aae4de9"/>
+			</pragmas>
+		</Type>
+		<Type name="FLYMOVE">
+			<definition>
+				<Enum>
+					<values>
+						<Value name="LANDED">
+							<pragmas>
+								<ed:Value oid="!ed/46e3/4A03/EC8/5710e8d46fb4"/>
+							</pragmas>
+						</Value>
+						<Value name="TAKINGOFF">
+							<pragmas>
+								<ed:Value oid="!ed/46e4/4A03/EC8/5710e8d4de3"/>
+							</pragmas>
+						</Value>
+						<Value name="HOVERING">
+							<pragmas>
+								<ed:Value oid="!ed/46e5/4A03/EC8/5710e8d46b0e"/>
+							</pragmas>
+						</Value>
+						<Value name="FLYING">
+							<pragmas>
+								<ed:Value oid="!ed/46e6/4A03/EC8/5710e8d423d9"/>
+							</pragmas>
+						</Value>
+						<Value name="LAND">
+							<pragmas>
+								<ed:Value oid="!ed/46e7/4A03/EC8/5710e8d46246"/>
+							</pragmas>
+						</Value>
+						<Value name="EMERGENCY">
+							<pragmas>
+								<ed:Value oid="!ed/46e8/4A03/EC8/5710e8d41f7f"/>
+							</pragmas>
+						</Value>
+					</values>
+				</Enum>
+			</definition>
+			<pragmas>
+				<ed:Type oid="!ed/46e2/4A03/EC8/5710e8d46f0c"/>
+			</pragmas>
+		</Type>
+		<Type name="KEY">
+			<definition>
+				<Enum>
+					<values>
+						<Value name="Z">
+							<pragmas>
+								<ed:Value oid="!ed/46f6/4A03/EC8/5710e9033a68"/>
+							</pragmas>
+						</Value>
+						<Value name="S">
+							<pragmas>
+								<ed:Value oid="!ed/46f7/4A03/EC8/5710e9035693"/>
+							</pragmas>
+						</Value>
+						<Value name="Q">
+							<pragmas>
+								<ed:Value oid="!ed/46f8/4A03/EC8/5710e90353aa"/>
+							</pragmas>
+						</Value>
+						<Value name="D">
+							<pragmas>
+								<ed:Value oid="!ed/46f9/4A03/EC8/5710e9032acf"/>
+							</pragmas>
+						</Value>
+						<Value name="SPACE">
+							<pragmas>
+								<ed:Value oid="!ed/46fa/4A03/EC8/5710e9033091"/>
+							</pragmas>
+						</Value>
+						<Value name="T">
+							<pragmas>
+								<ed:Value oid="!ed/46fb/4A03/EC8/5710e9035a6b"/>
+							</pragmas>
+						</Value>
+					</values>
+				</Enum>
+			</definition>
+			<pragmas>
+				<ed:Type oid="!ed/46f5/4A03/EC8/5710e9032250"/>
+			</pragmas>
+		</Type>
+	</declarations>
+</File>

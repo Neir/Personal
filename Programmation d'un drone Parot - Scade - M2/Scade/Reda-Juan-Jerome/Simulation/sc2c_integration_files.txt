@@ -1,0 +1,30 @@
+*****************************
+*** Generated KCG H files ***
+*****************************
+Deplacement.h
+kcg_types.h
+kcg_consts.h
+kcg_sensors.h
+
+*****************************
+*** Generated KCG C files ***
+*****************************
+Deplacement.c
+kcg_types.c
+kcg_consts.c
+
+*****************************
+*** Generated SC2C Files  ***
+*****************************
+user_macros.h
+kcg_imported_types.h
+
+*****************************
+*** Include Directories   ***
+*****************************
+.
+$(SCADE)
+$(SCADE)\include
+C:\Program Files (x86)\Esterel Technologies\SCADE R16.2.1\SCADE\include
+C:\Program Files (x86)\Esterel Technologies\SCADE R16.2.1\SCADE\libraries\SC65\libmathext
+
